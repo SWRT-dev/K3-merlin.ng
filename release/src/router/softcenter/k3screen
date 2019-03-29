@@ -1,0 +1,115 @@
+#!/bin/sh
+# add by tianbaoha
+
+plan_a() {
+  if [ -z "`nvram get screen_time`" ]; then
+  nvram set screen_time=180
+  nvram set screen_2G5G_pwd_en=0
+  nvram set city_ch=北京
+  nvram set county_ch=北京
+  nvram set city_id=WX4FBXXFKE4F
+  nvram set vis_ssid_enable=1
+  nvram set screen_guest_pwd_en=1
+  nvram set vis_ssid=ASUS_GUEST
+  nvram set vis_ssid_pwd=1234567890
+  nvram set ntp_server0=time1.aliyun.com
+  fi
+  nvram set product=K3
+  nvram set hd_version=A1/A2
+  sw_mode=`cat /var/tmp/sw_mode 2>/dev/null`
+  case "$sw_mode" in
+    2|3|4)
+      nvram set fw_version="AP`nvram get lan_ipaddr`"
+      nvram set wan_ifname=vlan1
+    ;;
+    *)
+      nvram set fw_version=2018-10-10_fixed
+      nvram set wan_ifname=vlan2
+    ;;
+  esac
+  nvram set wan_pppoe_ifname=ppp0
+  nvram set bsd_role=0
+  nvram set pingcheck=1
+  nvram set get_wan_port_status=1
+  devmem 0x1800c1c1 32 0x00001f0f
+  killall -q -9 phi_speed wl_cr uhmi k3screenctrl
+  sleep 1
+  rm -rf /var/tmp/u_lib
+  mkdir -p /var/tmp/u_lib
+  ln -sf /usr/share/libshared.so /var/tmp/u_lib/libshared.so
+  export LD_LIBRARY_PATH=/var/tmp/u_lib
+  phi_speed &
+  wl_cr &
+  uhmi &
+}
+plan_b() {
+  mkdir -p /tmp/k3screenctrl
+  if [ -x "/jffs/k3screenctrl/basic.sh" -a -x "/jffs/k3screenctrl/wifi.sh" ]; then
+    cp -fa /jffs/k3screenctrl/*.sh /tmp/k3screenctrl/
+  else
+    cp -fa /usr/share/k3screenctrl/*.sh /tmp/k3screenctrl/
+  fi
+  killall -q -9 phi_speed wl_cr uhmi k3screenctrl
+  sleep 1
+  /usr/sbin/k3screenctrl -r &
+}
+p_p() {
+  eval $(/usr/sbin/robocfg show 2>/dev/null | awk 'NR==2,NR==5{printf $3" "}' | awk '{printf("LAN2=%s; LAN1=%s; LAN3=%s; WAN1=%s;",$1,$2,$3,$4)}')
+  [ "$LAN2" = "DOWN" ] && LAN2="   0    Down" || LAN2="   0      Up           1000      Full"
+  [ "$LAN1" = "DOWN" ] && LAN1="   1    Down" || LAN1="   1      Up           1000      Full"
+  [ "$LAN3" = "DOWN" ] && LAN3="   2    Down" || LAN3="   2      Up           1000      Full"
+  [ "$WAN1" = "DOWN" ] && WAN1="   3    Down" || WAN1="   3      Up           1000      Full"
+  echo "Port    Link    Speed(Mbps)    Duplex
+----    ----    -----------    ------
+
+$LAN2
+$LAN1
+$LAN3
+$WAN1
+   4    Down
+"
+}
+case "$1" in
+  a|A|b|B)
+    nvram set k3screen=$1
+    nvram commit
+  ;;
+  ports)
+    p_p
+  ;;
+  set)
+    echo
+    read -p " 输入息屏时间(单位 秒，0为常亮): " screen1
+    read -p " 是否显示无线密码(1显示，0隐藏): " screen2
+    read -p " 输入城市地区汉字(如: 北京): " screen3
+    read -p " 输入要在屏幕上显示的城市汉字(如: 北京): " screen4
+    nvram set screen_time="${screen1:-180}"
+    nvram set screen_2G5G_pwd_en="${screen2:-0}"
+    nvram set city_ch="${screen3:-北京}"
+    nvram set county_ch="${screen4:-tbvv.net}"
+    nvram commit
+    cp /rom/city_list /tmp
+    weather convert >/dev/null 2>&1
+    weather update_weather >/dev/null 2>&1
+    echo " 完成."
+  ;;
+  *)
+    [ -f "/tmp/screen_lock" ] && return
+    touch /tmp/screen_lock
+    k3screen=`nvram get k3screen`
+    [ -z "$k3screen" ] && k3screen=a && nvram set k3screen=a
+    if [ "$1" = "boot" -a -f "/var/tmp/scr_st" ] && pidof uhmi >/dev/null; then
+      :
+    else
+      touch /var/tmp/scr_st
+      [ "$1" = "boot" ] && while [ "`awk -F. '{print $1}' /proc/uptime`" -le 50 ]; do sleep 1; done
+      if [ "$k3screen" = "a" -o "$k3screen" = "A" ]; then
+        plan_a
+      else
+        plan_b
+      fi
+    fi
+    rm -rf /tmp/screen_lock
+  ;;
+esac
+

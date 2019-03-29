@@ -1,0 +1,1 @@
+cmd_fs/yaffs2/yaffs.ko := arm-brcm-linux-uclibcgnueabi-ld -EL -r  -T /home/paldier/k3/release/src-rt-7.14.114.x/src/linux/linux-2.6.36/scripts/module-common.lds --build-id  -o fs/yaffs2/yaffs.ko fs/yaffs2/yaffs.o fs/yaffs2/yaffs.mod.o

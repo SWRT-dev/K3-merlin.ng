@@ -1,0 +1,126 @@
+#include <linux/module.h>
+#include <linux/vermagic.h>
+#include <linux/compiler.h>
+
+MODULE_INFO(vermagic, VERMAGIC_STRING);
+
+struct module __this_module
+__attribute__((section(".gnu.linkonce.this_module"))) = {
+ .name = KBUILD_MODNAME,
+ .init = init_module,
+#ifdef CONFIG_MODULE_UNLOAD
+ .exit = cleanup_module,
+#endif
+ .arch = MODULE_ARCH_INIT,
+};
+
+static const struct modversion_info ____versions[]
+__used
+__attribute__((section("__versions"))) = {
+	{ 0x488e00c8, "module_layout" },
+	{ 0x34664a74, "kmalloc_caches" },
+	{ 0x12da5bb2, "__kmalloc" },
+	{ 0xff178f6, "__aeabi_idivmod" },
+	{ 0x7f9df3c4, "generic_file_llseek" },
+	{ 0x31198863, "__mark_inode_dirty" },
+	{ 0xd6ee688f, "vmalloc" },
+	{ 0x2e5810c6, "__aeabi_unwind_cpp_pr1" },
+	{ 0x97255bdf, "strlen" },
+	{ 0x5641e459, "generic_fh_to_parent" },
+	{ 0x67053080, "current_kernel_time" },
+	{ 0xdbe09ba5, "is_bad_inode" },
+	{ 0xe9ae4e39, "test_set_page_writeback" },
+	{ 0x20000329, "simple_strtoul" },
+	{ 0xaecbf7b4, "generic_file_aio_read" },
+	{ 0xba611634, "remove_proc_entry" },
+	{ 0xe72f1ad7, "vfs_readlink" },
+	{ 0x7426f76c, "init_timer_key" },
+	{ 0x5b217964, "end_writeback" },
+	{ 0xf1151122, "mutex_unlock" },
+	{ 0x5f22dae7, "generic_read_dir" },
+	{ 0x999e8297, "vfree" },
+	{ 0x3c2c5af5, "sprintf" },
+	{ 0x8997dab9, "generic_file_aio_write" },
+	{ 0x7d11c268, "jiffies" },
+	{ 0xfef7cbff, "truncate_setsize" },
+	{ 0xe2d5255a, "strcmp" },
+	{ 0x93b8b7a6, "end_page_writeback" },
+	{ 0xe707d823, "__aeabi_uidiv" },
+	{ 0xfa2a45e, "__memzero" },
+	{ 0xa4476cec, "del_timer_sync" },
+	{ 0x5f754e5a, "memset" },
+	{ 0x11089ac7, "_ctype" },
+	{ 0xa32a6a39, "__mutex_init" },
+	{ 0xea147363, "printk" },
+	{ 0x62280118, "ddr_phys_offset2_va" },
+	{ 0x9112fd6f, "kthread_stop" },
+	{ 0x9da2fae6, "d_rehash" },
+	{ 0x9e1e6099, "d_obtain_alias" },
+	{ 0x71c90087, "memcmp" },
+	{ 0xe4bc4c33, "put_mtd_device" },
+	{ 0x7e2637ef, "d_alloc_root" },
+	{ 0xa1c76e0a, "_cond_resched" },
+	{ 0x328a05f1, "strncpy" },
+	{ 0x84b183ae, "strncmp" },
+	{ 0x7540c734, "mutex_lock" },
+	{ 0xd482c208, "mem_section" },
+	{ 0x315818ab, "coherence_flag" },
+	{ 0x538a16bf, "setattr_copy" },
+	{ 0x8a7c6f1, "add_timer" },
+	{ 0xdc3fcbc9, "__sw_hweight8" },
+	{ 0x43b0c9c3, "preempt_schedule" },
+	{ 0x41eb99eb, "unlock_page" },
+	{ 0x310917fe, "sort" },
+	{ 0x5093fa82, "_clear_bit_le" },
+	{ 0x2196324, "__aeabi_idiv" },
+	{ 0x59e5070d, "__do_div64" },
+	{ 0x61651be, "strcat" },
+	{ 0xfe107b, "ddr_phys_offset_va" },
+	{ 0x5858735, "kmem_cache_alloc" },
+	{ 0xd9ce8f0c, "strnlen" },
+	{ 0x8f4c245b, "generic_file_mmap" },
+	{ 0xd0c1db86, "bdevname" },
+	{ 0x93fca811, "__get_free_pages" },
+	{ 0x1000e51, "schedule" },
+	{ 0x5b40e30f, "do_sync_read" },
+	{ 0x65b6747a, "unlock_new_inode" },
+	{ 0x25116b97, "kill_block_super" },
+	{ 0xc27487dd, "__bug" },
+	{ 0x4cb1e3c8, "create_proc_entry" },
+	{ 0x525c2163, "wake_up_process" },
+	{ 0xf67b2e71, "get_mtd_device" },
+	{ 0x5ef0481f, "inode_change_ok" },
+	{ 0x722ed457, "register_filesystem" },
+	{ 0xd2965f6f, "kthread_should_stop" },
+	{ 0xf58d45a3, "iput" },
+	{ 0x37a0cba, "kfree" },
+	{ 0x40a0c77a, "kthread_create" },
+	{ 0xbc8e5ac8, "do_sync_write" },
+	{ 0x78c2bb45, "generic_file_splice_write" },
+	{ 0x9d669763, "memcpy" },
+	{ 0xf32ebd62, "get_sb_bdev" },
+	{ 0xc438eb25, "put_page" },
+	{ 0x74c134b9, "__sw_hweight32" },
+	{ 0x3f120d26, "unregister_filesystem" },
+	{ 0x479aa2d3, "init_special_inode" },
+	{ 0xefd6cf06, "__aeabi_unwind_cpp_pr0" },
+	{ 0xb742fd7, "simple_strtol" },
+	{ 0x9389f5aa, "generic_file_splice_read" },
+	{ 0xf6279c60, "generic_fh_to_dentry" },
+	{ 0xb28997b2, "grab_cache_page_write_begin" },
+	{ 0x13095525, "param_ops_uint" },
+	{ 0x37740f2d, "d_instantiate" },
+	{ 0x930d04cc, "flush_dcache_page" },
+	{ 0x117f85ff, "iget_locked" },
+	{ 0xe914e41e, "strcpy" },
+	{ 0xfd58d8e5, "truncate_inode_pages" },
+	{ 0x313341a3, "_set_bit_le" },
+};
+
+static const char __module_depends[]
+__used
+__attribute__((section(".modinfo"))) =
+"depends=";
+
+
+MODULE_INFO(srcversion, "2121EAD5F8AA70A84663C9F");

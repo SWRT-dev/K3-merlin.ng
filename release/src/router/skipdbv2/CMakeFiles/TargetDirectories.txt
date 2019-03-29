@@ -1,0 +1,10 @@
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/dbapi.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/dbus.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/example.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/jftest.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/skbus.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/skipd.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/skipdb.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/test.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/test2.dir
+/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/udbtest.dir

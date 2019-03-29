@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/paldier/k3/release/src/router/skipdbv2/client/skbus.c
+stdlib.h
+-
+stdio.h
+-
+sys/un.h
+-
+errno.h
+-
+string.h
+-
+sys/fcntl.h
+-
+unistd.h
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netinet/tcp.h
+-
+ev.h
+-
+
+libev/ev.h
+string.h
+-
+signal.h
+-
+time.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+
