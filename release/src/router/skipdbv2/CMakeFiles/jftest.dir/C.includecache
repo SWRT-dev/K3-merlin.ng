@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/tests/jftest.c
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/jftest.c
 stdlib.h
 -
 time.h
 -
 JFile.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/JFile.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/JFile.h
 List.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/List.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/List.h
 PortableGettimeofday.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/PortableGettimeofday.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/PortableGettimeofday.h
 Date.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/Date.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/Date.h
 
 basekit/Base.h
 stdio.h

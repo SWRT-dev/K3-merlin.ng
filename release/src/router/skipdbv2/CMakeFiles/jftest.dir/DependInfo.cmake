@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_C
-  "/home/paldier/k3/release/src/router/skipdbv2/tests/jftest.c" "/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/jftest.dir/tests/jftest.c.o"
+  "/home/paldier/k3_384/release/src/router/skipdbv2/tests/jftest.c" "/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/jftest.dir/tests/jftest.c.o"
   )
 SET(CMAKE_C_COMPILER_ID "GNU")
 
@@ -15,7 +15,7 @@ SET(CMAKE_TARGET_DEFINITIONS
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/skipdb.dir/DependInfo.cmake"
+  "/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/skipdb.dir/DependInfo.cmake"
   )
 
 # The include file search paths:

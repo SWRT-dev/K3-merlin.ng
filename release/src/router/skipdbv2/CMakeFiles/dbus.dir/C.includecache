@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/dbus.c
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/dbus.c
 stdlib.h
 -
 stdio.h
@@ -40,7 +40,7 @@ errno.h
 unistd.h
 -
 skipd.h
-/home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.h
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.h
 

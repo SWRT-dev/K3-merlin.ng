@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_SOURCE_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_BINARY_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/skipd.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/skipd.dir/flags.make
 
 CMakeFiles/skipd.dir/mgr/skipd.c.o: CMakeFiles/skipd.dir/flags.make
 CMakeFiles/skipd.dir/mgr/skipd.c.o: mgr/skipd.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/skipd.dir/mgr/skipd.c.o"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/skipd.dir/mgr/skipd.c.o   -c /home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.c
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/skipd.dir/mgr/skipd.c.o   -c /home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.c
 
 CMakeFiles/skipd.dir/mgr/skipd.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/skipd.dir/mgr/skipd.c.i"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.c > CMakeFiles/skipd.dir/mgr/skipd.c.i
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.c > CMakeFiles/skipd.dir/mgr/skipd.c.i
 
 CMakeFiles/skipd.dir/mgr/skipd.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/skipd.dir/mgr/skipd.c.s"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.c -o CMakeFiles/skipd.dir/mgr/skipd.c.s
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.c -o CMakeFiles/skipd.dir/mgr/skipd.c.s
 
 CMakeFiles/skipd.dir/mgr/skipd.c.o.requires:
 .PHONY : CMakeFiles/skipd.dir/mgr/skipd.c.o.requires
@@ -74,17 +74,17 @@ CMakeFiles/skipd.dir/mgr/skipd.c.o.provides.build: CMakeFiles/skipd.dir/mgr/skip
 
 CMakeFiles/skipd.dir/mgr/daemonize.c.o: CMakeFiles/skipd.dir/flags.make
 CMakeFiles/skipd.dir/mgr/daemonize.c.o: mgr/daemonize.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/skipd.dir/mgr/daemonize.c.o"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/skipd.dir/mgr/daemonize.c.o   -c /home/paldier/k3/release/src/router/skipdbv2/mgr/daemonize.c
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/skipd.dir/mgr/daemonize.c.o   -c /home/paldier/k3_384/release/src/router/skipdbv2/mgr/daemonize.c
 
 CMakeFiles/skipd.dir/mgr/daemonize.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/skipd.dir/mgr/daemonize.c.i"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3/release/src/router/skipdbv2/mgr/daemonize.c > CMakeFiles/skipd.dir/mgr/daemonize.c.i
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3_384/release/src/router/skipdbv2/mgr/daemonize.c > CMakeFiles/skipd.dir/mgr/daemonize.c.i
 
 CMakeFiles/skipd.dir/mgr/daemonize.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/skipd.dir/mgr/daemonize.c.s"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3/release/src/router/skipdbv2/mgr/daemonize.c -o CMakeFiles/skipd.dir/mgr/daemonize.c.s
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3_384/release/src/router/skipdbv2/mgr/daemonize.c -o CMakeFiles/skipd.dir/mgr/daemonize.c.s
 
 CMakeFiles/skipd.dir/mgr/daemonize.c.o.requires:
 .PHONY : CMakeFiles/skipd.dir/mgr/daemonize.c.o.requires
@@ -124,6 +124,6 @@ CMakeFiles/skipd.dir/clean:
 .PHONY : CMakeFiles/skipd.dir/clean
 
 CMakeFiles/skipd.dir/depend:
-	cd /home/paldier/k3/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/skipd.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/paldier/k3_384/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/skipd.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/skipd.dir/depend
 

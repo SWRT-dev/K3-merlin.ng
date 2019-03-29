@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/client/skbus.c
+/home/paldier/k3_384/release/src/router/skipdbv2/client/skbus.c
 stdlib.h
 -
 stdio.h

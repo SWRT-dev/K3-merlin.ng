@@ -440,4 +440,7 @@ extern int wave_handle_app_flag(char *name, int wave_app_flag);
 extern int change_location(char *lang);
 #endif
 extern void update_wlan_log(int sig);
+extern int inet_raddr6_pton(const char *src, void *dst, void *buf);
+extern void get_ipv6_client_info(void);
+extern void get_ipv6_client_list(void);
 #endif /* _httpd_h_ */

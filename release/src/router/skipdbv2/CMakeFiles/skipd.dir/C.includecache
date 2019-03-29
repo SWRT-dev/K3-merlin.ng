@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/coroutine.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/coroutine.h
 stdlib.h
 -
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/daemonize.c
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/daemonize.c
 stdio.h
 -
 stdlib.h
@@ -46,7 +46,7 @@ syslog.h
 ev.h
 -
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.c
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.c
 stdlib.h
 -
 stdio.h
@@ -88,13 +88,13 @@ syslog.h
 ev.h
 -
 coroutine.h
-/home/paldier/k3/release/src/router/skipdbv2/mgr/coroutine.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/coroutine.h
 SkipDB.h
-/home/paldier/k3/release/src/router/skipdbv2/mgr/SkipDB.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/SkipDB.h
 skipd.h
-/home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.h
 
-/home/paldier/k3/release/src/router/skipdbv2/mgr/skipd.h
+/home/paldier/k3_384/release/src/router/skipdbv2/mgr/skipd.h
 
 basekit/BStream.h
 Common.h

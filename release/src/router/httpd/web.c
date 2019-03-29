@@ -6159,7 +6159,7 @@ static int compare_back(FILE *fp, int current_line, char *buffer);
 static int check_mac_previous(char *mac);
 static char *value(FILE *fp, int line, int token);
 static void find_hostname_by_mac(char *mac, char *hostname);
-static void get_ipv6_client_info();
+//static void get_ipv6_client_info();
 static int total_lines = 0;
 
 /* Init File and clear the content */
@@ -6344,7 +6344,7 @@ END:
 	strcpy(hostname, "");
 }
 
-static void get_ipv6_client_info()
+void get_ipv6_client_info()
 {
 	FILE *fp;
 	char buffer[128], ipv6_addr[128], mac[32];
@@ -6385,7 +6385,7 @@ static void get_ipv6_client_info()
 	fclose(fp);
 }
 
-static void get_ipv6_client_list(void)
+void get_ipv6_client_list(void)
 {
 	FILE *fp;
 	int line_index = 1;
@@ -6610,7 +6610,7 @@ const static struct {
 };
 
 #ifdef RTCONFIG_IPV6
-static int inet_raddr6_pton(const char *src, void *dst, void *buf)
+int inet_raddr6_pton(const char *src, void *dst, void *buf)
 {
 	char *sptr = (char *) src;
 	char *dptr = buf;
@@ -23944,7 +23944,6 @@ struct ej_handler ej_handlers[] = {
 	{ "radio_status", ej_radio_status},
 	{ "asus_sysinfo", ej_sysinfo},
 	{ "sysinfo", ej_show_sysinfo},
-	{ "kool_info", ej_kool_info},
 	{ "iptraffic", ej_iptraffic},
 	{ "iptmon", ej_iptmon},
 	{ "ipt_bandwidth", ej_ipt_bandwidth},

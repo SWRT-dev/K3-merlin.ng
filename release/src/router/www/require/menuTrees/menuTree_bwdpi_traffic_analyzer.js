@@ -161,7 +161,6 @@ define(function(){
 				index: "menu_Tools",
 				tab: [
 					{url: "Tools_Sysinfo.asp", tabName: "系统信息"},
-					{url: "Tools_OtherSettings.asp", tabName: "其他设置"},
 					{url: "NULL", tabName: "__INHERIT__"}
 				] 
 			},

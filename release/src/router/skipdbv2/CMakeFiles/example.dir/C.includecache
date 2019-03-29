@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/tests/example.c
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/example.c
 SkipDB.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/SkipDB.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/SkipDB.h
 
 basekit/BStream.h
 Common.h

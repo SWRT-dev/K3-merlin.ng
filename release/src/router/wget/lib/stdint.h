@@ -93,7 +93,7 @@
 # define WINT_MAX 0xffffffffU
 #endif
 
-#if ! 1
+#if ! 0
 
 /* <sys/types.h> defines some of the stdint.h types as well, on glibc,
    IRIX 6.5, and OpenBSD 3.8 (via <machine/types.h>).
@@ -116,7 +116,7 @@
 #  include <sys/inttypes.h>
 # endif
 
-# if 0 && ! defined __BIT_TYPES_DEFINED__
+# if 1 && ! defined __BIT_TYPES_DEFINED__
   /* Linux libc4 >= 4.6.7 and libc5 have a <sys/bitypes.h> that defines
      int{8,16,32,64}_t and __BIT_TYPES_DEFINED__.  In libc5 >= 5.2.2 it is
      included by <sys/types.h>.  */
@@ -521,19 +521,19 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #  endif
 # else
 #  define PTRDIFF_MIN  \
-    _STDINT_MIN (1, , 0)
+    _STDINT_MIN (1, 32, 0)
 #  define PTRDIFF_MAX  \
-    _STDINT_MAX (1, , 0)
+    _STDINT_MAX (1, 32, 0)
 # endif
 
 /* sig_atomic_t limits */
 # undef SIG_ATOMIC_MIN
 # undef SIG_ATOMIC_MAX
 # define SIG_ATOMIC_MIN  \
-   _STDINT_MIN (, , \
+   _STDINT_MIN (1, 32, \
                 0)
 # define SIG_ATOMIC_MAX  \
-   _STDINT_MAX (, , \
+   _STDINT_MAX (1, 32, \
                 0)
 
 
@@ -546,7 +546,7 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #   define SIZE_MAX  _STDINT_MAX (0, 32, 0ul)
 #  endif
 # else
-#  define SIZE_MAX  _STDINT_MAX (0, , 0)
+#  define SIZE_MAX  _STDINT_MAX (0, 32, 0u)
 # endif
 
 /* wchar_t limits */
@@ -568,17 +568,17 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 # undef WCHAR_MIN
 # undef WCHAR_MAX
 # define WCHAR_MIN  \
-   _STDINT_MIN (, , 0)
+   _STDINT_MIN (0, 32, 0u)
 # define WCHAR_MAX  \
-   _STDINT_MAX (, , 0)
+   _STDINT_MAX (0, 32, 0u)
 
 /* wint_t limits */
 # undef WINT_MIN
 # undef WINT_MAX
 # define WINT_MIN  \
-   _STDINT_MIN (, , 0)
+   _STDINT_MIN (0, 32, 0u)
 # define WINT_MAX  \
-   _STDINT_MAX (, , 0)
+   _STDINT_MAX (0, 32, 0u)
 
 /* 7.18.4. Macros for integer constants */
 
@@ -642,7 +642,7 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
 #  endif
 # endif
 
-#endif /* !1 */
+#endif /* !0 */
 
 /* Macros specified by ISO/IEC TS 18661-1:2014.  */
 

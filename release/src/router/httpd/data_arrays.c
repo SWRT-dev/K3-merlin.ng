@@ -41,6 +41,11 @@
 #include <common.h>
 #include <shared.h>
 #include <rtstate.h>
+#ifdef HND_ROUTER
+#include "bcmwifi_rates.h"
+#include "wlioctl_defs.h"
+#endif
+
 #include <wlioctl.h>
 
 #include <wlutils.h>
@@ -53,6 +58,13 @@
 #include "iptraffic.h"
 
 #include <net/route.h>
+
+#ifdef RTCONFIG_BWDPI
+#define __USE_GNU
+#include "bwdpi_common.h"
+#include <search.h>
+#endif
+#define IPV6_CLIENT_LIST "/tmp/ipv6_client_list"
 
 int
 ej_get_leases_array(int eid, webs_t wp, int argc, char_t **argv)
@@ -199,6 +211,9 @@ ej_get_upnp_array(int eid, webs_t wp, int argc, char_t **argv)
 	int ret=0;
 	char line[256];
 
+	killall("miniupnpd", SIGUSR2);
+        sleep(1);
+
 	ret += websWrite(wp, "var upnparray = [");
 
 	fp = fopen("/tmp/upnp.leases", "r");
@@ -280,7 +295,7 @@ ej_get_vserver_array(int eid, webs_t wp, int argc, char_t **argv)
 			continue;
 
 		/* Don't list DNS redirections  from DNSFilter or UPNP */
-		if ((strcmp(chain, "DNSFILTER") == 0) || (strcmp(chain, "VUPNP") == 0) || (strcmp(chain, "PUPNP") == 0))
+		if ((strcmp(chain, "DNSFILTER") == 0) || (strcmp(chain, "VUPNP") == 0) || (strcmp(chain, "PUPNP") == 0) || (strncmp(chain, "DNSVPN", 6) == 0))
 			continue;
 
 		/* uppercase proto */
@@ -428,7 +443,7 @@ static
 int INET6_displayroutes_array(webs_t wp)
 {
 	FILE *fp;
-	char buf[256], *str, *dev, *sflags, *route;
+	char buf[256], *str, *dev, *sflags;
 	char sdest[INET6_ADDRSTRLEN], snexthop[INET6_ADDRSTRLEN], ifname[16];
 	struct in6_addr dest, nexthop;
 	int flags, ref, use, metric, prefix;
@@ -472,7 +487,6 @@ again:
 		inet_ntop(AF_INET6, &nexthop, snexthop, sizeof(snexthop));
 
 		/* Format addresses, reuse buf */
-		route = str;
 		i = snprintf(str, buf + sizeof(buf) - str, ((flags & RTF_NONEXTHOP) ||
 			     IN6_IS_ADDR_UNSPECIFIED(&nexthop)) ? "%s" : "%s via %s",
 			     sdest, snexthop);
@@ -664,18 +678,14 @@ ej_lan_ipv6_network_array(int eid, webs_t wp, int argc, char_t **argv)
 int ej_tcclass_dump_array(int eid, webs_t wp, int argc, char_t **argv) {
 	FILE *fp;
 	int ret = 0;
-#if 0
-	int len = 0;
-#endif
 	char tmp[64];
-	char wan_ifname[12];
 
 	if (nvram_get_int("qos_enable") == 0) {
 		ret += websWrite(wp, "var tcdata_lan_array = [[]];\nvar tcdata_wan_array = [[]];\n");
 		return ret;
 	}
 
-	if (nvram_get_int("qos_type") == 1) {
+	if (nvram_get_int("qos_type") == 1) {	// Adaptive-only
 		system("tc -s class show dev br0 > /tmp/tcclass.txt");
 
 		ret += websWrite(wp, "var tcdata_lan_array = [\n");
@@ -689,28 +699,10 @@ int ej_tcclass_dump_array(int eid, webs_t wp, int argc, char_t **argv) {
 		}
 		unlink("/tmp/tcclass.txt");
 
-#if 0	// tc classes don't seem to use this interface as would be expected
-		fp = fopen("/sys/module/bw_forward/parameters/dev_wan", "r");
-		if (fp) {
-			if (fgets(tmp, sizeof(tmp), fp) != NULL) {
-				len = strlen(tmp);
-				if (len && tmp[len-1] == '\n')
-					tmp[len-1] = '\0';
-			}
-			fclose(fp);
-		}
-		if (len)
-			strncpy(wan_ifname, tmp, sizeof(wan_ifname));
-		else
-#endif
-			strcpy(wan_ifname, "eth0");     // Default fallback
-
-	} else {
-		strncpy(wan_ifname, get_wan_ifname(wan_primary_ifunit()), sizeof (wan_ifname));
 	}
 
 	if (nvram_get_int("qos_type") != 2) {	// Must not be BW Limiter
-		snprintf(tmp, sizeof(tmp), "tc -s class show dev %s > /tmp/tcclass.txt", wan_ifname);
+		snprintf(tmp, sizeof(tmp), "tc -s class show dev %s > /tmp/tcclass.txt", "eth0");
 		system(tmp);
 
 	        ret += websWrite(wp, "var tcdata_wan_array = [\n");
@@ -796,6 +788,7 @@ void wo_iptbackup(char *url, webs_t wp)
 }
 #endif
 
+#if !defined(HND_ROUTER)
 int ej_iptmon(int eid, webs_t wp, int argc, char **argv) {
 
 	char comma;
@@ -1041,4 +1034,183 @@ void ctvbuf(FILE *f) {
 //		cprintf("setvbuf = %d\n", n);
 	}
 }
+
+#endif
+
+
+int ej_connlist_array(int eid, webs_t wp, int argc, char **argv) {
+	FILE *fp;
+	char line[100];
+	int firstline = 1;
+	char proto[4], address[16], dest[16], state[15], port1[6], port2[6];
+	int ret = 0;
+
+	ret += websWrite(wp, "var connarray = [");
+
+	system("/usr/sbin/netstat-nat -r state -xn > /tmp/connect.log 2>&1");
+
+	fp = fopen("/tmp/connect.log", "r");
+	if (fp == NULL) {
+		websWrite(wp, "[]];\n");
+		return ret;
+	}
+
+	while (fgets(line, sizeof(line), fp)) {
+		if (firstline) {
+			firstline = 0;
+			continue;
+		}
+                if (sscanf(line,
+			"%3s%*[ \t]"
+			"%15[0-9.]%*[:]"
+			"%5s%*[ \t]"
+			"%15[0-9.]%*[:]"
+			"%5s%*[ \t]"
+			"%14s%*[ \t]",
+		    proto, address, port1, dest, port2, state) < 6) continue;
+
+		ret += websWrite(wp, "[\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\"],\n",
+		                      proto, address, port1, dest, port2, state);
+	}
+	fclose(fp);
+
+	ret += websWrite(wp, "[]];\n");
+
+	return ret;
+}
+
+#ifdef RTCONFIG_BWDPI
+int ej_bwdpi_conntrack(int eid, webs_t wp, int argc, char **argv_) {
+	char comma;
+	char line[256];
+	FILE *fp;
+	static unsigned int count = 0;
+	char src_ip[64], dst_ip[64], prot[4];
+	int dport, sport;
+	int ret;
+	unsigned long mark;
+	int id, cat;
+	char desc[64], key[9];
+	char ipversion;
+	static struct hsearch_data *htab;
+	ENTRY entry, *resultp;
+	struct stat dbattrib;
+	static unsigned long lastupd = 0;
+	static char **alloctable;
+	int allocptr = 0;
+
+	if (stat(APPDB, &dbattrib))
+		return websWrite(wp, "bwdpi_conntrack=[];");
+
+	if ((lastupd) && (lastupd != dbattrib.st_ctime)) {
+		// free all nodes (2 entries per item)
+		while (allocptr < count * 2) {
+			free(alloctable[allocptr++]);
+		}
+		hdestroy_r(htab);
+		count = allocptr = lastupd = 0;
+		free(alloctable);
+	}
+
+// Init hash table
+	if (!lastupd) {
+		lastupd = dbattrib.st_ctime;
+
+		fp = fopen(APPDB, "r");
+		if (!fp) return websWrite(wp, "bwdpi_conntrack=[];");
+
+		while (fgets(line, sizeof(line), fp) != NULL) {
+			count++;
+		}
+
+		alloctable = calloc(count * 2, sizeof(char *));
+		htab = calloc(1, sizeof(struct hsearch_data));
+
+		if ((!alloctable) || (!htab) || (!hcreate_r((unsigned int)count * 1.3, htab))) {
+			fclose(fp);
+			return websWrite(wp, "bwdpi_conntrack=[];");
+		}
+
+// Parse App database
+		rewind(fp);
+		while (fgets(line, sizeof(line), fp) != NULL) {
+			if (sscanf(line,"%d,%d,%*d,%63[^\n]", &id, &cat, desc) == 3) {
+				snprintf(key, sizeof(key), "%d-%d",id, cat);
+				entry.key = strdup(key);
+				entry.data = strdup(desc);
+				if (entry.key && entry.data) {
+					alloctable[allocptr++] = entry.key;
+					alloctable[allocptr++] = entry.data;
+					hsearch_r(entry, ENTER, &resultp, htab);
+				}
+			}
+		}
+		fclose(fp);
+	}
+
+// Parse tracked connections
+	if ((fp = fopen("/proc/bw_cte_dump", "r")) == NULL)
+		return websWrite(wp, "bwdpi_conntrack=[];");
+
+	ret = websWrite(wp, "bwdpi_conntrack=[");
+	comma = ' ';
+
+	while (fgets(line, sizeof(line), fp)) {
+		// ipv4 tcp src=192.168.10.156 dst=172.217.13.110 sport=8248 dport=443 index=8510 mark=3cd000f
+		if (sscanf(line, "ipv%c %3s src=%63s dst=%63s sport=%d dport=%d index=%*d mark=%lx",
+			          &ipversion, prot, src_ip, dst_ip, &sport, &dport, &mark) != 7 ) continue;
+
+		id = (mark & 0x3F0000)/0xFFFF;
+		cat = mark & 0xFFFF;
+
+		if ((cat == 0) && (id == 0))
+			strcpy(desc, "Untracked");
+		else {
+
+			snprintf(key, sizeof(key), "%d-%d", id, cat);
+			entry.key = key;
+			if (!hsearch_r(entry, FIND, &resultp, htab))
+				sprintf(desc, "unknown (AppID=%d, Cat=%d)", id, cat);
+			else
+				strlcpy(desc, (char *)resultp->data, sizeof(desc));
+		}
+
+		if (ipversion == '6') {
+			_fix_TM_ipv6(src_ip);
+			_fix_TM_ipv6(dst_ip);
+		}
+
+		ret += websWrite(wp, "%c[\"%s\", \"%s\", \"%d\", \"%s\", \"%d\", \"%s\", \"%d\", \"%d\"]",
+		                      comma, prot, src_ip, sport, dst_ip, dport, desc, cat, id);
+		comma = ',';
+	}
+	fclose(fp);
+
+	ret += websWrite(wp, "];\n");
+	return ret;
+}
+
+// TM puts columns between every octet pairs
+// Reformat that into quads rather than pairs
+// Also TM is missing the last two octets, so pad
+// with arbitrary "00" octets to get a valid IPv6
+void _fix_TM_ipv6(char* str) {
+	char *pr = str, *pw = str;
+	int found=0;
+
+	while (*pr) {
+		*pw = *pr++;
+		if (*pw == ':') {
+			found++;
+			if (found % 2)
+				continue;
+		}
+		pw++;
+	}
+	*pw = '\0';
+
+	if (strlen(str) == 37)
+		strcat(str,"00");
+}
+#endif
 

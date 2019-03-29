@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_SOURCE_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_BINARY_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/example.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/example.dir/flags.make
 
 CMakeFiles/example.dir/tests/example.c.o: CMakeFiles/example.dir/flags.make
 CMakeFiles/example.dir/tests/example.c.o: tests/example.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/example.dir/tests/example.c.o"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/example.dir/tests/example.c.o   -c /home/paldier/k3/release/src/router/skipdbv2/tests/example.c
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/example.dir/tests/example.c.o   -c /home/paldier/k3_384/release/src/router/skipdbv2/tests/example.c
 
 CMakeFiles/example.dir/tests/example.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/example.dir/tests/example.c.i"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3/release/src/router/skipdbv2/tests/example.c > CMakeFiles/example.dir/tests/example.c.i
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3_384/release/src/router/skipdbv2/tests/example.c > CMakeFiles/example.dir/tests/example.c.i
 
 CMakeFiles/example.dir/tests/example.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/example.dir/tests/example.c.s"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3/release/src/router/skipdbv2/tests/example.c -o CMakeFiles/example.dir/tests/example.c.s
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3_384/release/src/router/skipdbv2/tests/example.c -o CMakeFiles/example.dir/tests/example.c.s
 
 CMakeFiles/example.dir/tests/example.c.o.requires:
 .PHONY : CMakeFiles/example.dir/tests/example.c.o.requires
@@ -98,6 +98,6 @@ CMakeFiles/example.dir/clean:
 .PHONY : CMakeFiles/example.dir/clean
 
 CMakeFiles/example.dir/depend:
-	cd /home/paldier/k3/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/example.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/paldier/k3_384/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/example.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/example.dir/depend
 

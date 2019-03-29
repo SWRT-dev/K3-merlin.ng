@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_SOURCE_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/paldier/k3/release/src/router/skipdbv2
+CMAKE_BINARY_DIR = /home/paldier/k3_384/release/src/router/skipdbv2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/jftest.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/jftest.dir/flags.make
 
 CMakeFiles/jftest.dir/tests/jftest.c.o: CMakeFiles/jftest.dir/flags.make
 CMakeFiles/jftest.dir/tests/jftest.c.o: tests/jftest.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/jftest.dir/tests/jftest.c.o"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/jftest.dir/tests/jftest.c.o   -c /home/paldier/k3/release/src/router/skipdbv2/tests/jftest.c
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/jftest.dir/tests/jftest.c.o   -c /home/paldier/k3_384/release/src/router/skipdbv2/tests/jftest.c
 
 CMakeFiles/jftest.dir/tests/jftest.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/jftest.dir/tests/jftest.c.i"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3/release/src/router/skipdbv2/tests/jftest.c > CMakeFiles/jftest.dir/tests/jftest.c.i
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -E /home/paldier/k3_384/release/src/router/skipdbv2/tests/jftest.c > CMakeFiles/jftest.dir/tests/jftest.c.i
 
 CMakeFiles/jftest.dir/tests/jftest.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jftest.dir/tests/jftest.c.s"
-	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3/release/src/router/skipdbv2/tests/jftest.c -o CMakeFiles/jftest.dir/tests/jftest.c.s
+	/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  $(C_DEFINES) $(C_FLAGS) -S /home/paldier/k3_384/release/src/router/skipdbv2/tests/jftest.c -o CMakeFiles/jftest.dir/tests/jftest.c.s
 
 CMakeFiles/jftest.dir/tests/jftest.c.o.requires:
 .PHONY : CMakeFiles/jftest.dir/tests/jftest.c.o.requires
@@ -98,6 +98,6 @@ CMakeFiles/jftest.dir/clean:
 .PHONY : CMakeFiles/jftest.dir/clean
 
 CMakeFiles/jftest.dir/depend:
-	cd /home/paldier/k3/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2 /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/jftest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/paldier/k3_384/release/src/router/skipdbv2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2 /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/jftest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/jftest.dir/depend
 

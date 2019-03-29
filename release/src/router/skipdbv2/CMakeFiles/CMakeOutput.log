@@ -1,7 +1,7 @@
 The system is: Linux - 4.2.0-42-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc 
-Build flags: -DBCMWPA2;-DBCMQOS;-DEXT_ACS;-DD11AC_IOTYPES;-DPHYMON;-DPROXYARP;-DTRAFFIC_MGMT;-DTRAFFIC_MGMT_RSSI_POLICY;-DMFP;-D__CONFIG_MFP__;-DLINUX26;-DCONFIG_BCMWL5;-DDEBUG_NOISY;-DDEBUG_RCTEST;-pipe;-DBCMWPA2;-DBCMARM;-fno-strict-aliasing;-marm;-DLINUX_KERNEL_VERSION=132644;;-DRTAC3100;-O2;-D__CONFIG_DHDAP__;-D__CONFIG_GMAC3__;-DBCM_BSD;-DBCM_DCS;-D__CONFIG_EMF__;-D__CONFIG_WPS__
+Build flags: -DRTAC3100;-DRTAC3100;-DBCMWPA2;-DBCMQOS;-DEXT_ACS;-DD11AC_IOTYPES;-DPHYMON;-DPROXYARP;-DTRAFFIC_MGMT;-DTRAFFIC_MGMT_RSSI_POLICY;-DMFP;-D__CONFIG_MFP__;-DLINUX26;-DCONFIG_BCMWL5;-DDEBUG_NOISY;-DDEBUG_RCTEST;-pipe;-DBCMWPA2;-DBCMARM;-fno-strict-aliasing;-marm;-DCONFIG_NVSIZE_128;-DLINUX_KERNEL_VERSION=132644;;-DRTAC3100;-O2;-D__CONFIG_DHDAP__;-D__CONFIG_GMAC3__;-DBCM_BSD;-DBCM_DCS;-D__CONFIG_EMF__;-D__CONFIG_WPS__
 Id flags: 
 
 The output was:
@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/2.8.12.2/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/2.8.12.2/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++ 
@@ -23,38 +23,38 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/2.8.12.2/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/2.8.12.2/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
+Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec2824542075/fast"
-make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2824542075.dir/build.make CMakeFiles/cmTryCompileExec2824542075.dir/build
-make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec2824542075.dir/testCCompiler.c.o
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec2824542075.dir/testCCompiler.c.o   -c /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTryCompileExec2824542075
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2824542075.dir/link.txt --verbose=1
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__      CMakeFiles/cmTryCompileExec2824542075.dir/testCCompiler.c.o  -o cmTryCompileExec2824542075 -rdynamic 
-make[5]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-make[4]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+Run Build Command:/usr/bin/make "cmTryCompileExec2394964452/fast"
+make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2394964452.dir/build.make CMakeFiles/cmTryCompileExec2394964452.dir/build
+make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2394964452.dir/testCCompiler.c.o
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec2394964452.dir/testCCompiler.c.o   -c /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTryCompileExec2394964452
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2394964452.dir/link.txt --verbose=1
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__      CMakeFiles/cmTryCompileExec2394964452.dir/testCCompiler.c.o  -o cmTryCompileExec2394964452 -rdynamic 
+make[5]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+make[4]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
+Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec3782048724/fast"
-make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3782048724.dir/build.make CMakeFiles/cmTryCompileExec3782048724.dir/build
-make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c
-Linking C executable cmTryCompileExec3782048724
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3782048724.dir/link.txt --verbose=1
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__    -v CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec3782048724 -rdynamic  
+Run Build Command:/usr/bin/make "cmTryCompileExec2830171617/fast"
+make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2830171617.dir/build.make CMakeFiles/cmTryCompileExec2830171617.dir/build
+make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec2830171617
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2830171617.dir/link.txt --verbose=1
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__    -v CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2830171617 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc
 COLLECT_LTO_WRAPPER=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/lto-wrapper
@@ -64,26 +64,26 @@ Thread model: posix
 gcc version 4.5.3 (Buildroot 2012.02) 
 COMPILER_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/bin/
 LIBRARY_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/
-COLLECT_GCC_OPTIONS='-DBCMWPA2' '-DBCMQOS' '-DEXT_ACS' '-DD11AC_IOTYPES' '-DPHYMON' '-DPROXYARP' '-DTRAFFIC_MGMT' '-DTRAFFIC_MGMT_RSSI_POLICY' '-DMFP' '-D__CONFIG_MFP__' '-DLINUX26' '-DCONFIG_BCMWL5' '-DDEBUG_NOISY' '-DDEBUG_RCTEST' '-pipe' '-DBCMWPA2' '-DBCMARM' '-fno-strict-aliasing' '-marm' '-DLINUX_KERNEL_VERSION=132644' '-DRTAC3100' '-O2' '-D__CONFIG_DHDAP__' '-D__CONFIG_GMAC3__' '-DBCM_BSD' '-DBCM_DCS' '-D__CONFIG_EMF__' '-D__CONFIG_WPS__' '-v' '-o' 'cmTryCompileExec3782048724' '-rdynamic' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux'
- /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec3782048724 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
-make[5]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-make[4]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-DRTAC3100' '-DRTAC3100' '-DBCMWPA2' '-DBCMQOS' '-DEXT_ACS' '-DD11AC_IOTYPES' '-DPHYMON' '-DPROXYARP' '-DTRAFFIC_MGMT' '-DTRAFFIC_MGMT_RSSI_POLICY' '-DMFP' '-D__CONFIG_MFP__' '-DLINUX26' '-DCONFIG_BCMWL5' '-DDEBUG_NOISY' '-DDEBUG_RCTEST' '-pipe' '-DBCMWPA2' '-DBCMARM' '-fno-strict-aliasing' '-marm' '-DCONFIG_NVSIZE_128' '-DLINUX_KERNEL_VERSION=132644' '-DRTAC3100' '-O2' '-D__CONFIG_DHDAP__' '-D__CONFIG_GMAC3__' '-DBCM_BSD' '-DBCM_DCS' '-D__CONFIG_EMF__' '-D__CONFIG_WPS__' '-v' '-o' 'cmTryCompileExec2830171617' '-rdynamic' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux'
+ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec2830171617 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+make[5]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+make[4]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec3782048724/fast"]
-  ignore line: [make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec3782048724.dir/build.make CMakeFiles/cmTryCompileExec3782048724.dir/build]
-  ignore line: [make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building C object CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTryCompileExec3782048724]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3782048724.dir/link.txt --verbose=1]
-  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__    -v CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec3782048724 -rdynamic  ]
+  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec2830171617/fast"]
+  ignore line: [make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec2830171617.dir/build.make CMakeFiles/cmTryCompileExec2830171617.dir/build]
+  ignore line: [make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc   -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__     -o CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec2830171617]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2830171617.dir/link.txt --verbose=1]
+  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc  -DRTAC3100 -DRTAC3100 -DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DCONFIG_NVSIZE_128 -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__    -v CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2830171617 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-gcc]
   ignore line: [COLLECT_LTO_WRAPPER=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/lto-wrapper]
@@ -93,8 +93,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.5.3 (Buildroot 2012.02) ]
   ignore line: [COMPILER_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/bin/]
   ignore line: [LIBRARY_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-DBCMWPA2' '-DBCMQOS' '-DEXT_ACS' '-DD11AC_IOTYPES' '-DPHYMON' '-DPROXYARP' '-DTRAFFIC_MGMT' '-DTRAFFIC_MGMT_RSSI_POLICY' '-DMFP' '-D__CONFIG_MFP__' '-DLINUX26' '-DCONFIG_BCMWL5' '-DDEBUG_NOISY' '-DDEBUG_RCTEST' '-pipe' '-DBCMWPA2' '-DBCMARM' '-fno-strict-aliasing' '-marm' '-DLINUX_KERNEL_VERSION=132644' '-DRTAC3100' '-O2' '-D__CONFIG_DHDAP__' '-D__CONFIG_GMAC3__' '-DBCM_BSD' '-DBCM_DCS' '-D__CONFIG_EMF__' '-D__CONFIG_WPS__' '-v' '-o' 'cmTryCompileExec3782048724' '-rdynamic' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux']
-  link line: [ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec3782048724 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-DRTAC3100' '-DRTAC3100' '-DBCMWPA2' '-DBCMQOS' '-DEXT_ACS' '-DD11AC_IOTYPES' '-DPHYMON' '-DPROXYARP' '-DTRAFFIC_MGMT' '-DTRAFFIC_MGMT_RSSI_POLICY' '-DMFP' '-D__CONFIG_MFP__' '-DLINUX26' '-DCONFIG_BCMWL5' '-DDEBUG_NOISY' '-DDEBUG_RCTEST' '-pipe' '-DBCMWPA2' '-DBCMARM' '-fno-strict-aliasing' '-marm' '-DCONFIG_NVSIZE_128' '-DLINUX_KERNEL_VERSION=132644' '-DRTAC3100' '-O2' '-D__CONFIG_DHDAP__' '-D__CONFIG_GMAC3__' '-DBCM_BSD' '-DBCM_DCS' '-D__CONFIG_EMF__' '-D__CONFIG_WPS__' '-v' '-o' 'cmTryCompileExec2830171617' '-rdynamic' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux']
+  link line: [ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec2830171617 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o]
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2] ==> ignore
     arg [--sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
@@ -105,7 +105,7 @@ Parsed C implicit link information from above output:
     arg [-m] ==> ignore
     arg [armelf_linux_eabi] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec3782048724] ==> ignore
+    arg [cmTryCompileExec2830171617] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o] ==> ignore
@@ -114,7 +114,7 @@ Parsed C implicit link information from above output:
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib]
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib]
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib]
-    arg [CMakeFiles/cmTryCompileExec3782048724.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec2830171617.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -141,35 +141,35 @@ Parsed C implicit link information from above output:
 
 
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
+Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec988914484/fast"
-make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTryCompileExec988914484.dir/build.make CMakeFiles/cmTryCompileExec988914484.dir/build
-make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec988914484.dir/testCXXCompiler.cxx.o
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec988914484.dir/testCXXCompiler.cxx.o -c /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTryCompileExec988914484
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec988914484.dir/link.txt --verbose=1
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++        CMakeFiles/cmTryCompileExec988914484.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec988914484 -rdynamic 
-make[5]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-make[4]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+Run Build Command:/usr/bin/make "cmTryCompileExec2035112796/fast"
+make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2035112796.dir/build.make CMakeFiles/cmTryCompileExec2035112796.dir/build
+make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec2035112796.dir/testCXXCompiler.cxx.o
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec2035112796.dir/testCXXCompiler.cxx.o -c /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec2035112796
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2035112796.dir/link.txt --verbose=1
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++        CMakeFiles/cmTryCompileExec2035112796.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec2035112796 -rdynamic 
+make[5]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+make[4]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
+Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec3395175959/fast"
-make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3395175959.dir/build.make CMakeFiles/cmTryCompileExec3395175959.dir/build
-make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTryCompileExec3395175959
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3395175959.dir/link.txt --verbose=1
-/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++      -v CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3395175959 -rdynamic  
+Run Build Command:/usr/bin/make "cmTryCompileExec204686512/fast"
+make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTryCompileExec204686512.dir/build.make CMakeFiles/cmTryCompileExec204686512.dir/build
+make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec204686512
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec204686512.dir/link.txt --verbose=1
+/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++      -v CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec204686512 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++
 COLLECT_LTO_WRAPPER=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/lto-wrapper
@@ -179,26 +179,26 @@ Thread model: posix
 gcc version 4.5.3 (Buildroot 2012.02) 
 COMPILER_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/bin/
 LIBRARY_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3395175959' '-rdynamic' '-shared-libgcc' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux'
- /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec3395175959 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
-make[5]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
-make[4]:正在离开目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec204686512' '-rdynamic' '-shared-libgcc' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux'
+ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec204686512 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+make[5]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
+make[4]:正在离开目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec3395175959/fast"]
-  ignore line: [make[4]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec3395175959.dir/build.make CMakeFiles/cmTryCompileExec3395175959.dir/build]
-  ignore line: [make[5]: 正在进入目录 `/home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/paldier/k3/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTryCompileExec3395175959]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3395175959.dir/link.txt --verbose=1]
-  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++      -v CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3395175959 -rdynamic  ]
+  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec204686512/fast"]
+  ignore line: [make[4]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec204686512.dir/build.make CMakeFiles/cmTryCompileExec204686512.dir/build]
+  ignore line: [make[5]: 正在进入目录 `/home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/paldier/k3_384/release/src/router/skipdbv2/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++     -o CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec204686512]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec204686512.dir/link.txt --verbose=1]
+  ignore line: [/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++      -v CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec204686512 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/brcm-arm/bin/arm-brcm-linux-uclibcgnueabi-g++]
   ignore line: [COLLECT_LTO_WRAPPER=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/lto-wrapper]
@@ -208,8 +208,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 4.5.3 (Buildroot 2012.02) ]
   ignore line: [COMPILER_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/bin/]
   ignore line: [LIBRARY_PATH=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib/:/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3395175959' '-rdynamic' '-shared-libgcc' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux']
-  link line: [ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec3395175959 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec204686512' '-rdynamic' '-shared-libgcc' '-march=armv7-a' '-mtune=cortex-a9' '-mfloat-abi=soft' '-mabi=aapcs-linux']
+  link line: [ /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2 --sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-uClibc.so.0 -X -m armelf_linux_eabi -o cmTryCompileExec204686512 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib -L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtend.o /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o]
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../libexec/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/collect2] ==> ignore
     arg [--sysroot=/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
@@ -220,7 +220,7 @@ Parsed CXX implicit link information from above output:
     arg [-m] ==> ignore
     arg [armelf_linux_eabi] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec3395175959] ==> ignore
+    arg [cmTryCompileExec204686512] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/crti.o] ==> ignore
     arg [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/crtbegin.o] ==> ignore
@@ -229,7 +229,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3/../../../../arm-brcm-linux-uclibcgnueabi/lib]
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/lib]
     arg [-L/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib] ==> dir [/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/../arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib]
-    arg [CMakeFiles/cmTryCompileExec3395175959.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec204686512.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]

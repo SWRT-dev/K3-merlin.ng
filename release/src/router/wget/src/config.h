@@ -5,19 +5,19 @@
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
 
 /* Define to the number of bits in type 'ptrdiff_t'. */
-/* #undef BITSIZEOF_PTRDIFF_T */
+#define BITSIZEOF_PTRDIFF_T 32
 
 /* Define to the number of bits in type 'sig_atomic_t'. */
-/* #undef BITSIZEOF_SIG_ATOMIC_T */
+#define BITSIZEOF_SIG_ATOMIC_T 32
 
 /* Define to the number of bits in type 'size_t'. */
-/* #undef BITSIZEOF_SIZE_T */
+#define BITSIZEOF_SIZE_T 32
 
 /* Define to the number of bits in type 'wchar_t'. */
-/* #undef BITSIZEOF_WCHAR_T */
+#define BITSIZEOF_WCHAR_T 32
 
 /* Define to the number of bits in type 'wint_t'. */
-/* #undef BITSIZEOF_WINT_T */
+#define BITSIZEOF_WINT_T 32
 
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
@@ -32,10 +32,10 @@
 
 /* Define as the bit index in the word where to find bit 0 of the exponent of
    'double'. */
-#define DBL_EXPBIT0_BIT 20
+/* #undef DBL_EXPBIT0_BIT */
 
 /* Define as the word index where to find the exponent of 'double'. */
-#define DBL_EXPBIT0_WORD 0
+/* #undef DBL_EXPBIT0_WORD */
 
 /* Define to 1 if // is a file system root distinct from /. */
 /* #undef DOUBLE_SLASH_IS_DISTINCT_ROOT */
@@ -64,7 +64,7 @@
 
 /* Define if you want file meta-data storing into POSIX Extended Attributes
    compiled in. */
-/* #undef ENABLE_XATTR */
+#define ENABLE_XATTR 1
 
 /* Define this to 1 if F_DUPFD behavior does not match POSIX */
 /* #undef FCNTL_DUPFD_BUGGY */
@@ -795,10 +795,10 @@
 /* #undef HAVE_GNUTLS_PRIORITY_SET_DIRECT */
 
 /* Define if you have the iconv() function and it works. */
-/* #undef HAVE_ICONV */
+#define HAVE_ICONV 1
 
 /* Define to 1 if you have the <iconv.h> header file. */
-/* #undef HAVE_ICONV_H */
+#define HAVE_ICONV_H 1
 
 /* Define to 1 if you have the `inet_ntop' function. */
 /* #undef HAVE_INET_NTOP */
@@ -1087,7 +1087,7 @@
 /* #undef HAVE_RAW_DECL_DUP3 */
 
 /* Define to 1 if duplocale is declared even after undefining macros. */
-/* #undef HAVE_RAW_DECL_DUPLOCALE */
+#define HAVE_RAW_DECL_DUPLOCALE 1
 
 /* Define to 1 if endusershell is declared even after undefining macros. */
 #define HAVE_RAW_DECL_ENDUSERSHELL 1
@@ -1448,7 +1448,7 @@
 #define HAVE_RAW_DECL_PWRITE 1
 
 /* Define to 1 if qsort_r is declared even after undefining macros. */
-#define HAVE_RAW_DECL_QSORT_R 1
+/* #undef HAVE_RAW_DECL_QSORT_R */
 
 /* Define to 1 if random is declared even after undefining macros. */
 #define HAVE_RAW_DECL_RANDOM 1
@@ -1817,7 +1817,7 @@
 #define HAVE_SIGINTERRUPT 1
 
 /* Define to 1 if 'sig_atomic_t' is a signed integer type. */
-/* #undef HAVE_SIGNED_SIG_ATOMIC_T */
+#define HAVE_SIGNED_SIG_ATOMIC_T 1
 
 /* Define to 1 if 'wchar_t' is a signed integer type. */
 /* #undef HAVE_SIGNED_WCHAR_T */
@@ -1962,7 +1962,7 @@
 #define HAVE_SYMLINK 1
 
 /* Define to 1 if you have the <sys/bitypes.h> header file. */
-/* #undef HAVE_SYS_BITYPES_H */
+#define HAVE_SYS_BITYPES_H 1
 
 /* Define to 1 if you have the <sys/cdefs.h> header file. */
 #define HAVE_SYS_CDEFS_H 1
@@ -2128,7 +2128,7 @@
 /* #undef HAVE_WS2TCPIP_H */
 
 /* Define to 1 if you have the <xlocale.h> header file. */
-/* #undef HAVE_XLOCALE_H */
+#define HAVE_XLOCALE_H 1
 
 /* Define to 1 if the system has the type `_Bool'. */
 #define HAVE__BOOL 1
@@ -2241,7 +2241,7 @@
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'ptrdiff_t'. */
-/* #undef PTRDIFF_T_SUFFIX */
+#define PTRDIFF_T_SUFFIX 
 
 /* Define to 1 if stat needs help when passed a directory name with a trailing
    slash */
@@ -2262,7 +2262,7 @@
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'sig_atomic_t'. */
-/* #undef SIG_ATOMIC_T_SUFFIX */
+#define SIG_ATOMIC_T_SUFFIX 
 
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4
@@ -2290,7 +2290,7 @@
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'size_t'. */
-/* #undef SIZE_T_SUFFIX */
+#define SIZE_T_SUFFIX u
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
@@ -2417,14 +2417,14 @@
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wchar_t'. */
-/* #undef WCHAR_T_SUFFIX */
+#define WCHAR_T_SUFFIX u
 
 /* Define if WSAStartup is needed. */
 /* #undef WINDOWS_SOCKETS */
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wint_t'. */
-/* #undef WINT_T_SUFFIX */
+#define WINT_T_SUFFIX u
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
@@ -2434,7 +2434,7 @@
 # endif
 #else
 # ifndef WORDS_BIGENDIAN
-#  define WORDS_BIGENDIAN 1
+/* #  undef WORDS_BIGENDIAN */
 # endif
 #endif
 

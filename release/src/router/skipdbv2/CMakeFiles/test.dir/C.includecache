@@ -6,15 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/paldier/k3/release/src/router/skipdbv2/tests/test.c
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/test.c
 SkipDB.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/SkipDB.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/SkipDB.h
 time.h
 -
 stdlib.h
 -
 Date.h
-/home/paldier/k3/release/src/router/skipdbv2/tests/Date.h
+/home/paldier/k3_384/release/src/router/skipdbv2/tests/Date.h
 
 basekit/BStream.h
 Common.h
