@@ -81,7 +81,7 @@ include ./version.conf
 else
 include $(ASUSWRTVERSIONCONFDIR)/version.conf
 endif
-export MERLINVER := K3_R1
+export MERLINVER := K3_B1
 export BRANCH := $(shell git branch)
 
 ifneq ($(RCNO),)

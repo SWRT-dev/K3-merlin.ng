@@ -2732,7 +2732,7 @@ gmac3_override_nvram()
 		default: // MODEL_RTAC3100
 			nvram_set("et2mdcport", cfe_nvram_get("et0mdcport"));
 			nvram_set("et2phyaddr", cfe_nvram_get("et0phyaddr"));
-			nvram_set("et2macaddr", cfe_nvram_get("et0macaddr"));
+			//nvram_set("et2macaddr", cfe_nvram_get("et0macaddr"));
 
 			nvram_set("et0macaddr", "00:00:00:00:00:00");
 
@@ -7520,10 +7520,10 @@ int init_nvram(void)
 		nvram_set("mmc_irq", "177");
 #endif
 		add_rc_support("smart_connect");
-		if (!strncmp(nvram_safe_get("territory_code"), "AU/05", 5)) {
-			add_rc_support("nz_isp");
-			nvram_set("wifi_psk", cfe_nvram_safe_get_raw("secret_code"));
-		}
+		//if (!strncmp(nvram_safe_get("territory_code"), "AU/05", 5)) {
+		//	add_rc_support("nz_isp");
+		//	nvram_set("wifi_psk", cfe_nvram_safe_get_raw("secret_code"));
+		//}
 		break;
 
 #endif
