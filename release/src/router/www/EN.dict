@@ -3474,3 +3474,7 @@ WiFi_Network_List=Wi-Fi network list
 Searching_WiFi_Network=Searching for Wi-Fi network nearby...
 WanDouJia=豌豆荚
 Softcenter=Softcenter
+Softcenter_tool=Tools
+WLANConfig11b_TxPower_custom=Txpower Adjustment
+WLANConfig11b_TxPower_asus=ASUS official:%
+WLANConfig11b_TxPower_dbm=Custom:dbm

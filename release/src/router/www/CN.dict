@@ -3474,3 +3474,7 @@ WiFi_Network_List=Wi-Fi 网络列表
 Searching_WiFi_Network=正在搜索附近的 Wi-Fi 网络……
 WanDouJia=豌豆荚
 Softcenter=软件中心
+Softcenter_tool=工具箱
+WLANConfig11b_TxPower_custom=功率调整方式
+WLANConfig11b_TxPower_asus=官方功率定义:%
+WLANConfig11b_TxPower_dbm=自定义功率:dbm

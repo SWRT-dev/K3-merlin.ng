@@ -715,6 +715,7 @@ obj-y += others
 obj-y += libpasswd
 ifeq ($(RTCONFIG_SOFTCENTER),y)
 obj-y += skipdbv2 libev-4.22 softcenter k3screenctrl libiconv-1.14
+obj-y += ipset
 endif
 obj-y += httpd json-c
 obj-$(RTCONFIG_VISUALIZATION) += sqlite3 json-c libxml2 visdcoll visdcon
@@ -1835,6 +1836,7 @@ endif
 	$(if $(RTCONFIG_OPENVPN),@cp -f,$(if $(RTCONFIG_USB_MODEM),@cp -f,@mv)) $(TARGETDIR)/lib/modules/*/kernel/drivers/net/tun.*o $(PLATFORMDIR)/extras/ || true
 	$(if $(RTCONFIG_EBTABLES),@cp -f,@mv) $(TARGETDIR)/lib/modules/*/kernel/net/bridge/netfilter/ebt*.*o $(PLATFORMDIR)/extras/ || true
 
+	@cp $(TARGETDIR)/lib/modules/*/kernel/net/ipv4/netfilter/ip_set*o $(PLATFORMDIR)/extras/ || true
 	@mv $(TARGETDIR)/lib/modules/*/kernel/drivers/net/ifb.*o $(PLATFORMDIR)/extras/ || true
 	@mv $(TARGETDIR)/lib/modules/*/kernel/net/sched/sch_red.*o $(PLATFORMDIR)/extras/ || true
 	@mv $(TARGETDIR)/lib/modules/*/kernel/fs/ntfs.*o $(PLATFORMDIR)/extras/ || true
@@ -3072,6 +3074,15 @@ k3screenctrl-install: k3screenctrl
 	install -D k3screenctrl/src/k3screend $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
+ipset:
+	$(MAKE) -C ipset binaries $(PARALLEL_BUILD)
+
+ipset-install:
+	install -D ipset/ipset $(INSTALLDIR)/ipset/usr/sbin/ipset
+	install -d $(INSTALLDIR)/ipset/usr/lib/
+	install ipset/*.so $(INSTALLDIR)/ipset/usr/lib/
+	$(STRIP) $(INSTALLDIR)/ipset/usr/lib/*.so
+	$(STRIP) $(INSTALLDIR)/ipset/usr/sbin/ipset
 endif
 
 miniupnpd/config.h: shared/version.h

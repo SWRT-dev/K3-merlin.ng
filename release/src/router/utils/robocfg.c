@@ -353,6 +353,7 @@ void usage()
 			"Operations are as below:\n"
 			"\tshow -- show current config\n"
 			"\tshowmacs -- show known MAC addresses\n"
+			"\tshowports -- show only port config\n"
 			"\tswitch <enable|disable>\n"
 			"\tport <port_number> [state <%s|%s|%s|%s>]\n"
 			"\t\t[stp %s|%s|%s|%s|%s|%s] [tag <vlan_tag>]\n"
@@ -386,6 +387,7 @@ main(int argc, char *argv[])
 	int i = 0, j;
 	int robo535x = 0; /* 0 - 5365, 1 - 5325/5352/5354, 3 - 5356, 4 - 53115, 5 - 5301x */
 	u32 phyid;
+	int novlan = 0;
 	
 	static robo_t robo;
 	struct ethtool_drvinfo info;
@@ -705,6 +707,11 @@ main(int argc, char *argv[])
 		{
 			break;
 		} else
+		if (strcasecmp(argv[i], "showports") == 0)
+		{
+			novlan = 1;
+			break;
+		} else
 		if (strncasecmp(argv[i], "robowr", 6) == 0 && (i + 2) < argc)
 		{
 			long pagereg = strtoul(argv[i + 1], NULL, 0);
@@ -810,6 +817,7 @@ main(int argc, char *argv[])
 			mac[2] >> 8, mac[2] & 255, mac[1] >> 8, mac[1] & 255, mac[0] >> 8, mac[0] & 255);
 	}
 	
+	if (novlan) return (0);	// Only show ethernet port states, used by webui
 	val16 = robo_read16(&robo, ROBO_VLAN_PAGE, ROBO_VLAN_CTRL0);
 	
 	printf("VLANs: %s %sabled%s%s\n", 

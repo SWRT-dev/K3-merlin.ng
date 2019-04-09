@@ -474,6 +474,7 @@ function initial(){
 	}
 		
 	adjust_tx_power();	
+	adjust_custom_power();
 	if(svc_ready == "0")
 		document.getElementById('svc_hint_div').style.display = "";	
 	
@@ -640,14 +641,11 @@ function generate_country_selection(){
 
 function adjust_tx_power(){
 	var custompower = parseInt(document.form.wl_cpenable.value);
-	var power_value_old = document.form.wl_TxPower.value;	//old nvram not exist now (value)
 	var power_value_new = document.form.wl_txpower.value;	//current nvram now (percentage)
 	var translated_value = 0;
 	
-	if(!power_support){
-		document.getElementById("wl_txPower_field").style.display = "none";
-	}
-	else if(custompower == 1){
+	
+	if(custompower == 1){
 		document.getElementById("wl_txPower_field").style.display = "none";
 	}
 	else if(based_modelid == "AC2900" && wl_unit_value == '0'){	//MODELDEP: AC2900(RT-AC86U)
@@ -655,24 +653,9 @@ function adjust_tx_power(){
 	}
 	else{
 		document.form.wl_txpower.disabled = false;
-		if(power_value_old != ""){
-			translated_value = parseInt(power_value_old/80*100);
-			if(translated_value >=100){
-				translated_value = 100;
-			}
-			else if(translated_value <=1){
-				translated_value = 1;			
-			}
-
-			document.getElementById('slider').children[0].style.width = translated_value + "%";
-			document.getElementById('slider').children[1].style.left = translated_value + "%";
-			document.form.wl_txpower.value = translated_value;
-		}
-		else{
-			document.getElementById('slider').children[0].style.width = power_value_new + "%";
-			document.getElementById('slider').children[1].style.left = power_value_new + "%";
-			document.form.wl_txpower.value = power_value_new;
-		}
+		document.getElementById('slider').children[0].style.width = power_value_new + "%";
+		document.getElementById('slider').children[1].style.left = power_value_new + "%";
+		document.form.wl_txpower.value = power_value_new;
 		
 		if(document.form.wl_txpower.value < 25){
 			document.getElementById('slider').children[0].style.width = "0%";
@@ -1890,11 +1873,11 @@ function checkWLReady(){
 						</td>
 					</tr>
 					<tr id="wl_chPower_field">
-						<th>功率调整方式</th>
+						<th><#WLANConfig11b_TxPower_custom#></th>
 						<td>
 							<select name="wl_cpenable" class="input_option" onchange="handle_chpower()">
-								<option value="0" <% nvram_match("wl_cpenable", "0","selected"); %>>官方功率定义：%</option>
-								<option value="1" <% nvram_match("wl_cpenable", "1","selected"); %>>自定义功率：dbm</option>
+								<option value="0" <% nvram_match("wl_cpenable", "0","selected"); %>><#WLANConfig11b_TxPower_asus#></option>
+								<option value="1" <% nvram_match("wl_cpenable", "1","selected"); %>><#WLANConfig11b_TxPower_dbm#></option>
 							</select>
 						</td>
 					</tr>
@@ -1905,7 +1888,7 @@ function checkWLReady(){
 								<table>
 									<tr>
 										<td style="border:0px;padding-left:0px;">
-											<div id="slider" style="width:80px;"></div>
+											<div id="slider" style="width:200px;"></div>
 										</td>									
 										<td style="border:0px;width:60px;">
 											<div id="tx_power_desc" style="width:150px;font-size:14px;"></div>

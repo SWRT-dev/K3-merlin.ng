@@ -157,10 +157,10 @@ define(function(){
 				] 
 			},
 			{
-				menuName: "工具箱",
+				menuName: "<#Softcenter_tool#>",
 				index: "menu_Tools",
 				tab: [
-					{url: "Tools_Sysinfo.asp", tabName: "系统信息"},
+					{url: "Tools_Sysinfo.asp", tabName: "Sysinfo"},
 					{url: "NULL", tabName: "__INHERIT__"}
 				] 
 			},
