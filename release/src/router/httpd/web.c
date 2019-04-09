@@ -23574,6 +23574,19 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 			continue;
 		}
 #endif
+#if defined(RTAC3100)
+		if(port[1] == '0') {
+			continue;
+		} else if (port[1] == '1') {
+			port[0] = 'W';
+		} else if (port[1] == '2') {
+			port[1] = '1';
+		} else if (port[1] == '3') {
+			port[1] = '2';
+		} else if (port[1] == '4') {
+			port[1] = '3';
+		}
+#endif
 		switch (*port++) {
 		case 'W':
 			snprintf(name, sizeof(name), "%s%s%s", "WAN", *port ? " " : "", port);

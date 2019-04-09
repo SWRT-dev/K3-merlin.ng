@@ -2114,8 +2114,8 @@ reset_mssid_hwaddr(int unit)
 				break;
 		}
 
-		macaddr_strp = cfe_nvram_get(macaddr_str);
-		//macaddr_strp = nvram_get(macaddr_str);//k3,we have to set this in nvram,not cfe
+		//macaddr_strp = cfe_nvram_get(macaddr_str);
+		macaddr_strp = nvram_get(macaddr_str);//k3,we have to set this in nvram,not cfe
 		if (macaddr_strp)
 		{
 			if (!mssid_mac_validate(macaddr_strp))

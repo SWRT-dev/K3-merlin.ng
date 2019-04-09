@@ -217,7 +217,7 @@ function show_etherstate(){
 				continue;
 			} else if ((based_modelid == "RT-AC56U") || (based_modelid == "RT-AC56S") || (based_modelid == "RT-AC88U") || (based_modelid == "RT-AC3100")) {
 				port++;		// Port starts at 0
-				if (port == "5") port = 0;	// Last port is WAN
+				if (port == "4") port = 0;	// Last port is WAN
 			} else if (based_modelid == "RT-AC87U") {
 				if (port == "4")
 					continue;	// This is the internal LAN port
@@ -232,7 +232,7 @@ function show_etherstate(){
 			} else if (port > 4) {
 				continue;	// Internal port
 			} else {
-				if (reversed) port = 5 - port;
+				if (reversed) port = 4 - port;
 			}
 			if (reversed)
 				port_array.unshift(["LAN "+ port, (line[7] & 0xFFF), state2, devicename]);
