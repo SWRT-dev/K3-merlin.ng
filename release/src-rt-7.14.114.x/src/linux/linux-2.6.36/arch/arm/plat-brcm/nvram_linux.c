@@ -87,7 +87,6 @@ static struct resource norflash_region = {
         .flags = IORESOURCE_MEM,
 };
 
-//static int remap_cfe=0;
 static unsigned char flash_nvh[MAX_NVRAM_SPACE];
 #ifdef CONFIG_MTD_NFLASH
 
@@ -339,32 +338,15 @@ early_nvram_init(void)
 		for (; off < nfl_boot_size(nfl_info); off += blocksize) {
 			if (hndnand_checkbadb(nfl_info, off) != 0)
 				continue;
-#if 0
-			if ((hndnand_checkbadb(nfl_info, off) != 0) && (hndnand_checkbadb(nfl_info, (off + 0x100000)) != 0))
-				continue;
-			header = (struct nvram_header *)(flash_base + (off + 0x100000));
-			if (header->magic == NVRAM_MAGIC){
-				/* Read into the nand_nvram */
-				if ((header = nand_find_nvram(nfl_info, (off + 0x100000))) == NULL)
-					continue;
-				if (nvram_calc_crc(header) == (uint8)header->crc_ver_init){
-					printk(KERN_INFO "found base nvram at %X\n", (off + 0x100000));
-					remap_cfe=0;
-					goto found;
-				}
-			}
-#endif
 			header = (struct nvram_header *)(flash_base + off);
-			if (header->magic == NVRAM_MAGIC){
-				/* Read into the nand_nvram */
-				if ((header = nand_find_nvram(nfl_info, off)) == NULL)
-					continue;
-				if (nvram_calc_crc(header) == (uint8)header->crc_ver_init){
-					printk(KERN_INFO "found nvram at %X\n",off);
-					//remap_cfe=1;
-					goto found;
-				}
-			}
+			if (header->magic != NVRAM_MAGIC)
+				continue;
+
+			/* Read into the nand_nvram */
+			if ((header = nand_find_nvram(nfl_info, off)) == NULL)
+				continue;
+			if (nvram_calc_crc(header) == (uint8)header->crc_ver_init)
+				goto found;
 		}
 	}
 	else
@@ -1048,9 +1030,6 @@ dev_nvram_init(void)
 	int order = 0, ret = 0;
 	struct page *page, *end;
 	osl_t *osh;
-	struct mtd_info *nvram_mtd_cfe = NULL;
-	struct nvram_header *header;
-	u32 *src, *dst;
 #if defined(CONFIG_MTD) || defined(CONFIG_MTD_MODULE)
 	unsigned int i;
 #endif
@@ -1068,14 +1047,8 @@ dev_nvram_init(void)
 	for (i = 0; i < MAX_MTD_DEVICES; i++) {
 		nvram_mtd = get_mtd_device(NULL, i);
 		if (!IS_ERR(nvram_mtd)) {
-			if (!strcmp(nvram_mtd->name, "cfe_backup")) {
-				printk(KERN_EMERG "found cfe nvram\n");
-				nvram_mtd_cfe = nvram_mtd;
-				continue;
-			}
-			else if (!strcmp(nvram_mtd->name, "nvram") &&
+			if (!strcmp(nvram_mtd->name, "nvram") &&
 			    nvram_mtd->size >= nvram_space) {
-				printk(KERN_EMERG "found base nvram\n");
 				break;
 			}
 			put_mtd_device(nvram_mtd);
@@ -1083,67 +1056,6 @@ dev_nvram_init(void)
 	}
 	if (i >= MAX_MTD_DEVICES)
 		nvram_mtd = NULL;
-#if 0
-	if (nvram_mtd_cfe != NULL && remap_cfe) {
-		printk(KERN_INFO "check if nvram copy is required CFE Size is %d\n", MAX_NVRAM_SPACE);
-		int len;
-		char *buf;
-		if (!(buf = kmalloc(MAX_NVRAM_SPACE, GFP_KERNEL))) {
-			printk(KERN_WARNING "nvram copy: out of memory\n");
-			goto done_nofree;
-		}
-
-		nvram_mtd->read(nvram_mtd, 0,MAX_NVRAM_SPACE, &len, buf);
-		header = (struct nvram_header *)buf;
-		len = 0;
-		printk(KERN_INFO "nvram copy magic is %X\n", header->magic);
-		if (header->magic != NVRAM_MAGIC) {
-			size_t lenw;
-			unsigned int j;
-			int ret;
-			unsigned long flags;
-			printk(KERN_EMERG "copy cfe nvram to base nvram\n");
-			len = 0;
-			memset(buf, 0, MAX_NVRAM_SPACE);
-			nvram_mtd_cfe->read(nvram_mtd_cfe, 0, MAX_NVRAM_SPACE, &len, buf);
-			put_mtd_device(nvram_mtd_cfe);
-			down(&nvram_sem);
-
-			header = (struct nvram_header *)buf;
-			header->magic = NVRAM_MAGIC;
-			/* reset MAGIC before we regenerate the NVRAM,
-			 * otherwise we'll have an incorrect CRC
-			 */
-			/* Regenerate NVRAM */
-			spin_lock_irqsave(&nvram_lock, flags);
-			ret = _nvram_commit(header);
-			spin_unlock_irqrestore(&nvram_lock, flags);
-			if (ret)
-				goto done;
-
-			/* Write partition up to end of data area */
-			j = header->len;
-			ret = nvram_mtd->write(nvram_mtd, 0, j, &lenw, buf);
-			if (ret || lenw != i) {
-				printk(KERN_WARNING "nvram copy: write error\n");
-				ret = -EIO;
-				goto done;
-			}
-done:
-			up(&nvram_sem);
-			kfree(buf);
-			printk(KERN_INFO "remap nvram %d\n", header->len);
-
-			src = (u32 *)header;
-			dst = (u32 *)nvram_buf;
-			for (i = 0; i < sizeof(struct nvram_header); i += 4)
-				*dst++ = *src++;
-			for (; i < header->len && i < MAX_NVRAM_SPACE; i += 4)
-				*dst++ = ltoh32(*src++);
-done_nofree:;
-		}
-	}
-#endif
 #endif
 
 	/* Initialize hash table lock */
