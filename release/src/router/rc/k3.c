@@ -1108,7 +1108,6 @@ void k3_insmod(){
 }
 
 void k3_init_done(){
-	bool verifyk = 0;
 	_dprintf("############################ k3 init done #################################\n");
 	if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh")){
 		doSystem("/usr/sbin/jffsinit.sh &");
@@ -1117,6 +1116,13 @@ void k3_init_done(){
 		_dprintf("....softcenter ok....\n");
 	}
 	doSystem("/usr/sbin/plugin.sh start &");
+	if(!cfe_nvram_get("il0macaddr"))
+		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
+#if 0
+	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2> /dev/null |grep 464C5348 | wc -l`");
+	if(nvram_get_int("k3nvram_back")==1)
+		logmessage("K3", "!!!WARNING!!! found phicomm nvram_backup");
+#endif
 	start_k3screen();
 	k3_insmod();
 }
