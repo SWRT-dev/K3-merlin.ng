@@ -1119,7 +1119,7 @@ void k3_init_done(){
 	if(!cfe_nvram_get("il0macaddr"))
 		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
 #if 0
-	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2> /dev/null |grep 464C5348 | wc -l`");
+	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2>/dev/null |grep 464C5348 | wc -l`");
 	if(nvram_get_int("k3nvram_back")==1)
 		logmessage("K3", "!!!WARNING!!! found phicomm nvram_backup");
 #endif
