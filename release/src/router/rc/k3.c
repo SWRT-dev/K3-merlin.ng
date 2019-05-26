@@ -949,7 +949,11 @@ int k3screenb(){
 		fprintf(fpp, "  [ \"$LAN1\" = \"DOWN\" ] && LAN1=\"0\" || LAN1=\"1\"\n");
 		fprintf(fpp, "  [ \"$LAN3\" = \"DOWN\" ] && LAN3=\"0\" || LAN3=\"1\"\n");
 		fprintf(fpp, "  [ \"$WAN1\" = \"DOWN\" ] && WAN1=\"0\" || WAN1=\"1\"\n");
-		fprintf(fpp, "[ \"$(lsusb | wc -l)\" -gt 2 ] && USB=\"1\" || USB=\"0\"\n");
+		fprintf(fpp, "  if [ $(nvram get usb_usb3) -eq 1 ]; then\n");
+		fprintf(fpp, "   [ \"$(lsusb | wc -l)\" -gt 3 ] && USB=\"1\" || USB=\"0\"\n");
+		fprintf(fpp, "  else\n");
+		fprintf(fpp, "   [ \"$(lsusb | wc -l)\" -gt 2 ] && USB=\"1\" || USB=\"0\"\n");
+		fprintf(fpp, "  fi\n");
 		fprintf(fpp, "echo $LAN1\n");
 		fprintf(fpp, "echo $LAN2\n");
 		fprintf(fpp, "echo $LAN3\n");
@@ -1115,7 +1119,7 @@ void k3_init_done(){
 		logmessage("软件中心", "1分钟后完成安装");
 		_dprintf("....softcenter ok....\n");
 	}
-	doSystem("/usr/sbin/plugin.sh start &");
+	doSystem("/usr/sbin/plugin.sh start");
 	if(!cfe_nvram_get("il0macaddr"))
 		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
 #if 0
@@ -1125,6 +1129,15 @@ void k3_init_done(){
 #endif
 	start_k3screen();
 	k3_insmod();
+	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
+	if(!cfe_nvram_get("uuid")){
+		doSystem("nvram set uuid=`cat /proc/sys/kernel/random/uuid`");
+		ATE_BRCM_SET("uuid", nvram_get("uuid"));
+		ATE_BRCM_COMMIT();
+	} else
+		nvram_set("uuid",cfe_nvram_get("uuid"));
+	logmessage("K3", "uuid:%s", nvram_get("uuid"));
+	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 }
 
 int GetPhyStatusk3(int verbose)
