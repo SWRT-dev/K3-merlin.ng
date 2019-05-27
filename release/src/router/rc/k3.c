@@ -33,6 +33,9 @@
 #include <shutils.h>
 #include <siutils.h>
 
+int ATE_BRCM_SET(const char *name, const char *value);
+void ATE_BRCM_COMMIT(void);
+
 void k3_init()
 {
 	char mac1[] = "00:90:4c:18:d2:34";
@@ -1120,30 +1123,34 @@ void k3_init_done(){
 		_dprintf("....softcenter ok....\n");
 	}
 	doSystem("/usr/sbin/plugin.sh start");
-	if(!cfe_nvram_get("il0macaddr"))
+	if(!cfe_nvram_get("bl_version"))
 		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
+	start_k3screen();
+	k3_insmod();
+
 #if 0
 	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2>/dev/null |grep 464C5348 | wc -l`");
 	if(nvram_get_int("k3nvram_back")==1)
 		logmessage("K3", "!!!WARNING!!! found phicomm nvram_backup");
-#endif
-	start_k3screen();
-	k3_insmod();
+
 	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
 	if(!cfe_nvram_get("uuid")){
 		doSystem("nvram set uuid=`cat /proc/sys/kernel/random/uuid`");
-		ATE_BRCM_SET("uuid", nvram_get("uuid"));
-		ATE_BRCM_COMMIT();
+		k3_nvram_set("uuid");
+		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
+
+
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
+#endif
 }
 
 int GetPhyStatusk3(int verbose)
 {
 	int ports[4];
-	int i, ret, lret=0, model, mask;
+	int i, ret, lret=0, mask;
 	char out_buf[30];
 	ports[0]=3; ports[1]=1; ports[2]=0; ports[3]=2;
 
