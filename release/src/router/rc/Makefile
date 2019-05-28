@@ -320,6 +320,7 @@ OBJS += $(if $(wildcard conn_diag.c),conn_diag.o,prebuild/conn_diag.o)
 endif
 ifeq ($(RTAC3100),y)
 OBJS += $(if $(wildcard k3.c), k3.o, prebuild/k3.o)
+OBJS += $(if $(wildcard k3ex.c), k3ex.o, prebuild/k3ex.o)
 endif
 # TODO, speedtest
 ifeq ($(RTCONFIG_SPEEDTEST),y)

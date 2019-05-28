@@ -33,8 +33,8 @@
 #include <shutils.h>
 #include <siutils.h>
 
-int ATE_BRCM_SET(const char *name, const char *value);
-void ATE_BRCM_COMMIT(void);
+int k3_nvram_set(const char *name, const char *value);
+void k3_nvram_patch();
 
 void k3_init()
 {
@@ -1132,19 +1132,19 @@ void k3_init_done(){
 	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2>/dev/null |grep 464C5348 | wc -l`");
 	if(nvram_get_int("k3nvram_back")==1)
 		logmessage("K3", "!!!WARNING!!! found phicomm nvram_backup");
-
+#endif
 	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
+	k3_nvram_patch();
 	if(!cfe_nvram_get("uuid")){
 		doSystem("nvram set uuid=`cat /proc/sys/kernel/random/uuid`");
-		k3_nvram_set("uuid");
+		k3_nvram_set("uuid",nvram_get("uuid"));
 		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
 
-
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
-#endif
+
 }
 
 int GetPhyStatusk3(int verbose)

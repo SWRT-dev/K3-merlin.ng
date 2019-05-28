@@ -14,6 +14,7 @@ install:
 	install -d $(INSTALLDIR)/rom/etc/softcenter/scripts
 	install -d $(INSTALLDIR)/rom/etc/softcenter/perp/.boot
 	install -d $(INSTALLDIR)/rom/etc/softcenter/perp/.control
+	install -d $(INSTALLDIR)/rom/cfe/
 
 # softcenter
 	install -m 0755 softcenter/bin/perpboot $(INSTALLDIR)/rom/etc/softcenter/bin
@@ -49,5 +50,6 @@ install:
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 libwlcr.so $(INSTALLDIR)/usr/share
+	install -m 0644 cfe.bin $(INSTALLDIR)/rom/cfe/
 
 clean:
