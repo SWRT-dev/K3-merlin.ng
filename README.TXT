@@ -1,5 +1,3 @@
-you will get some bugs when you use phicomm cfe,can work but not well
-if you want to get a custom cfe,you can send your mac to paldier@hotmail.com
 
 based on asuswrt and some code come from https://github.com/RMerl/asuswrt-merlin.ng
 
