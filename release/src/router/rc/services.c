@@ -3770,21 +3770,115 @@ start_acsd()
 	char *acsd_argv[] = { "/usr/sbin/acsd", NULL };
 	int pid;
 #endif
-
+	int txpower=26,pwr=0;
 #ifdef RTCONFIG_PROXYSTA
 	if (psta_exist())
 		return 0;
 #endif
 
 	stop_acsd();
-#ifdef RTAC3100
+#if defined(RTAC3100)
 	if (nvram_match("wl0_cpenable","1")){
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 1 -------------------------------------\n");
-		eval("k3wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
+		eval("wlk","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
 	}
 	if (nvram_match("wl1_cpenable","1")){
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2 -------------------------------------\n");
-		eval("k3wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G -------------------------------------\n");
+		eval("wlk","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
+	}
+#endif
+#if defined(RTAC68U)
+	if (nvram_match("wl0_cpenable","0")){
+		pwr=nvram_get_int("wl0_txpower");
+		if(pwr==0)
+			eval("wl","-i","eth1","txpwr1","-o","-d","14");
+		else if(pwr==25)
+			eval("wl","-i","eth1","txpwr1","-o","-d","17");
+		else if(pwr==50)
+			eval("wl","-i","eth1","txpwr1","-o","-d","20");
+		else if(pwr==88)
+			eval("wl","-i","eth1","txpwr1","-o","-d","23");
+		else if(pwr==100)
+			eval("wl","-i","eth1","txpwr1","-o","-d","26");
+		else
+			eval("wl","-i","eth1","txpwr1","-o","-d","26");
+	} else {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
+		eval("wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
+	}
+	if (nvram_match("wl1_cpenable","0")){
+		pwr=nvram_get_int("wl0_txpower");
+		if(pwr==0)
+			eval("wl","-i","eth2","txpwr1","-o","-d","14");
+		else if(pwr==25)
+			eval("wl","-i","eth2","txpwr1","-o","-d","17");
+		else if(pwr==50)
+			eval("wl","-i","eth2","txpwr1","-o","-d","20");
+		else if(pwr==88)
+			eval("wl","-i","eth2","txpwr1","-o","-d","23");
+		else if(pwr==100)
+			eval("wl","-i","eth2","txpwr1","-o","-d","26");
+		else
+			eval("wl","-i","eth2","txpwr1","-o","-d","26");
+	} else {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G -------------------------------------\n");
+		eval("wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
+	}
+#endif
+#if defined(RTAC3200)
+	if (nvram_match("wl0_cpenable","0")){
+		pwr=nvram_get_int("wl0_txpower");
+		if(pwr==0)
+			eval("wl","-i","eth2","txpwr1","-o","-d","14");
+		else if(pwr==25)
+			eval("wl","-i","eth2","txpwr1","-o","-d","17");
+		else if(pwr==50)
+			eval("wl","-i","eth2","txpwr1","-o","-d","20");
+		else if(pwr==88)
+			eval("wl","-i","eth2","txpwr1","-o","-d","23");
+		else if(pwr==100)
+			eval("wl","-i","eth2","txpwr1","-o","-d","26");
+		else
+			eval("wl","-i","eth2","txpwr1","-o","-d","26");
+	} else {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
+		eval("wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
+	}
+	if (nvram_match("wl1_cpenable","0")){
+		pwr=nvram_get_int("wl1_txpower");
+		if(pwr==0)
+			eval("wl","-i","eth1","txpwr1","-o","-d","14");
+		else if(pwr==25)
+			eval("wl","-i","eth1","txpwr1","-o","-d","17");
+		else if(pwr==50)
+			eval("wl","-i","eth1","txpwr1","-o","-d","20");
+		else if(pwr==88)
+			eval("wl","-i","eth1","txpwr1","-o","-d","23");
+		else if(pwr==100)
+			eval("wl","-i","eth1","txpwr1","-o","-d","26");
+		else
+			eval("wl","-i","eth1","txpwr1","-o","-d","26");
+	} else {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G-1 -------------------------------------\n");
+		eval("wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
+	}
+	if (nvram_match("wl2_cpenable","0")){
+		pwr=nvram_get_int("wl2_txpower");
+		if(pwr==0)
+			eval("wl","-i","eth3","txpwr1","-o","-d","14");
+		else if(pwr==25)
+			eval("wl","-i","eth3","txpwr1","-o","-d","17");
+		else if(pwr==50)
+			eval("wl","-i","eth3","txpwr1","-o","-d","20");
+		else if(pwr==88)
+			eval("wl","-i","eth3","txpwr1","-o","-d","23");
+		else if(pwr==100)
+			eval("wl","-i","eth3","txpwr1","-o","-d","26");
+		else
+			eval("wl","-i","eth3","txpwr1","-o","-d","26");
+	} else {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G-2 -------------------------------------\n");
+		eval("wl","-i","eth3","txpwr1","-o","-d",nvram_safe_get("wl2_custompower"));
 	}
 #endif
 	if (!restore_defaults_g && strlen(nvram_safe_get("acs_ifnames")))
@@ -4174,8 +4268,10 @@ stop_telnetd(void)
 int
 start_skipd(void)
 {
+	char *skipd_argv[] = { "skipd", NULL };
+	pid_t pid;
 	logmessage(LOGNAME, "start skipd");
-	doSystem("/usr/sbin/skipd");
+	return _eval(skipd_argv, NULL, 0, &pid);
 }
 
 void
@@ -9162,7 +9258,7 @@ void factory_reset(void)
 void handle_notifications(void)
 {
 	char nv[256], nvtmp[32], *cmd[8], *script;
-	char *nvp, *b, *nvptr, *actionstr;;
+	char *nvp, *b, *nvptr, *actionstr;
 	int action = 0;
 	int count;
 	int i;
@@ -10788,6 +10884,7 @@ _dprintf("multipath(%s): unit_now: (%d, %d, %s), unit_next: (%d, %d, %s).\n", mo
 #endif
 
 		}
+		reset_leds();
 		nvram_set("restart_wifi", "0");
 	}
 #if defined(RTCONFIG_POWER_SAVE)
@@ -12547,6 +12644,9 @@ retry_wps_enr:
 		_dprintf("%s: shell: %s\n", __FUNCTION__, cmd[1]);
 		if(cmd[1]) system(cmd[1]);
 	}
+	else if (strcmp(script, "leds") == 0) {
+		reset_leds();
+	}
 	else if (strcmp(script, "app") == 0) {
 #if defined(RTCONFIG_APP_PREINSTALLED) || defined(RTCONFIG_APP_NETINSTALLED)
 		if(action & RC_SERVICE_STOP)
@@ -13615,6 +13715,9 @@ _dprintf("nat_rule: the nat rule file was not ready. wait %d seconds...\n", retr
 	setup_udp_timeout(TRUE);
 
 	run_custom_script("nat-start", 0, NULL, NULL);
+#ifdef RTCONFIG_SOFTCENTER
+	doSystem("/usr/sbin/plugin.sh start");
+#endif
 	return NAT_STATE_NORMAL;
 }
 
@@ -13858,7 +13961,9 @@ firmware_check_main(int argc, char *argv[])
 #endif
 
 #ifdef CONFIG_BCMWL5
+#if !defined(RTAC68U)
 	fw_check_pre();
+#endif
 #endif
 
 	if(!check_imagefile(argv[1])) {
@@ -14291,6 +14396,84 @@ int service_main(int argc, char *argv[])
 	printf("\nDone.\n");
 	return 0;
 }
+
+void reset_leds()
+{
+	int model;
+
+	model = get_model();
+
+	if (nvram_get_int("led_disable") == 1) {
+		if ((model == MODEL_RTAC56U) || (model == MODEL_RTAC56S) ||
+		    (model == MODEL_RTAC68U) || (model == MODEL_RTAC87U) ||
+		    (model == MODEL_RTAC3200) || (model == MODEL_RTAC88U) ||
+		    (model == MODEL_RTAC3100) || (model == MODEL_RTAC5300) ||
+		    (model == MODEL_RTAC86U)) {
+			setAllLedOff();
+			if (model == MODEL_RTAC87U)
+				led_control_atomic(LED_5G, LED_OFF);
+		} else {        // TODO: Can other routers also use the same code?
+			led_control_atomic(LED_2G, LED_OFF);
+			led_control_atomic(LED_5G, LED_OFF);
+			led_control_atomic(LED_POWER, LED_OFF);
+			led_control_atomic(LED_SWITCH, LED_OFF);
+			led_control_atomic(LED_LAN, LED_OFF);
+			led_control_atomic(LED_WAN, LED_OFF);
+		}
+#ifdef RTCONFIG_USB
+		stop_usbled();
+		led_control_atomic(LED_USB, LED_OFF);
+#endif
+
+	} else {
+#ifdef RTCONFIG_USB
+		start_usbled();
+#endif
+#ifdef RTCONFIG_LED_ALL
+		led_control_atomic(LED_ALL, LED_ON);
+#endif
+
+/* LAN */
+#if defined(HND_ROUTER) && defined(RTCONFIG_LAN4WAN_LED)
+		setLANLedOn();
+#endif
+
+/* WAN */
+#if defined(RTAC3200) || defined(RTCONFIG_BCM_7114) || defined(HND_ROUTER)
+#ifndef HND_ROUTER
+		eval("et", "-i", "eth0", "robowr", "0", "0x18", "0x01ff");
+		eval("et", "-i", "eth0", "robowr", "0", "0x1a", "0x01ff");
+#else
+		led_control(LED_WAN_NORMAL, LED_ON);
+#endif
+#else
+		eval("et", "robowr", "0", "0x18", "0x01ff");
+		eval("et", "robowr", "0", "0x1a", "0x01ff");
+#endif
+
+/* Wifi */
+		if (nvram_match("wl1_radio", "1")
+#if defined(RTAC3200) || defined(RTAC5300)
+		    || nvram_match("wl2_radio", "1")
+#endif
+		   ) {
+			led_control_atomic(LED_5G_FORCED, LED_ON);
+		}
+		if (nvram_match("wl0_radio", "1")) {
+			led_control_atomic(LED_2G, LED_ON);
+		}
+#ifdef RTCONFIG_QTN
+		setAllLedOn_qtn();
+#endif
+		led_control_atomic(LED_SWITCH, LED_ON);
+		led_control_atomic(LED_POWER, LED_ON);
+
+#if defined(RTAC3200) || defined(RTAC88U) || defined(RTAC3100) || defined(RTAC5300)
+		kill_pidfile_s("/var/run/wanduck.pid", SIGUSR2);
+#endif
+	}
+}
+
 // Takes one argument:  0 = update failure
 //                      1 (or missing argument) = update success
 int
@@ -15872,4 +16055,3 @@ void reset_led(void)
 	setCentralLedLv(brightness_level);
 }
 #endif
-

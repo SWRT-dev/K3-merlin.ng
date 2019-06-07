@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 1.42.13
+Requires: 
+Cflags: -I${includedir}/uuid -I${includedir}
+Libs: -L${libdir} -luuid

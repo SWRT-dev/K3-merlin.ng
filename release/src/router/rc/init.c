@@ -117,7 +117,7 @@ static char *defenv[] = {
 #ifdef RTCONFIG_LANTIQ
 	"LD_LIBRARY_PATH=/lib:/usr/lib:/opt/lantiq/usr/lib:/opt/lantiq/usr/sbin/:/tmp/wireless/lantiq/usr/lib/:/jffs/softcenter/lib",
 #endif
-#ifdef RTCONFIG_RTAC3100
+#ifdef defined(RTAC3100) || defined(RTAC68U) || defined(RTAC3200)
 	"LD_LIBRARY_PATH=/lib:/usr/lib:/jffs/softcenter/lib",
 #endif
 	"SHELL=" SHELL,

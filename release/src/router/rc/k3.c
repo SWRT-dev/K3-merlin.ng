@@ -1116,13 +1116,14 @@ void k3_insmod(){
 
 void k3_init_done(){
 	_dprintf("############################ k3 init done #################################\n");
+#ifdef RTCONFIG_SOFTCENTER
 	if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh")){
 		doSystem("/usr/sbin/jffsinit.sh &");
 		logmessage("软件中心", "开始安装......");
 		logmessage("软件中心", "1分钟后完成安装");
 		_dprintf("....softcenter ok....\n");
 	}
-	doSystem("/usr/sbin/plugin.sh start");
+#endif
 	if(!cfe_nvram_get("bl_version"))
 		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
 	start_k3screen();

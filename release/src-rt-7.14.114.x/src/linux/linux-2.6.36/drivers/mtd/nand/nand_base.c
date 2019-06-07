@@ -2950,7 +2950,8 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 		chip->badblockpos = NAND_SMALL_BADBLOCK_POS;
 
 	/* Get chip options, preserve non chip based options */
-	chip->options &= ~NAND_CHIPOPTIONS_MSK;
+	//lostlonger
+	chip->options |= NAND_NO_SUBPAGE_WRITE;
 	chip->options |= type->options & NAND_CHIPOPTIONS_MSK;
 
 	/*

@@ -7442,7 +7442,7 @@ wdp:
 	amas_ctl_check();
 #endif
 #ifdef RTCONFIG_CFGSYNC
-	cfgsync_check();
+	//cfgsync_check();
 #endif
 #ifdef RTCONFIG_TUNNEL
 	mastiff_check();

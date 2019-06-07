@@ -36,9 +36,8 @@ endif
 
 # K3screenctrl setup script
 	ln -sf /tmp/k3screenctrl $(INSTALLDIR)/lib/k3screenctrl
-# K3 nvram & wl setup script
-	install -m 0700 k3nv.sh $(INSTALLDIR)/usr/sbin
-	install -m 0700 k3wl $(INSTALLDIR)/usr/sbin
+# K3 wl setup script
+	install -m 0700 wlk $(INSTALLDIR)/usr/sbin
 # Entware setup script
 	install -m 0700 entware_install.sh $(INSTALLDIR)/usr/sbin
 	install -m 0700 entware-setup.sh $(INSTALLDIR)/usr/sbin

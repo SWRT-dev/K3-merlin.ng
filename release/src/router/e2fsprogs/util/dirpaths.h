@@ -1,0 +1,1 @@
+/* fake dirpaths.h for config.h */

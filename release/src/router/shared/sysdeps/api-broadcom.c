@@ -1175,6 +1175,10 @@ void set_radio(int on, int unit, int subunit)
 		if (on) eval("wl", "-i", nvram_safe_get(wl_nvname("ifname", unit, 0)), "bss", "-C", tmp, "up");
 		else eval("wl", "-i", nvram_safe_get(wl_nvname("ifname", unit, 0)), "bss", "-C", tmp, "down");
 
+		if (nvram_get_int("led_disable")==1) {
+			led_control(LED_2G, LED_OFF);
+			led_control(LED_5G, LED_OFF);
+		}
 		return;
 	}
 
@@ -1196,6 +1200,11 @@ void set_radio(int on, int unit, int subunit)
 		//led(LED_DIAG, 0);
 	}
 #endif
+
+	if (nvram_get_int("led_disable")==1) {
+		led_control(LED_2G, LED_OFF);
+		led_control(LED_5G, LED_OFF);
+	}
 }
 
 /* Return nvram variable name, e.g. et0macaddr, which is used to repented as LAN MAC.
@@ -1213,6 +1222,8 @@ char *get_lan_mac_name(void)
 #endif
 
 	switch(get_model()) {
+		case MODEL_RTAC68U:
+			return "et2macaddr";
 		case MODEL_RTAC87U:
 		case MODEL_RTAC88U:
 		case MODEL_RTAC5300:
@@ -1236,6 +1247,8 @@ char *get_wan_mac_name(void)
 	}
 #endif
 	switch(get_model()) {
+		case MODEL_RTAC68U:
+			return "et2macaddr";
 		case MODEL_RTAC87U:
 		case MODEL_RTAC88U:
 		case MODEL_RTAC5300:
