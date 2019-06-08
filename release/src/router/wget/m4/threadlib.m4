@@ -1,10 +1,12 @@
-# threadlib.m4 serial 12
-dnl Copyright (C) 2005-2017 Free Software Foundation, Inc.
+# threadlib.m4 serial 15
+dnl Copyright (C) 2005-2018 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
 
 dnl From Bruno Haible.
+
+AC_PREREQ([2.60])
 
 dnl gl_THREADLIB
 dnl ------------
@@ -43,11 +45,7 @@ AC_DEFUN([gl_THREADLIB_EARLY_BODY],
 
   AC_REQUIRE([AC_CANONICAL_HOST])
   dnl _GNU_SOURCE is needed for pthread_rwlock_t on glibc systems.
-  dnl AC_USE_SYSTEM_EXTENSIONS was introduced in autoconf 2.60 and obsoletes
-  dnl AC_GNU_SOURCE.
-  m4_ifdef([AC_USE_SYSTEM_EXTENSIONS],
-    [AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])],
-    [AC_REQUIRE([AC_GNU_SOURCE])])
+  AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])
   dnl Check for multithreading.
   m4_ifdef([gl_THREADLIB_DEFAULT_NO],
     [m4_divert_text([DEFAULTS], [gl_use_threads_default=no])],
@@ -66,7 +64,7 @@ changequote(,)dnl
          dnl child process gets an endless segmentation fault inside execvp().
          dnl Disable multithreading by default on Cygwin 1.5.x, because it has
          dnl bugs that lead to endless loops or crashes. See
-         dnl <http://cygwin.com/ml/cygwin/2009-08/msg00283.html>.
+         dnl <https://cygwin.com/ml/cygwin/2009-08/msg00283.html>.
          osf*) gl_use_threads=no ;;
          cygwin*)
                case `uname -r` in
@@ -148,6 +146,40 @@ int main ()
               [gl_cv_have_weak="guessing no"])
            ])
        fi
+       dnl But when linking statically, weak symbols don't work.
+       case " $LDFLAGS " in
+         *" -static "*) gl_cv_have_weak=no ;;
+       esac
+      ])
+    dnl Check whether the linker supports the --as-needed/--no-as-needed options.
+    dnl Assume GCC, so that we can use the -Wl option.
+    AC_CACHE_CHECK([whether the linker supports --as-needed],
+      [gl_cv_linker_have_as_needed],
+      [if test -n "$GCC"; then
+         gl_saved_ldflags="$LDFLAGS"
+         LDFLAGS="$gl_saved_ldflags -Wl,--as-needed -Wl,--no-as-needed"
+         AC_LINK_IFELSE([AC_LANG_PROGRAM()],
+           [gl_cv_linker_have_as_needed=yes],
+           [gl_cv_linker_have_as_needed=no])
+         LDFLAGS="$gl_saved_ldflags"
+       else
+         gl_cv_linker_have_as_needed=no
+       fi
+      ])
+    dnl Check whether the linker supports the --push-state/--pop-state options.
+    dnl Assume GCC, so that we can use the -Wl option.
+    AC_CACHE_CHECK([whether the linker supports --push-state],
+      [gl_cv_linker_have_push_state],
+      [if test -n "$GCC"; then
+         gl_saved_ldflags="$LDFLAGS"
+         LDFLAGS="$gl_saved_ldflags -Wl,--push-state -Wl,--pop-state"
+         AC_LINK_IFELSE([AC_LANG_PROGRAM()],
+           [gl_cv_linker_have_push_state=yes],
+           [gl_cv_linker_have_push_state=no])
+         LDFLAGS="$gl_saved_ldflags"
+       else
+         gl_cv_linker_have_push_state=no
+       fi
       ])
     if test "$gl_use_threads" = yes || test "$gl_use_threads" = posix; then
       # On OSF/1, the compiler needs the flag -pthread or -D_REENTRANT so that
@@ -165,7 +197,7 @@ int main ()
         #
         # If -pthread works, prefer it to -lpthread, since Ubuntu 14.04
         # needs -pthread for some reason.  See:
-        # http://lists.gnu.org/archive/html/bug-gnulib/2014-09/msg00023.html
+        # https://lists.gnu.org/r/bug-gnulib/2014-09/msg00023.html
         save_LIBS=$LIBS
         for gl_pthread in '' '-pthread'; do
           LIBS="$LIBS $gl_pthread"
@@ -227,6 +259,32 @@ int main ()
                 [Define if references to the POSIX multithreading library should be made weak.])
               LIBTHREAD=
               LTLIBTHREAD=
+              dnl On platforms where GCC enables --as-needed by default, attempt
+              dnl to make sure that LIBMULTITHREAD really links with -lpthread.
+              dnl Otherwise linking with LIBMULTITHREAD has no effect; then
+              dnl the weak symbols are not defined and thus evaluate to NULL.
+              case "$LIBMULTITHREAD" in
+                "") ;;
+                -pthread)
+                  if test $gl_cv_linker_have_as_needed = yes; then
+                    if test $gl_cv_linker_have_push_state = yes; then
+                      LIBMULTITHREAD="$LIBMULTITHREAD -Wl,--push-state -Wl,--no-as-needed -lpthread -Wl,--pop-state"
+                    else
+                      LIBMULTITHREAD="$LIBMULTITHREAD -Wl,--no-as-needed -lpthread"
+                    fi
+                  fi
+                  ;;
+                *)
+                  if test $gl_cv_linker_have_as_needed = yes; then
+                    if test $gl_cv_linker_have_push_state = yes; then
+                      LIBMULTITHREAD="-Wl,--push-state -Wl,--no-as-needed $LIBMULTITHREAD -Wl,--pop-state"
+                    else
+                      LIBMULTITHREAD="-Wl,--no-as-needed $LIBMULTITHREAD"
+                    fi
+                  fi
+                  ;;
+              esac
+              # TODO: May need to modify LTLIBMULTITHREAD similarly.
             fi
           fi
         fi
@@ -259,6 +317,18 @@ int main ()
               [Define if references to the old Solaris multithreading library should be made weak.])
             LIBTHREAD=
             LTLIBTHREAD=
+            dnl On platforms where GCC enables --as-needed by default, attempt
+            dnl to make sure that LIBMULTITHREAD really links with -lthread.
+            dnl Otherwise linking with LIBMULTITHREAD has no effect; then
+            dnl the weak symbols are not defined and thus evaluate to NULL.
+            if test $gl_cv_linker_have_as_needed = yes; then
+              if test $gl_cv_linker_have_push_state = yes; then
+                LIBMULTITHREAD="-Wl,--push-state -Wl,--no-as-needed $LIBMULTITHREAD -Wl,--pop-state"
+              else
+                LIBMULTITHREAD="-Wl,--no-as-needed $LIBMULTITHREAD"
+              fi
+            fi
+            # TODO: May need to modify LTLIBMULTITHREAD similarly.
           fi
         fi
       fi
@@ -287,6 +357,18 @@ int main ()
               [Define if references to the GNU Pth multithreading library should be made weak.])
             LIBTHREAD=
             LTLIBTHREAD=
+            dnl On platforms where GCC enables --as-needed by default, attempt
+            dnl to make sure that LIBMULTITHREAD really links with -lpth.
+            dnl Otherwise linking with LIBMULTITHREAD has no effect; then
+            dnl the weak symbols are not defined and thus evaluate to NULL.
+            if test $gl_cv_linker_have_as_needed = yes; then
+              if test $gl_cv_linker_have_push_state = yes; then
+                LIBMULTITHREAD="-Wl,--push-state -Wl,--no-as-needed $LIBMULTITHREAD -Wl,--pop-state"
+              else
+                LIBMULTITHREAD="-Wl,--no-as-needed $LIBMULTITHREAD"
+              fi
+            fi
+            # TODO: May need to modify LTLIBMULTITHREAD similarly.
           fi
         fi
       else

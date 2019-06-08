@@ -161,7 +161,7 @@ endif
 LIBS += -lm
 
 ifeq ($(RTCONFIG_PUSH_EMAIL),y)
-CFLAGS += -L$(TOP)/openssl/include
+CFLAGS += -I$(TOP)/openssl/include
 LIBS += -L$(TOP)/openssl -lcrypto -lssl -ldl
 endif
 

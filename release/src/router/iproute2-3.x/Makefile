@@ -80,7 +80,7 @@ snapshot:
 		> include/SNAPSHOT.h
 
 clean:
-	rm -f cscope.*
+	rm -f cscope.* stage
 	@for i in $(SUBDIRS) doc; \
 	do $(MAKE) $(MFLAGS) -C $$i clean; done
 

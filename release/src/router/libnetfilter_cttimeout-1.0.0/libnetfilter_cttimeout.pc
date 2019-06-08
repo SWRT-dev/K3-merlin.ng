@@ -1,0 +1,15 @@
+# libnetfilter_cttimeout pkg-config file
+
+prefix=/usr
+exec_prefix=${prefix}
+libdir=/usr/lib
+includedir=${prefix}/include
+
+Name: libnetfilter_cttimeout
+Description: Netfilter extended cttimeout infrastructure library
+URL: http://netfilter.org/projects/libnetfilter_cttimeout/
+Version: 1.0.0
+Requires:
+Conflicts:
+Libs: -L${libdir} -lnetfilter_cttimeout
+Cflags: -I${includedir}
