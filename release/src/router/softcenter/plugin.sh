@@ -6,7 +6,6 @@ if [ $# -lt 1 ]; then
     printf "Usage: $0 {start|stop|restart|reconfigure|check|kill}\n" >&2
     exit 1
 fi
-
 [ $ACTION = stop -o $ACTION = restart -o $ACTION = kill ] && ORDER="-r"
 
 for i in $(find /jffs/softcenter/init.d/ -name 'S*' | sort $ORDER ) ;
