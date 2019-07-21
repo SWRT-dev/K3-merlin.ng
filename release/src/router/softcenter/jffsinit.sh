@@ -8,6 +8,7 @@ if [ ! -d /jffs/softcenter ]; then
 fi
 mkdir -p /jffs/softcenter/init.d
 mkdir -p /jffs/softcenter/bin
+mkdir -p /jffs/softcenter/etc
 mkdir -p /jffs/softcenter/scripts
 mkdir -p /jffs/softcenter/webs
 mkdir -p /jffs/softcenter/res
@@ -26,16 +27,16 @@ mkdir -p /jffs/configs/dnsmasq.d
 #done
 
 
-if [ ! -f "/jffs/softcenter/init.d/S10softcenter.sh" ]; then
+#if [ ! -f "/jffs/softcenter/init.d/S10softcenter.sh" ]; then
 	cp /rom/etc/softcenter/scripts/* /jffs/softcenter/scripts/
 	cp /rom/etc/softcenter/res/* /jffs/softcenter/res/
 	cp /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
 	cp /rom/etc/softcenter/bin/* /jffs/softcenter/bin/
 	cp -rf /rom/etc/softcenter/perp /jffs/softcenter/
-	chmod 755 /jffs/softcenter/scripts/*.sh
-	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/init.d/S10softcenter.sh
+#	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/init.d/S10softcenter.sh
 	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
-fi
+	chmod 755 /jffs/softcenter/scripts/*.sh
+#fi
 
 if [ ! -d /jffs/softcenter/configs ]; then
 	mkdir -p /jffs/softcenter/configs
@@ -52,23 +53,41 @@ chmod 755 /jffs/softcenter/ss/cru/*
 
 # creat wan-start file
 mkdir -p /jffs/scripts
-if [ ! -f /jffs/scripts/nat-start ]; then
-cat > /jffs/scripts/nat-start <<EOF
-#!/bin/sh
-dbus fire onnatstart
-
-EOF
-chmod 755 /jffs/scripts/nat-start
+cp -r /jffs/softcenter/bin/softcenter.sh /jffs/.asusrouter
+if [ ! -f "/jffs/scripts/wan-start" ];then
+	cat > /jffs/scripts/wan-start <<-EOF
+	#!/bin/sh
+	/jffs/softcenter/bin/softcenter-wan.sh start
+	EOF
+	chmod +x /jffs/scripts/wan-start
+else
+	STARTCOMAND1=`cat /jffs/scripts/wan-start | grep -c "/jffs/softcenter/bin/softcenter-wan.sh start"`
+	[ "$STARTCOMAND1" -gt "1" ] && sed -i '/softcenter-wan.sh/d' /jffs/scripts/wan-start && sed -i '1a /jffs/softcenter/bin/softcenter-wan.sh start' /jffs/scripts/wan-start
+	[ "$STARTCOMAND1" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-wan.sh start' /jffs/scripts/wan-start
 fi
 
-# creat nat-start file
-if [ ! -f /jffs/scripts/wan-start ]; then
-cat > /jffs/scripts/wan-start <<EOF
-#!/bin/sh
-dbus fire onwanstart
+if [ ! -f "/jffs/scripts/nat-start" ];then
+	cat > /jffs/scripts/nat-start <<-EOF
+	#!/bin/sh
+	/jffs/softcenter/bin/softcenter-net.sh start_nat
+	EOF
+	chmod +x /jffs/scripts/nat-start
+else
+	STARTCOMAND2=`cat /jffs/scripts/nat-start | grep -c "/jffs/softcenter/bin/softcenter-net.sh start"`
+	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-net.sh/d' /jffs/scripts/nat-start && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start' /jffs/scripts/nat-start
+	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start' /jffs/scripts/nat-start
+fi
 
-EOF
-chmod 755 /jffs/scripts/wan-start
+if [ ! -f "/jffs/scripts/post-mount" ];then
+	cat > /jffs/scripts/post-mount <<-EOF
+	#!/bin/sh
+	/jffs/softcenter/bin/softcenter-mount.sh start
+	EOF
+	chmod +x /jffs/scripts/post-mount
+else
+	STARTCOMAND2=`cat /jffs/scripts/post-mount | grep "/jffs/softcenter/bin/softcenter-mount.sh start"`
+	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-mount.sh/d' /jffs/scripts/post-mount && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
+	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
 fi
 
 # creat profile file
@@ -83,32 +102,3 @@ export PERP_BASE=/softcenter/perp
 EOF
 fi
 
-# fix wan and screen
-i=0
-while [ $i -le 20 ]; do
-      success_start_service=`nvram get success_start_service`
-      if [ "$success_start_service" == "1" ]; then
-              break
-      fi
-      i=$(($i+1))
-      echo "autorun APP: wait $i seconds...";
-      sleep 1
-done
-wans_dualwan=`nvram get wans_dualwan`
-if [ "$wans_dualwan" = "wan lan" ]; then
-    nvram set wanports="3"
-    nvram set wan1ports="2"
-    nvram set lanports="0 1"
-    nvram set vlan1ports="0 1 5 7 8*"
-    nvram set vlan2ports="3 8t"
-    nvram set vlan3ports="2 8t"
-    robocfg vlans reset vlan 3 ports "2 8t" vlan 2 ports "3 8t" vlan 1 ports "0 1 5u 7 8t"
-    service net_restart
-else
-    nvram set wanports="3"
-    nvram set lanports="0 1 2"
-    nvram set vlan1ports="0 1 2 5 7 8*"
-    nvram set vlan2ports="3 8u"
-    robocfg vlans reset vlan 2 ports "3 8u" vlan 1 ports "0 1 2 5u 7 8t"
-    service net_restart
-fi

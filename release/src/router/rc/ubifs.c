@@ -202,11 +202,6 @@ void start_ubifs(void)
 	if (!mtd_getinfo(JFFS2_MTD_NAME, &mtd_part, &mtd_size)) return;
 	snprintf(dev_mtd, sizeof(dev_mtd), "/dev/mtd%d", mtd_part);
 	_dprintf("*** ubifs: %s (%d, %d)\n", JFFS2_MTD_NAME, mtd_part, mtd_size);
-	if (!nvram_get_int("ubifs_clean_fs")) {
-		/* attach ubi */
-		_dprintf("*** ubifs: attach (%s, %s)\n", dev_mtd, UBI_DEV_NUM);
-		eval("ubiattach", "-p", dev_mtd, "-d", UBI_DEV_NUM);
-	}
 
 	if (nvram_match("ubifs_clean_fs", "1") || nvram_match("jffs2_format", "1") || nvram_match("ubifs_format", "1")) {
 		nvram_unset("ubifs_clean_fs");
@@ -216,6 +211,10 @@ void start_ubifs(void)
 		eval("ubiattach","-p",dev_mtd,"-d","0");
 		eval("ubimkvol","/dev/ubi0","-N", UBIFS_VOL_NAME,"-m");
 		format = 1;
+	} else {
+		/* attach ubi */
+		_dprintf("*** ubifs: attach (%s, %s)\n", dev_mtd, UBI_DEV_NUM);
+		eval("ubiattach", "-p", dev_mtd, "-d", UBI_DEV_NUM);
 	}
 	if (ubi_getinfo(JFFS2_MTD_NAME, &dev, &part, &size)==0) {
 		sprintf(s, "%d", size);

@@ -992,11 +992,11 @@ int k3screenb(){
 		fprintf(fpe, "ssid24=`nvram get wl0_ssid`\n");
 		fprintf(fpe, "pd24=`nvram get wl0_wpa_psk`\n");
 		fprintf(fpe, "en24=`nvram get wl0_bss_enabled`\n");
-		fprintf(fpe, "cc24=`k3wl authe_sta_list | wc -l`\n");
+		fprintf(fpe, "cc24=`wl -i eth1 assoclist| wc -l`\n");
 		fprintf(fpe, "ssid5=`nvram get wl1_ssid`\n");
 		fprintf(fpe, "pd5=`nvram get wl1_wpa_psk`\n");
 		fprintf(fpe, "en5=`nvram get wl1_bss_enabled`\n");
-		fprintf(fpe, "cc5=`k3wl authe_sta_list | wc -l`\n");
+		fprintf(fpe, "cc5=`wl -i eth2 assoclist| wc -l`\n");
 		fprintf(fpe, "pdg=\"1234567890\"\n");
 		fprintf(fpe, "if [ $(nvram get wl0_auth_mode_x) == \"open\" ]; then\n");
 		fprintf(fpe, "pd24=\" \"\n");

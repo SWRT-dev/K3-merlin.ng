@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="ParentalControl.css">
 <link rel="stylesheet" type="text/css" href="css/icon.css">
 <link rel="stylesheet" type="text/css" href="css/element.css">
+<link rel="stylesheet" type="text/css" href="/res/softcenter.css">
 <script type="text/javascript" src="/state.js"></script>
 <script type="text/javascript" src="/popup.js"></script>
 <script type="text/javascript" src="/help.js"></script>
@@ -73,7 +74,7 @@ function upload_software() {
 	}
 }
 function upload_ok(isok) {
-	var info = $G('file_info');
+	var info = E('file_info');
 	if(isok==1){
 		info.innerHTML="上传完成";
 		checkCmdRet();
@@ -83,7 +84,7 @@ function upload_ok(isok) {
 		info.innerHTML="上传失败";
 	}
 	info.style.display = "block";
-	$G('loadingicon').style.display = "none";
+	E('loadingicon').style.display = "none";
 }
 function start_install() {
 	document.form.action_mode.value = ' Refresh ';
@@ -96,7 +97,7 @@ function start_install() {
 var _responseLen;
 var noChange = 0;
 function checkCmdRet(){
-	$j.ajax({
+	$.ajax({
 		url: '/cmdRet_check.htm',
 		dataType: 'html',
 		
@@ -104,7 +105,7 @@ function checkCmdRet(){
 			setTimeout("checkCmdRet();", 1000);
 			},
 		success: function(response){
-			var retArea = $G("log_content1");
+			var retArea = E("log_content1");
 			if(response.search("XU6J03M6") != -1){
 				retArea.value = response.replace("XU6J03M6", " ");
 				retArea.scrollTop = retArea.scrollHeight;
@@ -167,7 +168,7 @@ function checkCmdRet(){
 										<div style="margin-left:5px;margin-top:10px;margin-bottom:10px"><img src="/images/New_ui/export/line_export.png"></div>
 										<div class="formfontdesc" style="padding-top:5px;margin-top:0px;float: left;" id="cmdDesc"></div>
 										<div style="padding-top:5px;margin-top:0px;float: left;" id="NoteBox" >
-											<li>通过本页面，你可以上传插件的离线安装包来安装插件,此功能需要在K3固件上使用; </li>
+											<li>通过本页面，你可以上传插件的离线安装包来安装插件,此功能需要在K3/SBRAC1900P/SBRAC3200P固件上使用; </li>
 											<li>离线安装会自动解压tar.gz后缀的压缩包，识别压缩包一级目录下的install.sh文件并执行； </li>
 											<li>建议开发者将插件版本号，md5等信息在install.sh文件内进行写入； </li>
 											<li>此页面也能用来安装SS离线安装包，方便用户进行回滚操作，上传前需要将历史文件包改名为shadowsocks.tar.gz，建议安装时关闭SS，安装后需要重新提交才能看到安装的版本号； </li>

@@ -90,6 +90,8 @@ MODEL = $(subst -,,$(subst +,P,$(BUILD_NAME)))
 endif
 export CFLAGS += -D$(MODEL)
 export $(MODEL)=y
+export CFLAGS += -D$(MERLINR_NAME)
+export $(MERLINR_NAME)=y
 
 export OLD_SRC=$(SRCBASE)/../src
 ifeq ($(RTCONFIG_REALTEK),y)

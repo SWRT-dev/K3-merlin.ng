@@ -8,6 +8,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <syslog.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <time.h>
 #include <signal.h>
@@ -23,6 +25,7 @@
 #include <netdb.h>
 #define BUFFER 1024
 #define SECOND 1
+char arpbuffer[BUFFER];
 //0=default
 char deflogo[]="";
 char OnePlus[] ="C0EEFB,94652D";
@@ -83,10 +86,10 @@ void get_speed()
 	int result_of_upload;
 	FILE *fpup, *fpdo;
 	get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
-	sleep(SECOND);
+	sleep(SECOND*5);
 	get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
-	result_of_download = (end_download_speed-start_download_speed);
-	result_of_upload = (end_upload_speed-start_upload_speed);
+	result_of_download = ((end_download_speed-start_download_speed)/5);
+	result_of_upload = ((end_upload_speed-start_upload_speed)/5);
 	if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
 		fprintf(fpup, "%d\n", result_of_upload);
 		fclose(fpup);
@@ -96,6 +99,7 @@ void get_speed()
 		fclose(fpdo);
 	}
 }
+#if 0
 #define PACKET_SIZE 4096
 unsigned short cal_chksum(unsigned short *addr,int len)
 {
@@ -184,6 +188,13 @@ int livetest(char* ip) {
     }
     return 0;
 }
+#endif
+int livetest(char* ip) {
+	if (strstr(arpbuffer, ip))
+		return 1;
+	else
+		return 0;
+}
 int find_logo(char *mac)
 {
 	char curmac[7];
@@ -226,7 +237,8 @@ void online()
 	memset(strTmp, 0, sizeof(strTmp));
 	if (!(rip = fopen("/var/lib/misc/dnsmasq.leases", "r")))
 	{
-		printf("dnsmasq not run\n");
+		syslog(LOG_WARNING, "K3screend: dnsmasq not run,is it AP mode?\n");
+		//printf("dnsmasq not run\n");
 		goto ONLINEEND;
 	}
 	while ((next = fgets(line, sizeof(line), rip)) != NULL) {
@@ -272,12 +284,20 @@ ONLINEEND:
 }
 int main(int argc, char * argv[])
 {
+	FILE * pip;
 	while (1)
 	{
 		get_speed();
 		get_time();
 		online();
-		sleep(SECOND*5);
+		sleep(SECOND*2);
+		memset(arpbuffer, 0, sizeof(arpbuffer));
+		if ((pip=popen("/proc/net/arp", "r")) == NULL ){
+			syslog(LOG_WARNING, "K3screend: can't open /proc/net/arp\n");
+			continue;//bug?
+		}
+		fread(arpbuffer, 1, sizeof(arpbuffer), pip);
+		pclose(pip);
 	}
 }
  
@@ -291,8 +311,10 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 
 	if ((pipo_stream=popen("ifconfig", "r")) == NULL )
 	{
-		printf("K3SCREEND:not found any wan!\n");//reboot/upgrade? exit
-		exit(1);
+		syslog(LOG_WARNING, "K3screend: not found any wan!\n");
+		//printf("K3SCREEND:not found any wan!\n");//reboot/upgrade? exit
+		//exit(1);
+		goto GETERR;
 	}
 	fread(buffer, 1, sizeof(buffer), pipo_stream);
 	pclose(pipo_stream);
