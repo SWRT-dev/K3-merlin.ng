@@ -136,6 +136,8 @@ int dualwan_control(int argc, char *argv[])
 
 #if defined(RTCONFIG_CFEZ) && defined(RTCONFIG_BCMARM)
 	if (strcmp(nvram_safe_get("model"), MODEL_PROTECT) != 0){
+#elif defined(BLUECAVE) || defined(RTAX58U)
+	if (strcmp(nvram_safe_get("model"), MODEL_PROTECT) != 0){
 #else
 	if (strcmp(cfe_nvram_safe_get("model"), MODEL_PROTECT) != 0){
 #endif

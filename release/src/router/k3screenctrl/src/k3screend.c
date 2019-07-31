@@ -292,7 +292,7 @@ int main(int argc, char * argv[])
 		online();
 		sleep(SECOND*2);
 		memset(arpbuffer, 0, sizeof(arpbuffer));
-		if ((pip=popen("/proc/net/arp", "r")) == NULL ){
+		if ((pip=popen("cat /proc/net/arp", "r")) == NULL ){
 			syslog(LOG_WARNING, "K3screend: can't open /proc/net/arp\n");
 			continue;//bug?
 		}

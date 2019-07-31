@@ -724,8 +724,11 @@ obj-y += rom
 obj-y += others
 obj-y += libpasswd
 ifeq ($(RTCONFIG_SOFTCENTER),y)
-obj-y += skipdbv2 libev-4.22 softcenter k3screenctrl libiconv-1.14
+obj-y += skipdbv2 libev-4.22 softcenter libiconv-1.14
 obj-y += ipset libmnl libnfnetlink
+ifeq ($(MERLINR_NAME),K3)
+k3screenctrl
+endif
 endif
 obj-y += httpd json-c
 obj-$(RTCONFIG_VISUALIZATION) += sqlite3 json-c libxml2 visdcoll visdcon
@@ -2205,7 +2208,10 @@ roldconf: config/conf
 #	@$(MAKE) iptables-clean ebtables-clean pppd-clean zebra-clean openssl-clean mssl-clean pppd-clean
 	$(MAKE) dnsmasq-clean iproute2-clean networkmap-clean
 ifeq ($(RTCONFIG_SOFTCENTER),y)
-	$(MAKE) skipdbv2-clean libev-4.22-clean k3screenctrl-clean
+	$(MAKE) skipdbv2-clean libev-4.22-clean
+ifeq ($(MERLINR_NAME),K3)
+	$(MAKE) k3screenctrl-clean
+endif
 endif
 ifeq ($(RTCONFIG_BCMARM),y)
 	$(MAKE) compressed-clean
@@ -3130,6 +3136,7 @@ skipdbv2-install: skipdbv2
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/skipd
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
 
+ifeq ($(MERLINR_NAME),K3)
 k3screenctrl/Makefile:
 	cd k3screenctrl && autoreconf -i -f && CC=$(CC) STRIP=$(STRIP) \
 		CFLAGS=" -std=gnu99 -D_GNU_SOURCE $(EXTRACFLAGS) -I$(TOP)/nvram${BCMEX} -I$(TOP)/shared -I$(SRCBASE)/shared/bcmwifi/include -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR)" \
@@ -3147,6 +3154,7 @@ k3screenctrl-install: k3screenctrl
 	install -D k3screenctrl/src/k3screend $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
+endif
 
 libmnl/stamp-h1:
 	cd $(TOP)/libmnl && CC=$(CC) STRIP=$(STRIP) \

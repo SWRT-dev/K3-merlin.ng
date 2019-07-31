@@ -67,9 +67,9 @@ void k3_init()
 	if (!nvram_get("boardflags"))
 		nvram_set("boardflags", "0x00000110");
 	if (!nvram_get("k3macaddr"))
-		nvram_set("k3macaddr", nvram_get("et0macaddr"));
-	if (!nvram_get("il0macaddr"))
-		nvram_set("il0macaddr", nvram_get("k3macaddr"));
+		nvram_set("k3macaddr", cfe_nvram_get("et0macaddr"));
+//	if (!nvram_get("il0macaddr"))
+	//	nvram_set("il0macaddr", nvram_get("k3macaddr"));
 	strcpy(mac1,nvram_get("k3macaddr"));
 	ether_atoe(mac1, mac_binary);
 	ether_atoe(mac1, mac_binary2);
@@ -1004,7 +1004,7 @@ int k3screenb(){
 		fprintf(fpe, "if [ $(nvram get wl1_auth_mode_x) == \"open\" ]; then\n");
 		fprintf(fpe, "pd5=\" \"\n");
 		fprintf(fpe, "fi\n");
-		fprintf(fpe, "if [ $(nvram get screen_2G5G_pwd_en) -eq 0 ]; then\n");
+		fprintf(fpe, "if [ \"$(nvram get screen_2G5G_pwd_en)\" != \"1\" ]; then\n");
 		fprintf(fpe, "pd24=\"********\"\n");
 		fprintf(fpe, "pd5=\"********\"\n");
 		fprintf(fpe, "fi\n");
@@ -1129,11 +1129,6 @@ void k3_init_done(){
 	start_k3screen();
 	k3_insmod();
 
-#if 0
-	doSystem("nvram set k3nvram_back=`hexdump -e '16/1 \"%%02X \"' /dev/mtd2 2>/dev/null |grep 464C5348 | wc -l`");
-	if(nvram_get_int("k3nvram_back")==1)
-		logmessage("K3", "!!!WARNING!!! found phicomm nvram_backup");
-#endif
 	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
 	k3_nvram_patch();
 	if(!cfe_nvram_get("uuid")){
@@ -1142,7 +1137,10 @@ void k3_init_done(){
 		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
-
+	if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")==0){
+		k3_nvram_set("territory_code","CN/01");
+		nvram_set("location_code", "US");
+	}
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 

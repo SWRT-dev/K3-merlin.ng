@@ -8248,7 +8248,7 @@ static int get_client_detail_info(struct json_object *clients, struct json_objec
 					json_object_object_add(client, "isOnline", json_object_new_string("0"));
 			}
 			else
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P)
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000) || defined(R7000) || defined(R6300V2) || defined(R7900P) || defined(R8000P)
 				if(!pids("cfg_server")&&(p_client_info_tab->device_flag[i]&(1<<FLAG_EXIST)))
 					json_object_object_add(client, "isOnline", json_object_new_string("1"));
 				else
