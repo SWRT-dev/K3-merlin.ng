@@ -235,7 +235,7 @@ uninstall_module() {
 	fi
 	[ -z "$softcenter_server_tcode" ] && dbus set softcenter_server_tcode=`nvram get territory_code |cut -c 1-2`
 	if [ "$(dbus get softcenter_server_tcode)" == "CN" ]; then
-		curl -s http://update.wifi.com.cn/mips/"$softcenter_installing_module"/"$softcenter_installing_module"/install.sh >/dev/null 2>&1
+		curl -s http://update.wifi.com.cn/"$softcenter_installing_module"/"$softcenter_installing_module"/install.sh >/dev/null 2>&1
 	else
 		curl -s http://scarm.paldier.com/"$softcenter_installing_module"/"$softcenter_installing_module"/install.sh >/dev/null 2>&1
 	fi
