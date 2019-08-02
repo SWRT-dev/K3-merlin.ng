@@ -727,7 +727,7 @@ ifeq ($(RTCONFIG_SOFTCENTER),y)
 obj-y += skipdbv2 libev-4.22 softcenter libiconv-1.14
 obj-y += ipset libmnl libnfnetlink
 ifeq ($(MERLINR_NAME),K3)
-k3screenctrl
+obj-y += k3screenctrl
 endif
 endif
 obj-y += httpd json-c
