@@ -1718,6 +1718,10 @@ int dnsmasq_script_main(int argc, char **argv)
 #if defined(RTCONFIG_AMAS)
 	amaslib_lease_main(argc, argv);
 #endif
+#if defined(RTCONFIG_SOFTCENTER)
+	if(nvram_get("sc_dhcp_script"))
+		doSystem("/jffs/softcenter/scripts/%s",nvram_get("sc_dhcp_script"));
+#endif
 	return 0;
 }
 #endif
@@ -9734,7 +9738,7 @@ again:
 #if defined(RTCONFIG_SOFTCENTER)
 #if defined(RTCONFIG_LANTIQ)
 	if(nvram_get_int("k3c_enable"))
-		doSystem("/usr/sbin/plugin.sh stop");
+		doSystem("/usr/sbin/softcenter_start.sh stop");
 #elif defined(RTCONFIG_BCMARM)
 	doSystem("/usr/sbin/plugin.sh stop");
 #elif defined(RTCONFIG_QCA)
@@ -13780,6 +13784,16 @@ _dprintf("nat_rule: the nat rule file was not ready. wait %d seconds...\n", retr
 	setup_udp_timeout(TRUE);
 
 	run_custom_script("nat-start", 0, NULL, NULL);
+#if defined(RTCONFIG_SOFTCENTER)
+#if defined(RTCONFIG_LANTIQ)
+	if(nvram_get_int("k3c_enable"))
+		doSystem("/usr/sbin/softcenter_start.sh start");
+#elif defined(RTCONFIG_BCMARM)
+	doSystem("/usr/sbin/plugin.sh start");
+#elif defined(RTCONFIG_QCA)
+#elif defined(RTCONFIG_MTK)
+#endif
+#endif
 	return NAT_STATE_NORMAL;
 }
 

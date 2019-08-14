@@ -58,6 +58,8 @@ void k3_init()
 		nvram_set("watchdog", "2100");
 	if (!nvram_get("model"))
 		nvram_set("model", "RT-AC3100");
+	if (!nvram_get("modelname"))
+		nvram_set("modelname", "K3");
 	if (!nvram_get("productid"))
 		nvram_set("productid", "RT-AC3100");
 	if (!nvram_get("bootflags"))
@@ -82,8 +84,6 @@ void k3_init()
 		nvram_set("k3macaddr1", mac3);
 	if (!nvram_get("et2macaddr"))
 		nvram_set("et2macaddr", nvram_get("k3macaddr"));
-	_dprintf("##### k3 mac debug #####\n");
-	_dprintf("k3macaddr:%s\nk3macaddr0:%s\nk3macaddr1:%s\n", nvram_get("k3macaddr"),nvram_get("k3macaddr0"),nvram_get("k3macaddr1"));
 	if (!nvram_get("secret_code"))
 		nvram_set("secret_code", "147258369");
 	if (!nvram_get("territory_code"))
@@ -1008,7 +1008,7 @@ int k3screenb(){
 		fprintf(fpe, "pd24=\"********\"\n");
 		fprintf(fpe, "pd5=\"********\"\n");
 		fprintf(fpe, "fi\n");
-		fprintf(fpe, "if [ $(nvram get screen_guest_pwd_en) -eq 0 ]; then\n");
+		fprintf(fpe, "if [ \"$(nvram get screen_guest_pwd_en)\" == \"0\" ]; then\n");
 		fprintf(fpe, "pdg=\"********\"\n");
 		fprintf(fpe, "fi\n");
 		fprintf(fpe, "echo 0\n");
@@ -1126,8 +1126,6 @@ void k3_init_done(){
 #endif
 	if(!cfe_nvram_get("bl_version"))
 		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
-	start_k3screen();
-	k3_insmod();
 
 	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
 	k3_nvram_patch();
@@ -1137,13 +1135,15 @@ void k3_init_done(){
 		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
-	if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")==0){
-		k3_nvram_set("territory_code","CN/01");
+	if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")!=0){
+		k3_nvram_set("territory_code","US/01");
 		nvram_set("location_code", "US");
 	}
+	k3_insmod();
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 
+	start_k3screen();
 }
 
 int GetPhyStatusk3(int verbose)

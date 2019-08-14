@@ -99,96 +99,7 @@ void get_speed()
 		fclose(fpdo);
 	}
 }
-#if 0
-#define PACKET_SIZE 4096
-unsigned short cal_chksum(unsigned short *addr,int len)
-{
-    int sum=0;
-    int nleft = len;
-    unsigned short *w = addr;
-    unsigned short answer = 0;
-    while(nleft > 1){
-        sum += *w++;
-        nleft -= 2;
-    }
-    if(nleft == 1){
-        *(unsigned char *)(&answer) = *(unsigned char *)w;
-        sum += answer;
-    }
-    sum = (sum >> 16) + (sum & 0xffff);
-    sum += (sum >> 16);
-    answer = ~sum;
-    return answer;
-}
-int livetest(char* ip) {
 
-    char    sendpacket[PACKET_SIZE];
-    char    recvpacket[PACKET_SIZE];
-    pid_t    pid;
-    int    datalen = 56;
-    struct protoent *protocol;
-    protocol = getprotobyname("icmp");
-    int sockfd;
-    int size = 50*1024;
-    if((sockfd = socket(AF_INET, SOCK_RAW, protocol->p_proto)) < 0) {
-        perror("socket error");
-	return 0;
-    }
-    setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(size) );
-    
-    struct sockaddr_in dest_addr;
-    bzero(&dest_addr, sizeof(dest_addr));
-    dest_addr.sin_family = AF_INET;
-    dest_addr.sin_addr.s_addr = inet_addr(ip);
-    //send packet;
-    int packsize;
-    struct icmp *icmp;
-    struct timeval *tval;
-    icmp = (struct icmp*)sendpacket;
-    icmp->icmp_type = ICMP_ECHO;
-    icmp->icmp_code = 0;
-    icmp->icmp_cksum = 0;
-    icmp->icmp_seq = 1;
-    icmp->icmp_id = pid;
-    packsize = 8 + datalen;
-    tval = (struct timeval *)icmp->icmp_data;
-    gettimeofday(tval, NULL);
-    icmp->icmp_cksum = cal_chksum((unsigned short *)icmp, packsize);
-
-    if(sendto(sockfd, sendpacket, packsize, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr)) < 0){
-        perror("sendto error");
-	return 0;
-    }
-    //printf("send %d, send done\n",1 );
-    int n;
-    struct sockaddr_in from;
-    int fromlen = sizeof(from);
-    fcntl(sockfd, F_SETFL, O_NONBLOCK);
-    struct timeval timeo = {1,0};
-    fd_set set;
-    FD_ZERO(&set);
-    FD_SET(sockfd, &set);
-    //read , write;
-    int retval = select(sockfd+1, &set, NULL, NULL, &timeo);
-    if(retval == -1) {
-        //printf("select error\n");
-        return 0;
-    }else if(retval == 0 ) {
-        //printf("timeout\n");
-        return 0;
-    }else{
-        n = recvfrom(sockfd, recvpacket,sizeof(recvpacket), 0, (struct sockaddr *)&from, (socklen_t *)&fromlen);
-        if(n<0) {
-           //perror("recvfrom error");
-            return 0;
-        }else{
-           //printf("%d\n",n);
-            return 1;
-        }
-    }
-    return 0;
-}
-#endif
 int livetest(char* ip) {
 	if (strstr(arpbuffer, ip))
 		return 1;
@@ -279,6 +190,7 @@ ONLINEEND:
 		fprintf(wonline, "%d\n", i);
 		if (i > 0)
 			fprintf(wonline, "%s", buffer);
+			fprintf(wonline, "0\n");
 	}
 	fclose(wonline);
 }

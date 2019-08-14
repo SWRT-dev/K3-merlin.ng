@@ -16,7 +16,7 @@ char *alloc_string(const char *string){
 	if((buf = (char *)malloc(len+1)) == NULL)
 		return NULL;
 
-	strlcpy(buf, string, len+1);
+	strlcpy(buf, string, len);
 
 	return buf;
 }

@@ -69,7 +69,7 @@ export PATH := $(RELEASEDIR)/tools:$(SRCBASE)/ctools:$(PATH)
 
 #K3C/K3/SBRAC1900P/SBRAC3200P/R7000/R8000/R7900P/R8000P
 export MERLINR_NAME := K3
-export MERLINR_VER := B3
+export MERLINR_VER := B4
 export MERLINRVER := $(MERLINR_NAME)_$(MERLINR_VER)
 
 # tmp depend on busybox

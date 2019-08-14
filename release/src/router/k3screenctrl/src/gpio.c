@@ -4,7 +4,7 @@
 #include "common.h"
 #include "file_util.h"
 #include "gpio.h"
-
+#if !defined(BCMARM)
 int gpio_export(int gpio) {
     char path_buf[50];
 
@@ -48,3 +48,4 @@ int gpio_set_value(int gpio, int value) {
 
     return write_file_int(path_buf, value);
 }
+#endif

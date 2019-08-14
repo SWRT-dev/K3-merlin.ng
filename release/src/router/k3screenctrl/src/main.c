@@ -19,7 +19,9 @@
 #include <string.h>
 #include <syslog.h>
 #include <unistd.h>
+#if defined(BCMARM)
 #include <shared.h>
+#endif
 
 static void frame_handler(const unsigned char *frame, int len) {
     if (frame[0] != FRAME_APP) {
@@ -27,7 +29,6 @@ static void frame_handler(const unsigned char *frame, int len) {
                frame[0]);
         return;
     }
-
     extern RESPONSE_HANDLER g_response_handlers[];
     for (RESPONSE_HANDLER *handler = &g_response_handlers[0]; handler != NULL;
          handler++) {
@@ -44,11 +45,21 @@ static void frame_handler(const unsigned char *frame, int len) {
 
 static int screen_initialize(int skip_reset, int enter_dfu) {
     int boot_gpio = !!enter_dfu;
-
+#if defined(BCMARM)
+	system("devmem 0x1800c1c1 32 0x00001f0f");
+#else
     mask_memory_byte(0x1800c1c1, 0xf0, 0); /* Enable UART2 in DMU */
-
+#endif
     if (!skip_reset) {
-        /*if (gpio_export(SCREEN_BOOT_MODE_GPIO) == FAILURE ||
+#if defined(BCMARM)
+		if (set_gpio(SCREEN_BOOT_MODE_GPIO, boot_gpio) == FAILURE ||
+			set_gpio(SCREEN_RESET_GPIO, 0) == FAILURE ||
+			set_gpio(SCREEN_RESET_GPIO, 1) == FAILURE) {
+			syslog(LOG_ERR, "Could not reset screen\n");
+			return FAILURE;
+		}
+#else
+        if (gpio_export(SCREEN_BOOT_MODE_GPIO) == FAILURE ||
             gpio_export(SCREEN_RESET_GPIO) == FAILURE) {
             syslog(LOG_ERR, "Could not export GPIOs\n");
             return FAILURE;
@@ -65,13 +76,8 @@ static int screen_initialize(int skip_reset, int enter_dfu) {
             gpio_set_value(SCREEN_RESET_GPIO, 1) == FAILURE) {
             syslog(LOG_ERR, "Could not reset screen\n");
             return FAILURE;
-        }*/
-		if (set_gpio(SCREEN_BOOT_MODE_GPIO, boot_gpio) == FAILURE ||
-			set_gpio(SCREEN_RESET_GPIO, 0) == FAILURE ||
-			set_gpio(SCREEN_RESET_GPIO, 1) == FAILURE) {
-			syslog(LOG_ERR, "Could not reset screen\n");
-			return FAILURE;
-		}
+        }
+#endif
 	}
     return SUCCESS;
 }

@@ -80,6 +80,10 @@
 #include <cfg_event.h>
 #endif
 
+#if defined(K3)
+#include "k3.h"
+#endif
+
 #define BCM47XX_SOFTWARE_RESET	0x40		/* GPIO 6 */
 #define RESET_WAIT		2		/* seconds */
 #define RESET_WAIT_COUNT	RESET_WAIT * 10 /* 10 times a second */
@@ -4085,7 +4089,7 @@ void fake_etlan_led(void)
 	}
 	allstatus = 1;
 #endif
-#ifdef RTAC3100
+#if defined(K3)
 	if (!GetPhyStatusk3(0)) {
 #else
 	if (!GetPhyStatus(0)) {
@@ -5374,7 +5378,7 @@ void dnsmasq_check()
 #endif
 	}
 }
-#ifdef RTAC3100
+#if defined(K3)
 void k3screen_check()
 {
 	if ((strcmp(nvram_get("k3screen"), "A")==0) || (strcmp(nvram_get("k3screen"), "a")==0))
@@ -5406,6 +5410,7 @@ void k3screen_check()
 	}
 }
 #endif
+
 #ifdef RTCONFIG_NEW_USER_LOW_RSSI
 void roamast_check()
 {
@@ -7289,7 +7294,6 @@ void watchdog(int sig)
 
 	if (!nvram_match("asus_mfg", "0"))
 		return;
-
 	watchdog_period = (watchdog_period + 1) % 30;
 #ifdef WATCHDOG_PERIOD2
 	watchdog_period2 = (watchdog_period2 + 1) % 10;
@@ -7337,7 +7341,6 @@ void watchdog(int sig)
 	bs_pre = bs;
 #endif
 #endif
-
 	if (watchdog_period)
 		return;
 
@@ -7370,9 +7373,10 @@ wdp:
 	networkmap_check();
 	httpd_check();
 	dnsmasq_check();
-#ifdef RTAC3100
+#if defined(K3)
 	k3screen_check();
 #endif
+
 #ifdef RTCONFIG_NEW_USER_LOW_RSSI
 	roamast_check();
 #endif

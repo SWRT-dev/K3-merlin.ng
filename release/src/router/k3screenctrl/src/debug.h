@@ -9,5 +9,5 @@ void print_wifi_info(WIFI_INFO *info);
 void print_basic_info(BASIC_INFO *info);
 void print_host_info(struct _host_info_single *info, int len);
 void print_weather_info(WEATHER_INFO *info);
-
+void print_mcu_version();
 #endif
