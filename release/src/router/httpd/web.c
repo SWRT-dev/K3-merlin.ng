@@ -5914,9 +5914,7 @@ static int get_cpu_temperature(int eid, webs_t wp, int argc, char_t **argv)
 			temperature = -1;
 		fclose(fp);
 	}
-#if defined(SBRAC1900P) || defined(SBRAC3200P)
-	temperature=temperature-20;
-#endif
+
 	return websWrite(wp, "%d", temperature);
 #endif
 }
