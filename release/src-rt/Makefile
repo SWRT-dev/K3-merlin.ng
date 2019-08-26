@@ -67,10 +67,13 @@ export SRCBASEDIR := $(shell pwd | sed 's/.*release\///g')
 RELEASEDIR := $(shell (cd $(SRC_ROOT)/.. && pwd -P))
 export PATH := $(RELEASEDIR)/tools:$(SRCBASE)/ctools:$(PATH)
 
-#K3C/K3/SBRAC1900P/SBRAC3200P/R7000/R8000/R7900P/R8000P
+#K3C/K3/SBRAC1900P/SBRAC3200P/R7000/R8000/R7900P/R8000P/RTACRH17/RTAC85P
 export MERLINR_NAME := K3
 export MERLINR_VER := B4
 export MERLINRVER := $(MERLINR_NAME)_$(MERLINR_VER)
+ifeq ($(MERLINR_NAME),RTACRH17)
+export PATH := /opt/openwrt-gcc463.arm/bin:$(PATH)
+endif
 
 # tmp depend on busybox
 E2FSPROGS := $(if $(filter $(BUSYBOX),busybox-1.17.4),n,y)

@@ -26,6 +26,7 @@
 #define BUFFER 1024
 #define SECOND 1
 char arpbuffer[BUFFER];
+int swmode;
 //0=default
 char deflogo[]="";
 char OnePlus[] ="C0EEFB,94652D";
@@ -144,6 +145,8 @@ void online()
 	int i, l;
 	i=0;
 	l=0;
+	if(swmode != 1)//not router mode,jump to end
+		goto ONLINEEND;
 	memset(buffer, 0, sizeof(buffer));
 	memset(strTmp, 0, sizeof(strTmp));
 	if (!(rip = fopen("/var/lib/misc/dnsmasq.leases", "r")))
@@ -197,6 +200,7 @@ ONLINEEND:
 int main(int argc, char * argv[])
 {
 	FILE * pip;
+	swmode=nvram_get_int("sw_mode");
 	while (1)
 	{
 		get_speed();
@@ -220,10 +224,11 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 	char buffer[BUFFER];
 	char * match;
 	int wan;
-
+	if(swmode != 1)//not router mode,jump to end
+		goto GETERR;
 	if ((pipo_stream=popen("ifconfig", "r")) == NULL )
 	{
-		syslog(LOG_WARNING, "K3screend: not found any wan!\n");
+		//syslog(LOG_WARNING, "K3screend: not found any wan!\n");
 		//printf("K3SCREEND:not found any wan!\n");//reboot/upgrade? exit
 		//exit(1);
 		goto GETERR;
