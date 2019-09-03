@@ -1135,10 +1135,11 @@ void k3_init_done(){
 		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
-	if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")!=0){
-		k3_nvram_set("territory_code","US/01");
-		nvram_set("location_code", "US");
-	}
+	//官方驱动有bug，制造bug解决官方bug
+	//if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")!=0){
+		//k3_nvram_set("territory_code","US/01");
+		//nvram_set("location_code", "US");
+	//}
 	k3_insmod();
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));

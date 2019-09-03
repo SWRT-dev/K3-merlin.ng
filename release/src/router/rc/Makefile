@@ -784,6 +784,7 @@ ifeq ($(RTCONFIG_DETWAN),y)
 	@cd $(INSTALLDIR)/sbin && ln -sf rc detwan
 endif
 	@cd $(INSTALLDIR)/sbin && ln -sf rc ddns_updated
+	@cd $(INSTALLDIR)/sbin && ln -sf rc ddns_custom_updated
 
 #	@cd $(INSTALLDIR)/sbin && ln -sf rc wldist
 

@@ -2128,7 +2128,7 @@ ifneq (,$(filter y,$(RTCONFIG_RALINK) $(RTCONFIG_QCA) $(RTCONFIG_REALTEK) $(RTCO
 	@$(MAKE) -C $(LINUXDIR)/scripts/squashfs $(MKSQUASHFS_TARGET)
 	@$(LINUXDIR)/scripts/squashfs/$(MKSQUASHFS) $(TARGETDIR) $(PLATFORMDIR)/target.image -all-root -noappend -nopad
 else ifeq ($(RTCONFIG_BCMARM),y)
-	@$(SRCBASE)/ctools/mksquashfs $(TARGETDIR) $(PLATFORMDIR)/target.image -all-root -noappend -Xbcj arm,armthumb
+	@$(SRCBASE)/ctools/mksquashfs $(TARGETDIR) $(PLATFORMDIR)/target.image -all-root -noappend
 else ifeq ($(RTCONFIG_REALTEK),y)
 	@$(MAKE) -C $(LINUXDIR)/rtkload rtk-clean
 	@$(MAKE) -C $(LINUXDIR)/.. image

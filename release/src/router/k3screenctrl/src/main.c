@@ -47,6 +47,7 @@ static int screen_initialize(int skip_reset, int enter_dfu) {
     int boot_gpio = !!enter_dfu;
 #if defined(BCMARM)
 	system("devmem 0x1800c1c1 32 0x00001f0f");
+	//mask_memory_byte(0x1800c1c1, 0x1f0f, 0); /* Enable UART2 in DMU */
 #else
     mask_memory_byte(0x1800c1c1, 0xf0, 0); /* Enable UART2 in DMU */
 #endif

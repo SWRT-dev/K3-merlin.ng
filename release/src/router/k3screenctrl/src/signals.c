@@ -44,8 +44,9 @@ void refresh_screen_timeout() { g_last_check_time = time(NULL); }
 extern int g_is_screen_on;
 static void check_screen_timeout() {
     if (CFG->screen_timeout != 0 &&
-        time(NULL) - g_last_check_time >= CFG->screen_timeout) {
+        time(NULL) - g_last_check_time >= CFG->screen_timeout && g_is_screen_on != 0) {
         g_is_screen_on = 0; /* Do not process key messages - just wake up if there are any */
+	page_switch_to(PAGE_BASIC_INFO);//page wan have a bug
         request_notify_event(EVENT_SLEEP);
     }
 }
