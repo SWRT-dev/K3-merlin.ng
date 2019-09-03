@@ -1341,7 +1341,7 @@ void generate_switch_para(void)
 #else	// RTCONFIG_EXT_RTL8365MB
 			/* WAN L1 L2 L3 L4 CPU */	/*vision: WAN L1 L2 L3 L4 */
 #if defined(K3)
-			int ports[SWPORT_COUNT] = { 3, 1, 0, 2, 5 };
+			int ports[SWPORT_COUNT] = { 3, 1, 0, 2, 4, 5 };
 #else
 			int ports[SWPORT_COUNT] = { 4, 3, 2, 1, 0, 5 };
 #endif
