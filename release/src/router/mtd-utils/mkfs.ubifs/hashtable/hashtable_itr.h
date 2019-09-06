@@ -28,8 +28,13 @@ hashtable_iterator(struct hashtable *h);
 /* hashtable_iterator_key
  * - return the value of the (key,value) pair at the current position */
 
+#if defined(HND_ROUTER)
+inline void *
+hashtable_iterator_key(struct hashtable_itr *i)
+#else
 extern inline void *
 hashtable_iterator_key(struct hashtable_itr *i)
+#endif
 {
     return i->e->k;
 }
@@ -37,8 +42,13 @@ hashtable_iterator_key(struct hashtable_itr *i)
 /*****************************************************************************/
 /* value - return the value of the (key,value) pair at the current position */
 
+#if defined(HND_ROUTER)
+inline void *
+hashtable_iterator_value(struct hashtable_itr *i)
+#else
 extern inline void *
 hashtable_iterator_value(struct hashtable_itr *i)
+#endif
 {
     return i->e->v;
 }
