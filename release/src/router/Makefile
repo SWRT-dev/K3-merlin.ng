@@ -3176,7 +3176,8 @@ libmnl-install: libmnl
 		ln -sf libmnl.so.0.1.0 libmnl.so
 
 libmnl-clean:
-	-@$(MAKE) -C libmnl clean
+	-@$(MAKE) -C libmnl distclean
+	-@rm -rf libmnl/stamp-h1
 	-@rm -rf libmnl/staged
 
 ipset/stamp-h1: libmnl
@@ -3186,7 +3187,7 @@ ipset/stamp-h1: libmnl
 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
 	libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
 	libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
-	$(CONFIGURE) --prefix=/usr --with-kmod=yes --with-kbuild=$(LINUXDIR)
+	$(CONFIGURE) --prefix=/usr --with-kmod=no --with-kbuild=$(LINUXDIR)
 	touch ipset/stamp-h1
 
 ipset: ipset/stamp-h1
@@ -3225,6 +3226,11 @@ libnfnetlink-install:
 	cd $(INSTALLDIR)/libnfnetlink/usr/lib/ && \
 		ln -sf libnfnetlink.so.0.2.0 libnfnetlink.so.0 && \
 		ln -sf libnfnetlink.so.0.2.0 libnfnetlink.so
+
+libnfnetlink-clean:
+	-@$(MAKE) -C libnfnetlink distclean
+	@rm -f libnfnetlink/stamp-h1
+
 endif
 
 miniupnpd/config.h: shared/version.h
@@ -3538,10 +3544,17 @@ ifeq ($(ALPINE)$(LANTIQ),y)
 		LDFLAGS="-L$(STAGEDIR)/usr/lib" \
 		WITHOUT_XATTR=1 -C $@
 else
+ifeq ($(HND_ROUTER),y)
+	$(MAKE) CPPFLAGS="-I$(STAGEDIR)/usr/include" \
+		CFLAGS+="-I$(TOP)/mtd-utils/include -I$(TOP)/mtd-utils/ubi-utils/include" \
+		LDFLAGS="-L$(STAGEDIR)/usr/lib" \
+		WITHOUT_XATTR=1 -C $@
+else
 	$(MAKE) CPPFLAGS="-I$(STAGEDIR)/usr/include" \
 		CFLAGS="-I$(TOP)/mtd-utils/include -I$(TOP)/mtd-utils/ubi-utils/include" \
 		LDFLAGS="-L$(STAGEDIR)/usr/lib" \
 		WITHOUT_XATTR=1 -C $@
+endif
 endif
 
 mtd-utils-install:
@@ -3916,9 +3929,6 @@ quagga-install:
 	$(STRIP) $(INSTALLDIR)/quagga/usr/sbin/zebra
 	$(STRIP) $(INSTALLDIR)/quagga/usr/sbin/ripd
 	$(STRIP) $(INSTALLDIR)/quagga/usr/sbin/watchquagga
-	install -d $(INSTALLDIR)/quagga/rom/etc
-	install -c -m 600 quagga/zebra/zebra.conf.sample $(INSTALLDIR)/quagga/rom/etc/zebra.conf
-	install -c -m 600 quagga/ripd/ripd.conf.sample $(INSTALLDIR)/quagga/rom/etc/ripd.conf
 ifneq ($(HND_ROUTER),y)
 	install -D $(shell dirname $(shell which $(CXX)))/../lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
 else

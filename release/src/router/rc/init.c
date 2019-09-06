@@ -109,7 +109,7 @@ static char *defenv[] = {
 	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/jffs/softcenter/bin:/jffs/softcenter/scripts",
 #endif
 #ifdef HND_ROUTER
-	"LD_LIBRARY_PATH=/lib:/usr/lib:/lib/aarch64",
+	"LD_LIBRARY_PATH=/lib:/usr/lib:/lib/aarch64:/jffs/softcenter/lib",
 #ifdef RTCONFIG_HNDMFG
 	"PS1=# ",
 #endif
@@ -117,7 +117,7 @@ static char *defenv[] = {
 #ifdef RTCONFIG_LANTIQ
 	"LD_LIBRARY_PATH=/lib:/usr/lib:/opt/lantiq/usr/lib:/opt/lantiq/usr/sbin/:/tmp/wireless/lantiq/usr/lib/:/jffs/softcenter/lib",
 #endif
-#ifdef defined(RTAC3100) || defined(RTAC68U) || defined(RTAC3200)
+#if defined(RTAC3100) || defined(RTAC68U) || defined(RTAC3200)
 	"LD_LIBRARY_PATH=/lib:/usr/lib:/jffs/softcenter/lib",
 #endif
 	"SHELL=" SHELL,
