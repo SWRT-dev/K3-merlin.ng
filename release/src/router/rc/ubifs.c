@@ -38,6 +38,15 @@
 #define LEBS		0x1F000		/* 124 KiB */
 #define NUM_OH_LEB	20		/* for ubifs overhead */
 #endif
+// AC86U/GTAC2900/GTAC5300/R7900P/R8000P
+#ifdef HND_ROUTER
+#define PATH_MAX	512
+#define JFFS2_MTD_NAME	"misc2"
+#define UBI_DEV_NUM	"2"
+#define UBI_DEV_PATH	"/dev/ubi2"
+#define LEBS		0x1F000		/* 124 KiB */
+#define NUM_OH_LEB	20		/* for ubifs overhead */
+#endif
 
 static void error(const char *message)
 {
@@ -132,7 +141,7 @@ void start_ubifs(void)
 	int mtd_part = 0, mtd_size = 0;
 	char dev_mtd[] = "/dev/mtdXXX";
 #endif
-#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100)
+#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100) || defined(HND_ROUTER)
 	int mtd_part = 0, mtd_size = 0;
 	char dev_mtd[] = "/dev/mtdXXX";
 #endif
@@ -172,7 +181,7 @@ void start_ubifs(void)
 		_dprintf("*** ubifs: ubi volume not found\n");
 
 		/* mtd erase on UBIFS_VOL_NAME first */
-		if (!mtd_erase(JFFS2_MTD_NAME)) {
+		if (mtd_erase(JFFS2_MTD_NAME)) {
 			error("formatting");
 			return;
 		}
@@ -198,7 +207,7 @@ void start_ubifs(void)
 		}
 	}
 #endif
-#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100)
+#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100) || defined(HND_ROUTER)
 	if (!mtd_getinfo(JFFS2_MTD_NAME, &mtd_part, &mtd_size)) return;
 	snprintf(dev_mtd, sizeof(dev_mtd), "/dev/mtd%d", mtd_part);
 	_dprintf("*** ubifs: %s (%d, %d)\n", JFFS2_MTD_NAME, mtd_part, mtd_size);
@@ -208,8 +217,14 @@ void start_ubifs(void)
 		nvram_set("jffs2_format", "0");
 		nvram_set("ubifs_format", "0");
 		eval("ubiformat",dev_mtd,"-y");
+#if defined(HND_ROUTER)
+//ubi0:rootfs ubi1:nvram ubi2:jffs or ubi0:rootfs ubi1:data ubi2:nvram ubi3:jffs
+		eval("ubiattach","-p",dev_mtd,"-d","2");
+		eval("ubimkvol","/dev/ubi2","-N", UBIFS_VOL_NAME,"-m");
+#else
 		eval("ubiattach","-p",dev_mtd,"-d","0");
 		eval("ubimkvol","/dev/ubi0","-N", UBIFS_VOL_NAME,"-m");
+#endif
 		format = 1;
 	} else {
 		/* attach ubi */
@@ -224,14 +239,27 @@ void start_ubifs(void)
 			nvram_commit_x();
 		}
 	}
+#if defined(HND_ROUTER)
+	if (mount("/dev/ubi2_0", UBIFS_MNT_DIR, UBIFS_FS_TYPE, MS_NOATIME, "") != 0) {
+#else
 	if (mount("/dev/ubi0_0", UBIFS_MNT_DIR, UBIFS_FS_TYPE, MS_NOATIME, "") != 0) {
+#endif
 		_dprintf("*** ubifs mount error\n");
 		eval("ubidetach", "-p", dev_mtd);
 		eval("ubiformat", dev_mtd, "-y");
+#if defined(HND_ROUTER)
+		eval("ubiattach","-p",dev_mtd,"-d","2");
+		eval("ubimkvol","/dev/ubi2","-N", UBIFS_VOL_NAME,"-m");
+#else
 		eval("ubiattach","-p",dev_mtd,"-d","0");
 		eval("ubimkvol","/dev/ubi0","-N", UBIFS_VOL_NAME,"-m");
+#endif
 		format = 1;
+#if defined(HND_ROUTER)
+		if (mount("/dev/ubi2_0", UBIFS_MNT_DIR, UBIFS_FS_TYPE, MS_NOATIME, "") != 0) {
+#else
 		if (mount("/dev/ubi0_0", UBIFS_MNT_DIR, UBIFS_FS_TYPE, MS_NOATIME, "") != 0) {
+#endif
 			_dprintf("*** ubifs 2-nd mount error\n");
 			error("mounting");
 			return;
@@ -309,11 +337,14 @@ void start_ubifs(void)
 			return;
 		}
 	}
-#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100)
+
+#if defined(RTAC68U) || defined(RTAC3200) || defined(RTAC3100) || defined(HND_ROUTER)
 BRCM_UBI:
 		nvram_unset("ubifs_clean_fs");
 		nvram_commit_x();
 #endif
+	set_proper_perm();
+
 #ifndef RTCONFIG_NVRAM_FILE
 	if (nvram_get_int("ubifs_clean_fs")) {
 		_dprintf("Clean /jffs/*\n");
@@ -397,4 +428,3 @@ void stop_ubifs(int stop)
 		start_syslogd();
 #endif
 }
-
