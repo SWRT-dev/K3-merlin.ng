@@ -343,7 +343,7 @@ BRCM_UBI:
 		nvram_unset("ubifs_clean_fs");
 		nvram_commit_x();
 #endif
-	set_proper_perm();
+	//set_proper_perm();
 
 #ifndef RTCONFIG_NVRAM_FILE
 	if (nvram_get_int("ubifs_clean_fs")) {
