@@ -34,6 +34,7 @@ mkdir -p /jffs/configs/dnsmasq.d
 	cp /rom/etc/softcenter/bin/* /jffs/softcenter/bin/
 	cp -rf /rom/etc/softcenter/perp /jffs/softcenter/
 #	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/init.d/S10softcenter.sh
+	ln -sf /jffs/softcenter/bin/base64_encode /jffs/softcenter/bin/base64_decode
 	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
 	chmod 755 /jffs/softcenter/scripts/*.sh
 #fi
@@ -74,8 +75,8 @@ if [ ! -f "/jffs/scripts/nat-start" ];then
 	chmod +x /jffs/scripts/nat-start
 else
 	STARTCOMAND2=`cat /jffs/scripts/nat-start | grep -c "/jffs/softcenter/bin/softcenter-net.sh start"`
-	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-net.sh/d' /jffs/scripts/nat-start && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start' /jffs/scripts/nat-start
-	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start' /jffs/scripts/nat-start
+	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-net.sh/d' /jffs/scripts/nat-start && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start_nat' /jffs/scripts/nat-start
+	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start_nat' /jffs/scripts/nat-start
 fi
 
 if [ ! -f "/jffs/scripts/post-mount" ];then

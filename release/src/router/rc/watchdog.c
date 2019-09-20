@@ -2777,7 +2777,11 @@ void btn_check(void)
 #endif
 	{
 		TRACE_PT("button WIFI_TOG pressed\n");
+#if defined(SBRAC1900P) || defined(SBRAC3200P)
+		if ((++btn_count > 4) && (btn_pressed_toggle_radio == 0)) {
+#else
 		if (btn_pressed_toggle_radio == 0) {
+#endif
 			radio_switch(0);
 			btn_pressed_toggle_radio = 1;
 			return;
@@ -2785,6 +2789,9 @@ void btn_check(void)
 	}
 	else{
 		btn_pressed_toggle_radio = 0;
+#if defined(SBRAC1900P) || defined(SBRAC3200P)
+		btn_count=0;
+#endif
 	}
 
 #if defined(RTCONFIG_WPS_ALLLED_BTN)
@@ -4544,6 +4551,27 @@ void bluecave_ledbh_indicator()
 			}
 
 			// Solid RED led if no internet ability
+#if defined(K3C)
+			if((indicator_no_internet_red != indicator_no_internet_red_old) ||
+		  	   (indicator_no_internet_red && !get_gpio(nvram_get_int("led_idr_sig3_gpio")) ||
+			   (!indicator_no_internet_red) && get_gpio(nvram_get_int("led_idr_sig2_gpio")))) // WAR for gpio was reset by mem xxx 
+			{
+				if (nvram_get_int("bc_ledLv") != 0)
+				{
+					indicator_no_internet_red == 1 ? 
+					led_control(LED_INDICATOR_SIG3, LED_ON) : 
+					led_control(LED_INDICATOR_SIG3, LED_OFF);
+					led_control(LED_INDICATOR_SIG2, LED_OFF);
+				}
+				indicator_no_internet_red_old = indicator_no_internet_red;
+			}
+			else {
+				if (nvram_get_int("bc_ledLv") != 0)
+				{
+					led_control(LED_INDICATOR_SIG2, LED_ON);
+					led_control(LED_INDICATOR_SIG3, LED_OFF);
+				}
+#else
 			if((indicator_no_internet_red != indicator_no_internet_red_old) ||
 			   (indicator_no_internet_red && !get_gpio(nvram_get_int("led_idr_sig1_gpio")) ||
 			   (!indicator_no_internet_red) && get_gpio(nvram_get_int("led_idr_sig2_gpio")))) // WAR for gpio was reset by mem xxx
@@ -4553,6 +4581,7 @@ void bluecave_ledbh_indicator()
 					led_control(LED_INDICATOR_SIG1, LED_OFF);
 				led_control(LED_INDICATOR_SIG2, LED_OFF);
 				indicator_no_internet_red_old = indicator_no_internet_red;
+#endif
 			}
 
 			break;
@@ -5378,6 +5407,18 @@ void dnsmasq_check()
 #endif
 	}
 }
+
+#if defined(RTCONFIG_SMARTDNS)
+extern void start_smartdns();
+void smartdns_check()
+{
+	if (!pids("smartdns")) {
+		start_smartdns();
+		logmessage("watchdog", "restart smartdns");
+	}
+}
+#endif
+
 #if defined(K3)
 void k3screen_check()
 {
@@ -7372,6 +7413,9 @@ wdp:
 	ddns_check();
 	networkmap_check();
 	httpd_check();
+#if defined(RTCONFIG_SMARTDNS)
+	smartdns_check();
+#endif
 	dnsmasq_check();
 #if defined(K3)
 	k3screen_check();
@@ -7636,3 +7680,4 @@ int wdg_monitor_main(int argc, char *argv[])
 	return 0;
 }
 #endif
+

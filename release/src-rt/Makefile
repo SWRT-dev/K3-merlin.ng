@@ -69,7 +69,7 @@ export PATH := $(RELEASEDIR)/tools:$(SRCBASE)/ctools:$(PATH)
 
 #K3C/K3/SBRAC1900P/SBRAC3200P/R7000/R8000/R7900P/R8000P/RTACRH17/RTAC85P
 export MERLINR_NAME := K3
-export MERLINR_VER := B4
+export MERLINR_VER := B4.1
 export MERLINRVER := $(MERLINR_NAME)_$(MERLINR_VER)
 ifeq ($(MERLINR_NAME),RTACRH17)
 export PATH := /opt/openwrt-gcc463.arm/bin:$(PATH)
@@ -2673,6 +2673,10 @@ define RouterOptions
 	if [ "$(SOFTCENTER)" = "y" ]; then \
 	sed -i "/RTCONFIG_SOFTCENTER/d" $(1); \
 	echo "RTCONFIG_SOFTCENTER=y" >>$(1); \
+	fi; \
+	if [ "$(SMARTDNS)" = "y" ]; then \
+	sed -i "/RTCONFIG_SMARTDNS/d" $(1); \
+	echo "RTCONFIG_SMARTDNS=y" >>$(1); \
 	fi; \
 	)
 	$(call platformRouterOptions, $(1))

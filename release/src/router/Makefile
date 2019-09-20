@@ -723,6 +723,9 @@ obj-y += rc
 obj-y += rom
 obj-y += others
 obj-y += libpasswd
+ifeq ($(RTCONFIG_SMARTDNS),y)
+obj-y += smartdns
+endif
 ifeq ($(RTCONFIG_SOFTCENTER),y)
 obj-y += skipdbv2 libev-4.22 softcenter libiconv-1.14
 obj-y += ipset libmnl libnfnetlink
@@ -7985,3 +7988,4 @@ $(obj-y) $(obj-n) $(obj-clean) $(obj-install): dummy
 .PHONY: all clean distclean mrproper install package image
 .PHONY: conf mconf oldconf kconf kmconf config menuconfig oldconfig
 .PHONY: dummy libnet libpcap
+

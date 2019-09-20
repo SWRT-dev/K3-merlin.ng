@@ -15682,9 +15682,9 @@ applydb_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
 {
 	char *action_mode;
 	char *action_script;
-	char dbjson[100][2048];
+	char dbjson[100][9999];
 	char dbvar[2048];
-	char dbval[2048];
+	char dbval[9999];
 	char notify_cmd[128];
 	char db_cmd[128];
 	int i, j;
