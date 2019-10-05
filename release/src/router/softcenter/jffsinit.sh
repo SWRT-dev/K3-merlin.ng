@@ -15,46 +15,28 @@ mkdir -p /jffs/softcenter/res
 mkdir -p /jffs/softcenter/ss
 mkdir -p /jffs/softcenter/lib
 mkdir -p /jffs/configs/dnsmasq.d
-
-#check all dir version
-#for d in "/rom/etc/softcenter/"* ; do
-#	basedir=`basename $d`
-#	cmp=`$VERSIONCMP /jffs/softcenter/$basedir/version $d/version`
-#	if [ "$cmp" == "1" ]; then
-#		#/rom/etc/softcenter/xx is newer, so override all exists files
-#		cp -rf $d /jffs/softcenter/
-#	fi
-#done
-
-
-#if [ ! -f "/jffs/softcenter/init.d/S10softcenter.sh" ]; then
-	cp /rom/etc/softcenter/scripts/* /jffs/softcenter/scripts/
-	cp /rom/etc/softcenter/res/* /jffs/softcenter/res/
-	cp /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
-	cp /rom/etc/softcenter/bin/* /jffs/softcenter/bin/
-	cp -rf /rom/etc/softcenter/perp /jffs/softcenter/
-#	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/init.d/S10softcenter.sh
-	ln -sf /jffs/softcenter/bin/base64_encode /jffs/softcenter/bin/base64_decode
-	ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
-	chmod 755 /jffs/softcenter/scripts/*.sh
-#fi
-
-if [ ! -d /jffs/softcenter/configs ]; then
-	mkdir -p /jffs/softcenter/configs
-	mkdir -p /jffs/softcenter/scripts
-	cp /rom/etc/configs/* /jffs/softcenter/configs/
-
-	chmod 755 /jffs/softcenter/configs/*.sh
-	chmod 755 /jffs/softcenter/scripts/*.sh
-fi
-
-
-chmod 755 /jffs/softcenter/ss/cru/*
+mkdir -p /jffs/softcenter/configs
+cp -rf /rom/etc/softcenter/scripts/* /jffs/softcenter/scripts/
+cp -rf /rom/etc/softcenter/res/* /jffs/softcenter/res/
+cp -rf /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
+cp -rf /rom/etc/softcenter/bin/* /jffs/softcenter/bin/
+cp -rf /rom/etc/softcenter/perp /jffs/softcenter/
+ln -sf /jffs/softcenter/bin/base64_encode /jffs/softcenter/bin/base64_decode
+ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
+ln -sf  /jffs/softcenter/bin/softcenter.sh /jffs/.asusrouter
+chmod 755 /jffs/softcenter/scripts/*.sh
+chmod 755 /jffs/softcenter/configs/*.sh
+chmod 755 /jffs/softcenter/bin/*
+chmod 755 /jffs/softcenter/init.d/*
+chmod 755 /jffs/softcenter/perp/*
+chmod 755 /jffs/softcenter/perp/.boot/*
+chmod 755 /jffs/softcenter/perp/.control/*
+echo 1.2.0 > /jffs/softcenter/.soft_ver
 
 
 # creat wan-start file
 mkdir -p /jffs/scripts
-cp -r /jffs/softcenter/bin/softcenter.sh /jffs/.asusrouter
+
 if [ ! -f "/jffs/scripts/wan-start" ];then
 	cat > /jffs/scripts/wan-start <<-EOF
 	#!/bin/sh

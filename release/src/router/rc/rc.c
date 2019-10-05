@@ -23,8 +23,10 @@
 #if defined(RTCONFIG_LP5523)
 #include <lp5523led.h>
 #endif
-#if defined(RTAC3100)
+#if defined(K3)
 #include <k3.h>
+#elif defined(R7900P)
+#include <r7900p.h>
 #endif
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -277,14 +279,25 @@ static int rctest_main(int argc, char *argv[])
 	}
 #endif
 	else if (strcmp(argv[1], "GetPhyStatus")==0) {
-#ifdef RTAC3100
+#if defined(R7900P)
+		printf("Get Phy status:%d\n", GetPhyStatus2(0));
+#elif defined(K3)
 		printf("Get Phy status:%d\n", GetPhyStatusk3(0));
 #else
 		printf("Get Phy status:%d\n", GetPhyStatus(0));
 #endif
 	}
+#if defined(K3) || defined(R7900P)
+	else if (strcmp(argv[1], "Get_PhyStatus")==0) {
+#if defined(K3)
+		GetPhyStatusk3(1);
+#elif defined(R7900P)
+		GetPhyStatus2(1);
+#endif
+	}
+#endif
 	else if (strcmp(argv[1], "GetExtPhyStatus")==0) {
-#ifdef RTAC3100
+#if defined(K3)
 		printf("Get Ext Phy status:%d\n", GetPhyStatusk3(atoi(argv[2])));
 #else
 		printf("Get Ext Phy status:%d\n", GetPhyStatus(atoi(argv[2])));

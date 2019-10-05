@@ -81,7 +81,9 @@
 #endif
 
 #if defined(K3)
-#include "k3.h"
+#include <k3.h>
+#elif defined(R7900P)
+#include <r7900p.h>
 #endif
 
 #define BCM47XX_SOFTWARE_RESET	0x40		/* GPIO 6 */
@@ -4098,6 +4100,8 @@ void fake_etlan_led(void)
 #endif
 #if defined(K3)
 	if (!GetPhyStatusk3(0)) {
+#elif defined(R7900P)
+	if (!GetPhyStatus2(0)) {
 #else
 	if (!GetPhyStatus(0)) {
 #endif

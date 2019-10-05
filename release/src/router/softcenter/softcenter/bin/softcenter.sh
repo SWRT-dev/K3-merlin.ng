@@ -5,7 +5,9 @@ source /jffs/softcenter/scripts/base.sh
 sh /jffs/softcenter/perp/perp.sh start
 nvram set jffs2_scripts=1
 nvram commit
-
+dbus set softcenter_firmware_version=`nvram get extendno|cut -d "_" -f2|cut -d "-" -f1|cut -c2-5`
+dbus set softcenter_arch=`uname -m`
+dbus set softcenter_api=`cat /jffs/softcenter/.soft_ver`
 #============================================
 # check start up scripts 
 if [ ! -f "/jffs/scripts/wan-start" ];then
@@ -44,8 +46,9 @@ if [ ! -f "/jffs/scripts/post-mount" ];then
 	EOF
 	chmod +x /jffs/scripts/post-mount
 else
-	STARTCOMAND3=`cat /jffs/scripts/post-mount | grep "/jffs/softcenter/bin/softcenter-mount.sh start"`
+	STARTCOMAND3=`cat /jffs/scripts/post-mount | grep -c "/jffs/softcenter/bin/softcenter-mount.sh start"`
 	[ "$STARTCOMAND3" -gt "1" ] && sed -i '/softcenter-mount.sh/d' /jffs/scripts/post-mount && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
 	[ "$STARTCOMAND3" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
 fi
 #============================================
+

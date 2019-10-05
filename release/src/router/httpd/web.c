@@ -23911,7 +23911,11 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 	struct json_object *wanLanLinkSpeed = NULL;
 	struct json_object *wanLanCount = NULL;
 
+#if defined(K3) || defined(R7900P)
+	fp = popen("rc Get_PhyStatus", "r");
+#else
 	fp = popen("ATE Get_WanLanStatus", "r");
+#endif
 	if (fp == NULL)
 		goto error;
 
@@ -23934,19 +23938,6 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 #if defined(DSL_AC68U)
 		if(port[0] == 'W') {
 			continue;
-		}
-#endif
-#if defined(K3)
-		if(port[1] == '0') {
-			continue;
-		} else if (port[1] == '1') {
-			port[0] = 'W';
-		} else if (port[1] == '2') {
-			port[1] = '1';
-		} else if (port[1] == '3') {
-			port[1] = '2';
-		} else if (port[1] == '4') {
-			port[1] = '3';
 		}
 #endif
 		switch (*port++) {
