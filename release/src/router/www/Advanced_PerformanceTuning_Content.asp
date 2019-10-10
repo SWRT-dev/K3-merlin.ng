@@ -8,7 +8,7 @@
 <meta name="svg.render.forceflash" content="false" />	
 <link rel="shortcut icon" href="images/favicon.png">
 <link rel="icon" href="images/favicon.png">
-<title><#Web_Title#> - Performance tuning</title>
+<title><#Web_Title#> - Fan tuning</title><!-- untranslated -->
 <link rel="stylesheet" type="text/css" href="index_style.css"> 
 <link rel="stylesheet" type="text/css" href="form_style.css">
 <style type="text/css">
@@ -32,13 +32,19 @@
 <script language="JavaScript" type="text/javascript" src="/popup.js"></script>
 <script language="JavaScript" type="text/javascript" src="/validator.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
-<script type='text/javascript'>var fanctrl_info = [<% get_fanctrl_info(); %>];
-var cpuTemp = [<% get_cpu_temperature(); %>];
-if(typeof cpuTemp[0] != "undefined")
-	fanctrl_info = ["0", cpuTemp[0], cpuTemp[0], "0"];
+<script type='text/javascript'>
+var temp_base = 40;
+var d_temp = 20;
+var rpm_base = 1500;
+var d_rpm = 250;
+var fanctrl_info = <% get_fanctrl_info(); %>;
+var curr_cpuTemp = "<% get_cpu_temperature(); %>";
+var cpuTemp = new Array();
+cpuTemp = [curr_cpuTemp];
 var curr_rxData = fanctrl_info[3];
-var curr_coreTmp_2 = convertTemp(fanctrl_info[1], fanctrl_info[2], 0);
-//var curr_coreTmp_2 = fanctrl_info[1];
+var rxData = new Array();
+rxData = [(curr_rxData - rpm_base) / (d_rpm / d_temp) + temp_base];
+var curr_coreTmp_2 = fanctrl_info[1];
 var curr_coreTmp_5 = fanctrl_info[2];
 var coreTmp_2 = new Array();
 var coreTmp_5 = new Array();
@@ -78,9 +84,19 @@ function initial(){
 	}
 	document.form.fanctrl_fullspeed_temp_unit.selectedIndex = cookie.get("CoreTmpUnit");
 
-	if(!power_support){
+	if(!power_support || Qcawifi_support){
 		inputHideCtrl(document.form.wl0_TxPower, 0);
 		inputHideCtrl(document.form.wl1_TxPower, 0);
+		document.getElementById("formDesc").innerHTML = "Adjust fan speed depending on your system status.";/* untranslated */
+	}
+
+	if(based_modelid == "GT-AXY16000" || based_modelid == "RT-AX89U"){
+		var dc = new Array();
+		var dcDesc = new Array();
+		cur = '<% nvram_get("fanctrl_dutycycle"); %>';
+		dc = [0, -1, 1, 2, 3];	/* auto, off, state 1~3 */
+		dcDesc = ["<#Auto#>", "<#btn_disable#>", "76%", "86%", "100%"];
+		add_options_x2(document.form.fanctrl_dutycycle, dcDesc, dc, cur);
 	}
 
 	if(based_modelid == "RT-AC68U" || based_modelid == "RT-AC68A" || based_modelid == "DSL-AC68U" || based_modelid == "4G-AC68U"){
@@ -241,10 +257,19 @@ function changeTempUnit(num){
 	cookie.set("CoreTmpUnit", num, 365);
 	refreshpage();
 }
+
+function setCookie(num){
+	cookie.set("CoreTmpUnit", num, 365);
+}
+
+function getCookie(c_name)
+{
+	return cookie.get("CoreTmpUnit");
+}
 </script>
 </head>
 
-<body onload="initial();">
+<body onload="initial();" class="bg">
 <div id="TopBanner"></div>
 <div id="Loading" class="popup_bg"></div>
 <iframe name="hidden_frame" id="hidden_frame" src="" width="0" height="0" frameborder="0"></iframe>
@@ -284,9 +309,9 @@ function changeTempUnit(num){
                 <tr bgcolor="#4D595D" style="height:10px">
 	                <td valign="top">
 									  <div>&nbsp;</div>
-									  <div class="formfonttitle"><#menu5_6#> - Performance tuning</div>
+									  <div class="formfonttitle"><#menu5_6#> - Fan tuning</div><!-- untranslated -->
 									 <div style="margin:10px 0 10px 5px;" class="splitLine"></div>
-									  <div class="formfontdesc">Fine tune the radio power to enhance/decrease the coverage and change the cooler spin mode.Please note: If the output power is increased for long distance signal transmission, the client also need to use high power card to get the best performance.</div>
+									  <div class="formfontdesc" id="formDesc">Fine tune the radio power to enhance/decrease the coverage and change the cooler spin mode.Please note: If the output power is increased for long distance signal transmission, the client also need to use high power card to get the best performance.</div>
 									</td>
 					  		</tr>
 
@@ -295,7 +320,7 @@ function changeTempUnit(num){
 										<table width="99%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#6b8fa3" class="FormTable">
 											<thead>
 											<tr>
-												<td colspan="2">Cooler status</td>
+												<td colspan="2">System Temperature</td><!-- untranslated -->
 											</tr>
 											</thead>
 											
@@ -405,7 +430,7 @@ function changeTempUnit(num){
 											</tr>
 				            
 											<tr>
-												<th>Spin duty cycle</th>
+												<th>Fan speed</th><!-- untranslated -->
 												<td> 
 													<select name="fanctrl_dutycycle" class="input_option">
 														<option class="content_input_fd" value="0" <% nvram_match("fanctrl_dutycycle", "1", "selected"); %>><#Auto#></option>

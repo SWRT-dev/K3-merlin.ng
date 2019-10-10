@@ -7,6 +7,7 @@
 <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <meta HTTP-EQUIV="Expires" CONTENT="-1">
 <title><#Web_Title#> - Home Security</title>
+<link rel="stylesheet" type="text/css" href="css/basic.css">
 <link rel="stylesheet" type="text/css" href="index_style.css">
 <link rel="stylesheet" type="text/css" href="form_style.css">
 <script type="text/javascript" src="/state.js"></script>
@@ -19,6 +20,9 @@
 <script type="text/javascript" src="/js/httpApi.js"></script>
 <script language="JavaScript" type="text/javascript" src="/js/asus_eula.js"></script>
 <style>
+*{
+  box-sizing: content-box;
+}
 .weakness{
 	width:650px;
 	height:590px;
@@ -858,7 +862,7 @@ function shadeHandle(flag){
 </script>
 </head>
 
-<body onload="initial();" onunload="unload_body();">
+<body onload="initial();" onunload="unload_body();" class="bg">
 <div id="TopBanner"></div>
 <div id="Loading" class="popup_bg"></div>
 <div id="hiddenMask" class="popup_bg" style="z-index:999;">
@@ -988,74 +992,88 @@ function shadeHandle(flag){
 
 </div>
 
-<div id="alert_preference" class="alertpreference">
-	<table style="width:99%">
-		<tr>
-			<th>
-				<div style="font-size:16px;"><#AiProtection_alert_pref#></div>
-			</th>
-		</tr>
-			<td>
-				<div class="formfontdesc" style="font-style: italic;font-size: 14px;"><#AiProtection_HomeDesc1#></div>
-			</td>
-		<tr>
-			<td>
-				<table class="FormTable" width="99%" border="1" align="center" cellpadding="4" cellspacing="0">
-					<tr>
-						<th><#Provider#></th>
-						<td>
+
+<div id="alert_preference" class="eula_panel_container border-container" style="width: 600px; position: fixed; display: block;background:rgba(0,0,0,0.9);display:none;">
+	<div class="border-corner border-corner-top-left"></div>
+	<div class="border-corner border-corner-bottom-left"></div>
+	<div class="flexbox title-container">
+		<div class="title-symbol"></div>
+		<div class="title-content"><#AiProtection_alert_pref#></div>
+	</div>
+	<div id="tm_eula_content">
+		<div style="margin-bottom: 6px;"><#AiProtection_HomeDesc1#></div>
+		<div class="flexbox flex-a-center" style="margin: 12px 0;">
+			<div style="width: 150px;margin-right: 18px;font-size: 14px;font-family: Xolonium;color: #848C98"><#Provider#></div>
+			<div class="select-container">
+					<select name="" id="mail_provider">
+						<option value="0">Google</option>
+						<option value="1">AOL</option>
+						<option value="2">QQ</option>
+						<option value="3">163</option>
+					</select>
+					<div class="select-arrow">
+							<div></div>
+					</div>
+			</div>
+		</div>
+		<div class="flexbox flex-a-center" style="margin: 12px 0;">
+			<div style="width: 150px;margin-right: 18px;font-size: 14px;font-family: Xolonium;color: #848C98">Email</div>
+			<div>
+				<input type="type" class="input-container" id="mail_address">
+			</div>
+		</div>
+		<div class="flexbox flex-a-center" style="margin: 12px 0;">
+			<div style="width: 150px;margin-right: 18px;font-size: 14px;font-family: Xolonium;color: #848C98"><#HSDPAConfig_Password_itemname#></div>
+			<div>
+				<input type="password" class="input-container" id="mail_password" maxlength="50" autocorrect="off" autocapitalize="off">
+			</div>
+		</div>
+		<div class="flexbox flex-a-center" style="margin: 12px 0;">
+			<div style="width: 150px;margin-right: 18px;font-size: 14px;font-family: Xolonium;color: #848C98"><#Notification_Item#></div>
+			<div>
+					<div class="flexbox checkbox-container">
 							<div>
-								<select class="input_option" id="mail_provider">
-									<option value="0">Google</option>
-									<option value="1">AOL</option>
-									<option value="2">QQ</option>
-									<option value="3">163</option>
-								</select>
+									<input id="mal_website_item" type="checkbox">
+									<label for="mal_website_item">
+											<div></div>
+									</label>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>Email</th>
-						<td>
+							<div class="checkbox-desc"><#AiProtection_sites_blocking#></div>
+					</div>
+					<div class="flexbox checkbox-container">
 							<div>
-								<input type="type" class="input_30_table" id="mail_address" value="">
+									<input id="vp_item" type="checkbox">
+									<label for="vp_item">
+											<div></div>
+									</label>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<th><#HSDPAConfig_Password_itemname#></th>
-						<td>
+							<div class="checkbox-desc"><#AiProtection_two-way_IPS#></div>
+					</div>
+					<div class="flexbox checkbox-container">
 							<div>
-								<input type="password" class="input_30_table" id="mail_password" maxlength="100" value="" autocorrect="off" autocapitalize="off">
+									<input id="cc_item" type="checkbox">
+									<label for="cc_item">
+											<div></div>
+									</label>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<th><#Notification_Item#></th>
-						<td>
-							<div>
-								<input type="checkbox" class="" id="mal_website_item" value="">
-								<label><#AiProtection_sites_blocking#></label>
-								<input type="checkbox" class="" id="vp_item" value="">
-								<label><#AiProtection_two-way_IPS#></label>
-								<input type="checkbox" class="" id="cc_item" value="">
-								<label><#AiProtection_detection_blocking#></label>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div style="text-align:center;margin-top:20px;">
-					<input class="button_gen" type="button" onclick="close_alert_preference();" value="<#CTL_close#>">
-					<input class="button_gen" type="button" onclick="apply_alert_preference();" value="<#CTL_apply#>">
-				</div>
-			</td>
-		</tr>
-	</table>
+							<div class="checkbox-desc"><#AiProtection_detection_blocking#></div>
+					</div>
+			</div>
+		</div>
+	</div>	
+	<div class="divide-line"></div>
+	<div class="control-field">
+		<div class="button-container button-container-sm" onclick="close_alert_preference();">
+			<div class="button-icon icon-cancel"></div>
+			<div class="button-text"><#CTL_close#></div>
+		</div>
+		<div class="button-container button-container-sm" onclick="apply_alert_preference();">
+			<div class="button-icon button-icon-check"></div>
+			<div class="button-text"><#CTL_apply#></div>
+		</div>
+	</div>
 </div>
+
 <iframe name="hidden_frame" id="hidden_frame" width="0" height="0" frameborder="0"></iframe>
 <form method="post" name="form" action="/start_apply.htm" target="hidden_frame">
 <input type="hidden" name="productid" value="<% nvram_get("productid"); %>">
@@ -1222,7 +1240,7 @@ function shadeHandle(flag){
 													</div>
 												</td>
 												 <td width="6px">
-													v<div class="line_vertical"></div>
+													<div class="line_vertical"></div>
 												</td>
 												<td style="width:20%;">
 													<div style="position:relative;">

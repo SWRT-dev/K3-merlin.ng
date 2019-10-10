@@ -7,6 +7,10 @@ include $(SRCBASE)/router/.config
 EXT_FUNC+=ip standard redirect mark
 ifeq ($(RTCONFIG_HND_ROUTER),y)
 EXT_FUNC+=time ftos skiplog wmm_mark
+else
+ifeq ($(and $(RTCONFIG_BCMARM),$(RTCONFIG_AMAS)),y)
+EXT_FUNC+=skipctf
+endif
 endif
 EXT_TABLES+=filter nat broute
 EXT_OBJS+=$(foreach T,$(EXT_FUNC), extensions/ebt_$(T).o)

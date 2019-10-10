@@ -180,7 +180,7 @@ function valid_form(){
 		</thead>
 		<tr>
 		<td>
-			<select id="" class="input_option" name="dslx_snrm_offset">
+			<select class="input_option" name="dslx_snrm_offset">
 				<option value="0" <% nvram_match("dslx_snrm_offset", "0", "selected"); %>><#btn_Disabled#></option>
 				<option value="5120" <% nvram_match("dslx_snrm_offset", "5120", "selected"); %>>10 dB</option>
 				<option value="4608" <% nvram_match("dslx_snrm_offset", "4608", "selected"); %>>9 dB</option>
@@ -215,7 +215,7 @@ function valid_form(){
 		</thead>
 		<tr>
 		<td>
-			<select id="" class="input_option" name="dslx_sra">
+			<select class="input_option" name="dslx_sra">
 				<option value="1" <% nvram_match("dslx_sra", "1", "selected"); %>><#btn_Enabled#></option>
 				<option value="0" <% nvram_match("dslx_sra", "0", "selected"); %>><#btn_Disabled#></option>
 			</select>
@@ -231,7 +231,7 @@ function valid_form(){
 		</thead>
 		<tr>
 		<td>
-			<select id="" class="input_option" name="dslx_bitswap">
+			<select class="input_option" name="dslx_bitswap">
 				<option value="1" <% nvram_match("dslx_bitswap", "1", "selected"); %>><#btn_Enabled#></option>
 				<option value="0" <% nvram_match("dslx_bitswap", "0", "selected"); %>><#btn_Disabled#></option>
 			</select>

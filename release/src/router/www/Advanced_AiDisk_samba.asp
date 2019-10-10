@@ -727,7 +727,7 @@ function switchUserType(flag){
 </script>
 </head>
 
-<body onLoad="initial();" onunload="unload_body();">
+<body onLoad="initial();" onunload="unload_body();" class="bg">
 <div id="TopBanner"></div>
 
 <div id="Loading" class="popup_bg"></div>

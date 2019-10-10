@@ -710,7 +710,8 @@ form{
  	cursor:pointer;
  	border:2px outset #EFEFEF;
  	background-color:#CCC;
- 	padding:3px 2px 4px 0px;
+	padding:3px 2px 4px 0px;
+	box-sizing: content-box;
 }
 
 .list_table{
@@ -895,6 +896,11 @@ form{
 	background: url(images/New_ui/helpicon.png) no-repeat;
 }
 /* CSS Document */
+@font-face{
+	font-family: rog;
+	src: url(/fonts/ROG_Fonts-Regular.woff) format("woff"),
+	     url(./fonts/ROG_Fonts-Regular.otf) format("opentype");
+}
 body{
 color:#FFFFFF;
 font-family:Arial, Helvetica, sans-serif;
@@ -918,6 +924,8 @@ a:active {
 }
 
 p{margin-top:   0;margin-bottom:   0}
+
+
 
 /*  Move to index_style.css By Viz , aidisk still use this*/
 .titlebtn {
@@ -992,8 +1000,9 @@ color:#FFFFFF;
 	text-decoration: none;
 	text-align:center;
 	max-width:240px;
-	background: rgb(104,5,22);
+/*	background: rgb(104,5,22);*/
 	border-radius: 5px 5px 0 0;
+	border-bottom: 2px solid #680516;
 }
 .tab_NW span {
 	cursor:pointer;
@@ -1026,7 +1035,7 @@ color:#FFFFFF;
 	text-align:center;
 	text-decoration: none;
 	max-width:240px;
-	background: rgb(62,3,13);
+	background: #680516;
 	border-radius: 5px 5px 0 0;
 }
 .tabclick_NW span {
@@ -1063,17 +1072,20 @@ color:#FFFFFF;
 	text-align: center;
 }
 .tab_item  {
+/*
 	background-color: rgb(104,5,22);
+*/
 	border-radius: 6px 6px 0 0;
 	height: 100%;
 	width: 99%;
 	display: table;
+	border-bottom: 2px solid #680516;
 }
 .tab_item:hover {
 	background-color: rgb(207,10,44);
 }
 .tab_item_click {
-	background-color: rgb(62,3,13);
+	background-color: #680516;
 	border-radius: 6px 6px 0 0;
 	height: 100%;
 	width: 99%;
@@ -1629,14 +1641,14 @@ padding-top:1px;
 	width:740px;
 	height:760px;
 	position:relative;
-	background-color:#111;
+	background-color:rgba(17, 17, 17, .5);
 }
 
 /* 整體設置*/
 .navigation {
-	margin-left:790px;
+	margin-left:820px;
 	*margin-left:45px;
-	margin-top:13px;
+	margin-top:20px;
 	width:100px;
 	list-style-type:none;
 	font:12px Arial, Helvetica, sans-serif;
@@ -1668,16 +1680,13 @@ padding-top:1px;
 /* 設置主選單dt */
 .navigation li dt {
 	background:url('/images/New_ui/dropdown_bt.png') no-repeat;
-	padding-top:8px;
-	padding-right:8px;
+	padding:8px 8px 0 0;
 	text-align:center;
-	/*background-color:transparent;*/
 	font-size: 13px;
-	font-weight: bold;
-	height:26px;
+	height: 34px;
 	overflow:hidden;
-	width:144px;
-	}
+	width: 152px;
+}
 
 .navigation li dt:hover{
 	color:#CF0A2C;
@@ -2037,7 +2046,7 @@ padding-top:1px;
 }
 .textarea_ssh_table{
 	color: #FFFFFF;
-	background-color: #111;
+	background-color: rgba(17, 17, 17, .5);
 	border-color: rgb(145,7,31);
 }
 
@@ -2066,13 +2075,13 @@ padding-top:1px;
 }
 
 .content_bg{
-	background: #111;
+	background: rgba(17, 17, 17, .5);
 }
 .divide_line{
 	border: 1px solid #FFF;
 }
 [bgcolor="#4D595D"]{
-	background: #111;
+	background: rgba(17, 17, 17, .5);
 }
 .block_bg{
 	background: transparent;
@@ -2084,16 +2093,16 @@ padding-top:1px;
 	border: 1px solid rgb(145,7,31);
 }
 .control_bg{
-	background: #111;
+	background: rgba(17, 17, 17, .5);
 }
 .tab_font_color{
 	color: #FFF;
 }
-.pop_div_bg, .list_bg{
+.pop_div_bg{
 	background-color: rgb(62,3,13);
 }
 .analysis_bg, .web_frame{
-	background: #111;
+	background: rgba(17, 17, 17, .5);
 	border: 1px solid rgb(145,7,31);
 }
 .tm_title_bg{
@@ -2118,7 +2127,7 @@ padding-top:1px;
 	font-weight: bolder;
 }
 .tab_info_bg{
-	background: #1E0505;
+	background: #860220;
 }
 .textarea_bg{
 	background: rgb(62,3,13);
@@ -2134,13 +2143,16 @@ padding-top:1px;
 	background-color:transparent !important;
 }
 .eula_panel_container{
-	margin-left: 25%;
+	margin: 20px 0 0 210px;
 	display: none;
-	position: absolute;
-	width: 50%;
+	position: fixed;
+	width: 600px;
 	z-index: 10000;
 	border: 3px solid #4D5C63;
-	border-radius: 4px;
+	border-radius: 6px;
+	font-family: monospace;
+	font-size: 14px;
+	text-align: left;
 }
 
 #bottom_border{
@@ -2151,6 +2163,19 @@ padding-top:1px;
 	width: 3px; 
 	height: 102px;
 	background: #354248;
+}
+.oauth_google_btn{
+	float: left;
+	background: transparent url(images/New_ui/btn_google_signin_dark_normal_web.png) no-repeat scroll center top;
+	width: 133px;
+	height: 26px;
+	cursor: pointer;
+}
+.oauth_google_status{
+	float: left;
+	margin-top: 3px;
+	margin-left: 5px;
+	display: none;
 }
 .quotabar{
 	background: #8DB6D8;

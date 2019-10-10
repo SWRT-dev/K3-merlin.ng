@@ -86,5 +86,6 @@ obj-$(CONFIG_IP_NF_TOMATOCT) += tomato_ct.o
 
 obj-$(CONFIG_IP_NF_LFP) += lfp.o
 obj-$(CONFIG_IP_NF_DNSMQ) += dnsmq.o
+obj-$(CONFIG_IP_NF_CTFNAT) += ctfnat.o
 
 

@@ -1282,7 +1282,7 @@ function ppp_echo_control(flag){
 										<tr>
 											<th><#WAN_PPP_AuthText#></th>
 											<td align="left">
-												<select id="" class="input_option" name="dslx_pppoe_auth">
+												<select class="input_option" name="dslx_pppoe_auth">
 													<option value="" <% nvram_match("dslx_pppoe_auth", "", "selected"); %>>AUTO</option>
 													<option value="pap" <% nvram_match("dslx_pppoe_auth", "pap", "selected"); %>>PAP</option>
 													<option value="chap" <% nvram_match("dslx_pppoe_auth", "chap", "selected"); %>>CHAP</option>

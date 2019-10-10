@@ -70,8 +70,15 @@ static void ntp_service()
 
 		setup_timezone();
 
+#ifdef RTCONFIG_DNSPRIVACY
+		if (nvram_get_int("dnspriv_enable"))
+			notify_rc("restart_stubby");
+#endif
 #ifdef RTCONFIG_DISK_MONITOR
 		notify_rc("restart_diskmon");
+#endif
+#ifdef RTCONFIG_UUPLUGIN
+		exec_uu();
 #endif
 	}
 }

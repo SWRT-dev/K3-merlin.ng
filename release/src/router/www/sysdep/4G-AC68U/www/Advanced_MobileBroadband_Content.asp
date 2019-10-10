@@ -82,6 +82,7 @@
 <script type="text/javascript" src="validator.js"></script>
 <script type="text/javascript" src="wcdma_list.js"></script>
 <script type="text/javaScript" src="js/jquery.js"></script>
+<script type="text/javascript" src="./js/httpApi.js"></script>
 <script type="text/javascript" src="switcherplugin/jquery.iphone-switch.js"></script>
 <script>
 
@@ -725,54 +726,45 @@ function showUpDownRate(){
 	}
 }
 
-function check_simact_result(flag){ // 1: Unblock PIN  2: configure PIN  3: modify PIN
+function check_simact_result(flag){ // 1: Unblock PIN  2: configure PIN  3: modify PIN  4:PIN Verification
 	var result_no = "";
+	var simact_result = httpApi.hookGet("get_simact_result", true);
 
-	$.ajax({
-		url: '/simact_result.asp',
-		dataType: 'script',
-		error: function(xhr){
-			check_simact_result();		
-		},
-		success: function(response){
-			if(simact_result.indexOf("done") >= 0){
-				if(flag == 1)
-					setTimeout("check_sim_state(1);", 2000);
-				else if(flag == 2)
-					setTimeout("check_sim_state(2);", 2000);
-				else if(flag == 3){
-					show_sim_table(0);
-					document.getElementById("pin_modify_result").innerHTML = "<#Mobile_succeed_changePIN#>";
-					document.getElementById("pin_modify_result").style.display="";
-				}
-				else if(flag ==4)
-					location.reload();
-				simact_flag = 0;
-			}
-			else{
-				result_no = simact_result.substring(0,2);
-				if(flag == 1 || flag == 2)
-					check_sim_state(flag);
-				else if(flag == 3){//Modify PIN
-					show_sim_table(0);				
-					document.getElementById("pin_modify_result").innerHTML = simact_result_str(result_no);
-					document.getElementById("pin_modify_result").style.display="";
-				}
-				else if(flag == 4){//PIN Verification
-					if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2"){
-						document.form.pin_verify[0].selected = true;
-						document.getElementById("pin_modify_tr").style.display = "";
-					}
-					else if(usb_modem_act_auth == "3"){
-						document.form.pin_verify[1].selected = true;
-						document.getElementById("pin_modify_tr").style.display = "none";	
-					}
-					document.getElementById("pin_verify_result").innerHTML = simact_result_str(result_no);
-					document.getElementById("pin_verify_result").style.display="";
-				}
-			}
+	if(simact_result.indexOf("done") >= 0){
+		if(flag == 1)
+			setTimeout("check_sim_state(1);", 2000);
+		else if(flag == 2)
+			setTimeout("check_sim_state(2);", 2000);
+		else if(flag == 3){
+			show_sim_table(0);
+			document.getElementById("pin_modify_result").innerHTML = "<#Mobile_succeed_changePIN#>";
+			document.getElementById("pin_modify_result").style.display="";
 		}
-	});	
+		else if(flag ==4)
+			location.reload();
+		simact_flag = 0;
+	}
+	else{
+		result_no = simact_result.substring(0,2);
+		if(flag == 1)
+			setTimeout("check_sim_state(1);", 3000);
+		else if(flag == 2)
+			setTimeout("check_sim_state(2);", 3000);
+		else if(flag == 3){//Modify PIN
+			show_sim_table(0);
+			document.getElementById("pin_modify_result").innerHTML = simact_result_str(result_no);
+			document.getElementById("pin_modify_result").style.display="";
+		}
+		else if(flag == 4){//PIN Verification
+			document.getElementById("pin_verify_result").innerHTML = simact_result_str(result_no);
+			if(result_no == "34")
+				document.form.pin_verify.selectedIndex = 1;
+			else if(result_no == "35")
+				document.form.pin_verify.selectedIndex = 0;
+			show_sim_table(0);
+			document.getElementById("pin_verify_result").style.display = "";
+		}
+	}
 }
 
 function simact_result_str(result_no){
@@ -782,11 +774,11 @@ function simact_result_str(result_no){
 			result_string = "Fail to unlock the SIM.";
 			break;
 		case "28":
-			result_string = "Fail to unlock the SIM PIN.";		
+			result_string = "Fail to unlock the SIM PIN.";
 			break;
 		case "30":
 			result_string = "<#Mobile_sim_lock#>";
-			break;																	
+			break;
 		case "34":
 			result_string = "Fail to enable PIN Verification.";
 			break;
@@ -802,130 +794,128 @@ function simact_result_str(result_no){
 }
 
 function check_sim_state(flag){
-	$.ajax({
-    	url: '/ajax_simstate.asp',
-    	dataType: 'script', 
+	var simStatus = httpApi.nvramGet(["usb_modem_act_sim", "g3err_pin", "usb_modem_act_auth", "usb_modem_act_auth_pin", "usb_modem_act_auth_puk", "modem_sim_order"], true);
+	sim_state = simStatus.usb_modem_act_sim;
+	g3err_pin = simStatus.g3err_pin;
+	pin_remaining_count = simStatus.usb_modem_act_auth_pin;
+	puk_remaining_count = simStatus.usb_modem_act_auth_puk;
+	usb_modem_act_auth = simStatus.usb_modem_act_auth;
+	modem_sim_order = simStatus.modem_sim_order;
 
-    	error: function(xhr){
-      		setTimeout("check_sim_state();", 1000);
-    	},
-    	success: function(response){
-			switch(sim_state){
-				case '1':	
-					if(flag == 1 && $("#sim_input").css("display") == "block")
-						show_sim_table(0);
-					document.getElementById("usim_status").innerHTML = "<#Mobile_sim_ready#>";
-					break;
-				case '2':
-					if(g3err_pin == '1' && pin_remaining_count < 3){
-						document.getElementById("usim_status").innerHTML = "<#Mobile_wrong_pin#>";	
-						if( pin_remaining_count == 0)
-							check_sim_state(2);									
-					}
-					else if(!simact_flag){
-						document.getElementById("usim_status").innerHTML = "<#Mobile_need_pin#>";
-					}
-					document.getElementById("pin_remaining").innerHTML = '<#Mobile_remaining_num#>: ';
-					document.getElementById("pin_remaining").innerHTML += pin_remaining_count;							
-					break;	
-				case '3':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_need_puk#>";	
-					if(flag == 1 && $("#sim_input").css("display") == "block")
-						document.getElementById("puk_remaining").innerHTML = puk_remaining_count;		
-					break;
-				case '4':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_need_pin2#>";
-					break;
-				case '5':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_need_puk2#>";					
-					break;
-				case '6':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_wait_sim#>";				
-					break;					
-				case '-1':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_sim_miss#>";
-					break;	
-				case '-2':
-				case '-10':
-					document.getElementById("usim_status").innerHTML = "<#Mobile_sim_fail#>";
-					break;
-				default:
-					break;	
-			}
+	switch(sim_state){
+	case '1':
+		if(flag == 1 && $("#sim_input").css("display") == "block")
+			show_sim_table(0);
+		document.getElementById("usim_status").innerHTML = "<#Mobile_sim_ready#>";
+		break;
+	case '2':
+		if(g3err_pin == '1' && pin_remaining_count < 3){
+			document.getElementById("usim_status").innerHTML = "<#Mobile_wrong_pin#>";
+			if( pin_remaining_count == 0)
+				check_sim_state(2);
+		}
+		else if(!simact_flag){
+			document.getElementById("usim_status").innerHTML = "<#Mobile_need_pin#>";
+		}
+		document.getElementById("pin_remaining").innerHTML = '<#Mobile_remaining_num#>: ';
+		document.getElementById("pin_remaining").innerHTML += pin_remaining_count;
+		break;
+	case '3':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_need_puk#>";
+		if(flag == 1 && $("#sim_input").css("display") == "block")
+			document.getElementById("puk_remaining").innerHTML = puk_remaining_count;
+		break;
+	case '4':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_need_pin2#>";
+		break;
+	case '5':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_need_puk2#>";
+		break;
+	case '6':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_wait_sim#>";
+		break;
+	case '-1':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_sim_miss#>";
+		break;
+	case '-2':
+	case '-10':
+		document.getElementById("usim_status").innerHTML = "<#Mobile_sim_fail#>";
+		break;
+	default:
+		break;
+	}
 
-			if(document.form.pin_verify[0].selected != true && document.form.pin_verify[1].selected != true){
-				if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2")
-					document.form.pin_verify[0].selected = true;
-				else if(usb_modem_act_auth == "3")
-					document.form.pin_verify[1].selected = true;
-			}
+	if(document.form.pin_verify[0].selected != true && document.form.pin_verify[1].selected != true){
+		if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2")
+			document.form.pin_verify.selectedIndex = 0;
+		else if(usb_modem_act_auth == "3")
+			document.form.pin_verify.selectedIndex = 1;
+	}
 
-			if(sim_state == '1'){
-				document.getElementById("pin_verify_tr").style.display = "";
-				document.getElementById("unblock_btn").style.display = "none";
-				if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2")
-					document.getElementById("pin_modify_tr").style.display = "";
-				document.form.pincode.value="";
-				document.getElementById("pin_code_tr").style.display="none";		
-			}
-			else if(sim_state == '3' || sim_state == '5'){
-				document.getElementById("pin_verify_tr").style.display = "none";
-				document.getElementById("pin_modify_tr").style.display = "none";
-				document.form.pincode.value="";
-				document.getElementById("pin_code_tr").style.display="none";
-				document.getElementById("unblock_btn").style.display = "";				
-			}
-			else{
-				if(sim_state == '2'){
-					document.getElementById("pin_code_tr").style.display="";
-				}
-				document.getElementById("pin_verify_tr").style.display = "none";
-				document.getElementById("pin_modify_tr").style.display = "none";
-				document.getElementById("unblock_btn").style.display = "none";					
-			}			
+	if(sim_state == '1'){
+		document.getElementById("pin_verify_tr").style.display = "";
+		document.getElementById("unblock_btn").style.display = "none";
+		if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2")
+			document.getElementById("pin_modify_tr").style.display = "";
+		document.form.pincode.value="";
+		document.getElementById("pin_code_tr").style.display="none";
+	}
+	else if(sim_state == '3' || sim_state == '5'){
+		document.getElementById("pin_verify_tr").style.display = "none";
+		document.getElementById("pin_modify_tr").style.display = "none";
+		document.form.pincode.value="";
+		document.getElementById("pin_code_tr").style.display="none";
+		document.getElementById("unblock_btn").style.display = "";
+	}
+	else{
+		if(sim_state == '2'){
+			document.getElementById("pin_code_tr").style.display="";
+		}
+		document.getElementById("pin_verify_tr").style.display = "none";
+		document.getElementById("pin_modify_tr").style.display = "none";
+		document.getElementById("unblock_btn").style.display = "none";
+	}
 
-			if(flag == 1){
-				if($("#sim_input").css("display") == "block"){
-					document.getElementById("loadingIcon_sim").style.display="none";
-					document.getElementById("sim_ok_button").style.display = "";
-					document.getElementById("sim_cancel_btn").style.display = "";	
-				}
-			}	
-			else if(flag == 2){			
-				document.getElementById("loadingIcon_pin").style.display = "none";
-				document.getElementById("save_pin_btn").style.display = "";
-				document.getElementById("save_pin_ckb_span").style.display="";	
-			}
-			
-			if(!simact_flag)
-				setTimeout("check_sim_state();", 2000);
+	if(flag == 1){
+		if($("#sim_input").css("display") == "block"){
+			document.getElementById("loadingIcon_sim").style.display="none";
+			document.getElementById("sim_ok_button").style.display = "";
+			document.getElementById("sim_cancel_btn").style.display = "";
+		}
+	}
+	else if(flag == 2){
+		document.getElementById("loadingIcon_pin").style.display = "none";
+		document.getElementById("save_pin_btn").style.display = "";
+		document.getElementById("save_pin_ckb_span").style.display="";
+	}
 
-			if(old_sim_state != sim_state){
-				if(sim_state == '1'){
-					if(document.form.modem_enable.value != '0')
-						check_connect_status();
-						show_sim_settings(1);
-				}
-				else{
-					show_sim_settings(0);
-				}
-			}
+	if(!simact_flag)
+		setTimeout("check_sim_state();", 2000);
 
-			old_sim_state = sim_state;
+	if(old_sim_state != sim_state){
+		if(sim_state == '1'){
+			if(document.form.modem_enable.value != '0')
+				check_connect_status();
+				show_sim_settings(1);
+		}
+		else{
+			show_sim_settings(0);
+		}
+	}
 
-			if((modem_sim_order != old_sim_order) && (modem_sim_order == "-1")){
-				var confirm_str = "<#Mobile_record_limit_warning#>";
-				if(confirm(confirm_str)){
-					document.simact_form.action_mode.value = "restart_sim_del";
-					document.simact_form.sim_order.value = "1";
-					document.simact_form.submit();							
-				}
-			}
+	old_sim_state = sim_state;
 
-			old_sim_order = modem_sim_order;
-        }
-   });
-}	
+	if((modem_sim_order != old_sim_order) && (modem_sim_order == "-1")){
+		var confirm_str = "<#Mobile_record_limit_warning#>";
+		if(confirm(confirm_str)){
+			document.simact_form.action_mode.value = "restart_sim_del";
+			document.simact_form.sim_order.value = "1";
+			document.simact_form.submit();
+		}
+	}
+
+	old_sim_order = modem_sim_order;
+}
 
 function check_sim_details(){
 	if( stopCheck == 1 )
@@ -1350,13 +1340,13 @@ function scan_isp(){
 
 function cancel_action(){
 	if(usb_modem_act_auth == "1" || usb_modem_act_auth == "2")
-		document.form.pin_verify[0].selected = true;
+		document.form.pin_verify.selectedIndex = 0;
 	else if(usb_modem_act_auth == "3")
-		document.form.pin_verify[1].selected = true;
+		document.form.pin_verify.selectedIndex = 1;
 	show_sim_table(0);
 }
 
-function set_verify_pin(){	
+function set_verify_pin(){
 	if(document.form.sim_pincode.value !=""){
 		if(document.form.sim_pincode.value.search(/^\d{4,12}$/)==-1){
 			document.getElementById("verify_pincode_status").innerHTML='<#JS_InvalidPIN#>';
@@ -1372,15 +1362,14 @@ function set_verify_pin(){
 				document.simact_form.action_mode.value = "stop_lockpin";
 			document.simact_form.submit();
 			show_sim_table(0);
+			showLoading(6);
+			setTimeout("check_simact_result(4);", 5000);
 		}
 	}
 	else{
 		document.getElementById("verify_pincode_status").innerHTML='<#Mobile_pin_hint#>';
 		document.getElementById("verify_pincode_status").style.display="";
 	}
-
-	showLoading(4);
-	setTimeout("check_simact_result(4);", 3000);
 }
 
 function change_sim_pin(){
@@ -1420,8 +1409,8 @@ function change_sim_pin(){
 	if(pin_check && newPin_check){
 		document.simact_form.action_mode.value = "start_pwdpin";
 		document.simact_form.submit();
-		showLoading(3);
-		setTimeout("check_simact_result(3);", 3500);	
+		showLoading(6);
+		setTimeout("check_simact_result(3);", 5000);
 	}
 }
 
@@ -1456,11 +1445,11 @@ function unblock_pin(){
 	if(puk_check && newPin_check){
 		document.getElementById("loadingIcon_sim").style.display="";
 		document.getElementById("sim_ok_button").style.display = "none";
-		document.getElementById("sim_cancel_btn").style.display = "none";		
+		document.getElementById("sim_cancel_btn").style.display = "none";
 		document.simact_form.action_mode.value = "start_simpuk";
 		document.simact_form.submit();
 		simact_flag = 1;
-		setTimeout("check_simact_result(1);", 3000);	
+		setTimeout("check_simact_result(1);", 5000);
 	}
 }
 
@@ -1476,6 +1465,7 @@ function show_sim_table(show, action){ //show: 1-show  0-hide   action: 1-pin ve
 			document.getElementById("sim_newpin_tr").style.display = "none";
 			document.getElementById("sim_puk_tr").style.display = "none";
 			document.getElementById("puk_remaining_tr").style.display = "none";
+			document.getElementById("verify_pincode_status").style.display = "none";
 			document.getElementById("table_pin_remaining").innerHTML = pin_remaining_count;
 			document.getElementById("pin_remaining_tr").style.display = "";
 			document.form.sim_pincode.focus();
@@ -2170,7 +2160,7 @@ function update_lte_fw(){
 						<tr>
 							<td align="left">
 							<span id="sim_formtitle" class="formfonttitle"></span>
-							<div style="width:500px; height:15px;overflow:hidden;position:relative;left:0px;top:5px;" class="splitLine"></div>
+							<div style="width:500px;" class="splitLine"></div>
 							<div id="sim_title_desc"></div>
 							</td>
 						</tr>

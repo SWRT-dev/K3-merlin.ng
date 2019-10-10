@@ -86,11 +86,16 @@ void get_speed()
 	int result_of_download;
 	int result_of_upload;
 	FILE *fpup, *fpdo;
-	get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
-	sleep(SECOND*5);
-	get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
-	result_of_download = ((end_download_speed-start_download_speed)/5);
-	result_of_upload = ((end_upload_speed-start_upload_speed)/5);
+	if (swmode == 1) {
+		get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
+		sleep(SECOND*5);
+		get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
+		result_of_download = ((end_download_speed-start_download_speed)/5);
+		result_of_upload = ((end_upload_speed-start_upload_speed)/5);
+	} else {
+		result_of_download = 0;
+		result_of_upload = 0;
+	}
 	if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
 		fprintf(fpup, "%d\n", result_of_upload);
 		fclose(fpup);
@@ -200,7 +205,7 @@ ONLINEEND:
 int main(int argc, char * argv[])
 {
 	FILE * pip;
-	swmode=nvram_get_int("sw_mode");
+	swmode=nvram_get_int("sw_mode");//1=router,2=ap,3=rp or aimesh,4=wb
 	while (1)
 	{
 		get_speed();

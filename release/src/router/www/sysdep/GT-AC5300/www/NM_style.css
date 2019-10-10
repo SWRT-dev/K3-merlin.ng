@@ -13,7 +13,7 @@
 	text-align:center;
 	height:36px;	
 	width:320px;
-	margin-left:45px;
+	margin-left:44px;
 	behavior: url(/PIE.htc);
 	position:relative;
 	-webkit-border-radius: 10px 10px 0 0;
@@ -44,9 +44,11 @@
 #diskquota{
 	width:100px;
 	height:13px;
+/*	
 	background: #596E74;
-	border-top: 1px solid #929EA1;
 	border-bottom: 1px solid #929eA1;
+*/
+	border: 1px solid #929EA1;
 }
 
 #iconRemote{ background:url(images/map-iconRemote.gif) no-repeat;	width:87px;	height:77px; cursor:pointer; display:none}
@@ -74,7 +76,7 @@
 .iconAMesh{ background:url(images/New_ui/amesh/Amesh_button_light.png) no-repeat 0% 0%; width:90px; height:90px; cursor:pointer;}
 .iconAMesh_dis{ background:url(images/New_ui/amesh/Amesh_button_dark.png) no-repeat 0% 0%; width:90px; height:90px; cursor:pointer;}
 .table1px{
-	background-color: rgb(62,3, 13);
+/*	background-color: rgb(62,3, 13); */
 	border-collapse: collapse;
 }
 .table1px img{	
@@ -82,7 +84,7 @@
 	text-align:center;
 }
 .table1px tr, .table1px td{
-	border:1px solid rgb(62,3, 13);	
+	border: 1px solid transparent;
 }
 .table1px tfoot{
 	color: #669900;
@@ -321,6 +323,7 @@
 	-webkit-border-radius: 0 0 10px 10px;
 	-moz-border-radius: 0 0 10px 10px;
 	border-radius: 0 0 10px 10px;
+	border: 1px solid rgb(161, 10, 16);
 }
 .NM_radius{
 	-webkit-border-radius: 10px;

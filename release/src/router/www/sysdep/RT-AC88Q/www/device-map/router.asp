@@ -123,7 +123,7 @@ $(function () {
 			.attr('src', _src)
 			.appendTo('head');
 	};
-	if(parent.amesh_support && (parent.isSwMode("rt") || parent.isSwMode("ap")))
+	if(parent.amesh_support && (parent.isSwMode("rt") || parent.isSwMode("ap")) && parent.ameshRouter_support)
 		dynamic_include_js('/require/modules/amesh.js');
 	if(parent.smart_connect_support && (parent.isSwMode("rt") || parent.isSwMode("ap")))
 		dynamic_include_js('/switcherplugin/jquery.iphone-switch.js');
@@ -376,7 +376,7 @@ function initial(){
 			parent.based_modelid == "RT-AC3200" || 
 			parent.based_modelid == "RT-AC88U" ||
 			parent.based_modelid == "RT-AC86U" ||
-			parent.based_modelid == "AC2900" ||
+			parent.based_modelid == "GT-AC2900" ||
 			parent.based_modelid == "RT-AC3100" ||
 			parent.based_modelid == "BLUECAVE"){
 			var value = new Array();
@@ -392,7 +392,7 @@ function initial(){
 				value = ["0", "1"];
 				add_options_x2(document.form.smart_connect_t, desc, value, smart_connect_x);						
 			}
-			else if(parent.based_modelid == "RT-AC88U" || parent.based_modelid == "RT-AC86U" || parent.based_modelid == "AC2900" || parent.based_modelid == "RT-AC3100" || parent.based_modelid == "BLUECAVE"){
+			else if(parent.based_modelid == "RT-AC88U" || parent.based_modelid == "RT-AC86U" || parent.based_modelid == "GT-AC2900" || parent.based_modelid == "RT-AC3100" || parent.based_modelid == "BLUECAVE"){
 				desc = ["none", "Dual-Band Smart Connect"];
 				value = ["0", "1"];
 				add_options_x2(document.form.smart_connect_t, desc, value, smart_connect_x);						
@@ -977,7 +977,7 @@ function submitForm(){
 	}
 	document.form.wsc_config_state.value = "1";
 
-	if(parent.amesh_support && (parent.isSwMode("rt") || parent.isSwMode("ap"))) {
+	if(parent.amesh_support && (parent.isSwMode("rt") || parent.isSwMode("ap")) && parent.ameshRouter_support) {
 		if(!check_wl_auth_support(auth_mode, $("select[name=wl_auth_mode_x] option:selected")))
 			return false;
 		else {
@@ -1089,7 +1089,7 @@ function tab_reset(v){
 	}else if(v == 1){	//Smart Connect
 		if(parent.based_modelid == "RT-AC5300" || parent.based_modelid == "RT-AC3200" || parent.based_modelid == "GT-AC5300")
 			document.getElementById("span0").innerHTML = "2.4GHz, 5GHz-1 and 5GHz-2";
-		else if(parent.based_modelid == "RT-AC88U" || parent.based_modelid == "RT-AC86U" || parent.based_modelid == "AC2900" || parent.based_modelid == "RT-AC3100" || parent.based_modelid == "BLUECAVE")
+		else if(parent.based_modelid == "RT-AC88U" || parent.based_modelid == "RT-AC86U" || parent.based_modelid == "GT-AC2900" || parent.based_modelid == "RT-AC3100" || parent.based_modelid == "BLUECAVE")
 			document.getElementById("span0").innerHTML = "2.4GHz and 5GHz";
 		
 		document.getElementById("t1").style.display = "none";

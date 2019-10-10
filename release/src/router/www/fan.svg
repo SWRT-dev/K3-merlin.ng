@@ -62,8 +62,8 @@ var xpstVis = 1;
 var ignoreNext = 0;
 var eraseL = 0;
 var samp = 1;
-
-rxData = [top.curr_rxData];
+var nr_v_scale = 4;
+var pt_per_degree = vHeight / (top.d_temp * nr_v_scale);
 
 function initial(){
 	gen_svg();
@@ -77,7 +77,7 @@ function initial(){
 		setText(xpst[n], xps(n+1));
 	}
 
-	for (n=0; n<4; ++n){
+	for (n=0; n < nr_v_scale; ++n){
 		xpstslash[n] = E('xpstslash' + n);
 		setText(xpstslash[n], xpsslash(n+1));
 		xpstfan[n] = E('xpstfan' + n);
@@ -97,9 +97,9 @@ function setText(e, text){
 }
 
 function xps(n){
-	if(n<4){
+	if(n<nr_v_scale){
 		var currUnit;
-		x = n*10+60;
+		x = n * top.d_temp + top.temp_base;
 		if(top.getCookie("CoreTmpUnit") == "1"){
 			currUnit = " \'F";
 			x = x*9/5+32;
@@ -107,7 +107,6 @@ function xps(n){
 		else
 			currUnit = " \'C";
 
-		//return (x + currUnit + " / " + parseInt(1700+n*1000) + " RPM");
 		return (x + currUnit);
 	}
 	else{
@@ -118,7 +117,7 @@ function xps(n){
 
 function xpsfan(n){
 	if(typeof top.curr_rxData != "undefined")
-		return (parseInt(1700+n*1000) + " RPM");
+		return (parseInt(top.rpm_base + n * top.d_rpm) + " RPM");
 	else
 		return "";
 }
@@ -164,7 +163,7 @@ function drawData(poly, data, mode, color){
 			d = 0;
 		}
 		else {
-			d = (data[i]-40)*7.5;
+			d = (data[i] - top.temp_base) * pt_per_degree;
 		}
 
 		y = vHeight - d;
@@ -180,19 +179,22 @@ function drawData(poly, data, mode, color){
 }
 
 function gen_svg(){
+	polyCpu = E('polyCpu');
 	polyRx = E('polyRx');
 	polyCoreTmp_2 = E('polyCoreTmp_2');
 	polyCoreTmp_5 = E('polyCoreTmp_5');
+	top.cpuTemp[top.cpuTemp.length] = top.curr_cpuTemp;
 	top.coreTmp_2[top.coreTmp_2.length] = top.curr_coreTmp_2;
 	top.coreTmp_5[top.coreTmp_5.length] = top.curr_coreTmp_5;
-	rxData[rxData.length] = top.curr_rxData*5+40;
+	top.rxData[top.rxData.length] = (top.curr_rxData - top.rpm_base) / (top.d_rpm / top.d_temp) + top.temp_base;
 	updateSVG();
 }
 
 function updateSVG(){
-	drawData(polyCoreTmp_2, top.coreTmp_2, 0, "#FF9000");
+	drawData(polyCpu, top.cpuTemp, 0, "#FF9000");
+	//drawData(polyCoreTmp_2, top.coreTmp_2, 0, "#FF9000");
 	//drawData(polyCoreTmp_5, top.coreTmp_5, 0, "#33CCFF");
-	drawData(polyRx, rxData, 0, "#33CCFF");
+	drawData(polyRx, top.rxData, 0, "#33CCFF");
 	setTimeout('gen_svg();', 5000);
 }
 ]]></script>
@@ -223,6 +225,7 @@ function updateSVG(){
 <polyline id="polyCoreTmp_2" style="stroke-width:1" stroke-opacity="0.9" points="" />
 <polyline id="polyCoreTmp_5" style="stroke-width:1" stroke-opacity="0.9" points="" />
 <polyline id="polyRx" style="stroke-width:1" stroke-opacity="0.9" points="" />
+<polyline id="polyCpu" style="stroke-width:1" stroke-opacity="0.9" points="" />
 
 </svg>
 

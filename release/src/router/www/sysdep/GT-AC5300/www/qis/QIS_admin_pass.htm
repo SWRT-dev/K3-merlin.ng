@@ -230,7 +230,19 @@ function submitForm(){
 		document.form.http_passwd.select();
 		changeiuiBackground(0);
 		return false;
-	}	
+	}
+
+	if(document.form.http_passwd.value.length > 16){
+		if(parent.ISMOBILE)
+			showtext(document.getElementById("_alert_msg2"),"* <#JS_max_password#>");
+		else
+			showtext(document.getElementById("alert_msg2"),"* <#JS_max_password#>");			
+		
+		document.form.http_passwd.focus();
+		document.form.http_passwd.select();
+		changeiuiBackground(0);
+		return false;
+	}
 
 	if(document.form.http_passwd.value != document.form.v_password2.value){
 		if(parent.ISMOBILE)
@@ -312,7 +324,13 @@ function submitForm(){
 	else if(parent.flag_manual == "modem")
 		document.form.action = "/qis/QIS_modem.htm";
 	else if(parent.document.QKform.sw_mode.value == "1"){
-		if(autodet_state == "6" || autodet_auxstate == "6"){
+		if((based_modelid == "GT-AXY16000" || based_modelid == "GT-AC9600" || based_modelid == "RT-AX89U") && (phy_port_state.portSpeed["WAN 1"] != "X" || phy_port_state.portSpeed["SFP+"] != "X")){
+			document.form.action = "/qis/QIS_wireless.htm";
+		}
+		else if((based_modelid == "GT-AX11000") && phy_port_state.portSpeed["LAN 5"] != "X"){
+			document.form.action = "/qis/QIS_wireless.htm";
+		}
+		else if(autodet_state == "6" || autodet_auxstate == "6"){
 			if((wanstate  == 2 && wansbstate == 0 && wanauxstate == 0) && (link_internet == "2" || wan0_realip_state == "2" || wan1_realip_state == "2")){
 				if(parent.isFirst)
 					document.form.action = "/qis/QIS_internet_type.htm";
@@ -325,7 +343,7 @@ function submitForm(){
 				document.form.action = "/qis/QIS_internet_account.htm";
 			}
 		}
-		else if(wanstate  == 2 && wansbstate == 0 && wanauxstate == 0){
+		else if(wanstate == 2 && wansbstate == 0 && wanauxstate == 0){
 			document.form.action = "/qis/QIS_wireless.htm";
 		}
 		else if(wanstate == 4 && wansbstate == 4 && wanauxstate == 0){

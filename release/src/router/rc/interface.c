@@ -180,7 +180,7 @@ void gen_lan_ports(char *buf, const int sample[SWPORT_COUNT], int index, int ind
 
 int _ifconfig(const char *name, int flags, const char *addr, const char *netmask, const char *dstaddr, int mtu)
 {
-	int s, err;
+	int s, err, postup;
 	struct ifreq ifr;
 	struct in_addr in_addr, in_netmask, in_broadaddr;
 
@@ -221,10 +221,11 @@ int _ifconfig(const char *name, int flags, const char *addr, const char *netmask
 
 	/* Set interface name */
 	strlcpy(ifr.ifr_name, name, IFNAMSIZ);
+	postup = strchr(name, ':') && (flags & IFUP);
 
 	/* Set interface flags */
 	ifr.ifr_flags = flags;
-	if (ioctl(s, SIOCSIFFLAGS, &ifr) < 0)
+	if (!postup && ioctl(s, SIOCSIFFLAGS, &ifr) < 0)
 		goto ERROR;
 
 	/* Set IP address */
@@ -259,6 +260,11 @@ int _ifconfig(const char *name, int flags, const char *addr, const char *netmask
 		if (ioctl(s, SIOCSIFDSTADDR, &ifr) < 0)
 			goto ERROR;
 	}
+
+	/* Set interface flags */
+	ifr.ifr_flags = flags;
+	if (postup && ioctl(s, SIOCSIFFLAGS, &ifr) < 0)
+		goto ERROR;
 
 	/* Set MTU */
 	if (mtu > 0) {
@@ -406,6 +412,9 @@ void config_loopback(void)
 {
 	/* Bring up loopback interface */
 	ifconfig("lo", IFUP, "127.0.0.1", "255.0.0.0");
+#ifdef RTCONFIG_DNSPRIVACY
+	ifconfig("lo:0", IFUP, "127.0.1.1", "255.0.0.0");
+#endif
 
 	/* Add to routing table */
 	route_add("lo", 0, "127.0.0.0", "0.0.0.0", "255.0.0.0");
@@ -599,29 +608,9 @@ int start_vlan(void)
 #if (defined(RTCONFIG_QCA) || (defined(RTCONFIG_RALINK) && (defined(RTCONFIG_RALINK_MT7620) || defined(RTCONFIG_RALINK_MT7621))))
 	if(!nvram_match("switch_wantag", "none")&&!nvram_match("switch_wantag", "")&&!nvram_match("switch_wantag", "hinet"))
 	{
-#if defined(RTCONFIG_QCA)
-#if defined(RTCONFIG_SWITCH_RTL8370MB_PHY_QCA8033_X2)
-		char *wan_base_if = "eth1";	/* lan_1, WAN interface if IPTV is enabled. */
-#else
-		char *wan_base_if = "eth0";
-#endif
-#if defined(RTCONFIG_DETWAN)
-		char buf[32];
-		char *detwan_ifname;
+		char wan_base_if[IFNAMSIZ] = "";
 
-		if((detwan_ifname = nvram_get("detwan_ifname")) != NULL) {
-			strncpy(buf, detwan_ifname, sizeof(buf)-1);
-			buf[sizeof(buf)-1] = '\0';
-			wan_base_if = buf;
-		}
-#endif	/* RTCONFIG_DETWAN */
-#elif defined(RTCONFIG_RALINK)
-#if defined(RTCONFIG_RALINK_MT7620) /* RT-N14U, RT-AC52U, RT-AC51U, RT-N11P, RT-N54U, RT-AC1200HP, RT-AC54U */
-		char *wan_base_if = "eth2";
-#elif defined(RTCONFIG_RALINK_MT7621) /* RT-N56UB1, RT-N56UB2 */
-		char *wan_base_if = "eth3";
-#endif
-#endif
+		strlcpy(wan_base_if, get_wan_base_if(), sizeof(wan_base_if));
 		set_wan_tag(wan_base_if);
 	}
 #endif

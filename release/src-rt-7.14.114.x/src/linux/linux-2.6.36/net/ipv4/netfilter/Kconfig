@@ -507,5 +507,10 @@ config IP_NF_DNSMQ
         depends on NF_CONNTRACK
         default n
 
+config IP_NF_CTFNAT
+        tristate  'ctfnat'
+        depends on NF_CONNTRACK
+        default n
+
 endmenu
 

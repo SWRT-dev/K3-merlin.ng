@@ -1,12 +1,14 @@
 ﻿/* CSS Document */
-body {
-	background: url(/images/New_ui/login_bg.png) no-repeat center center fixed;
+body{
+/*	background-color: rgb(31, 31, 31) !important; */
+}
+.bg{
+	background:url(/images/New_ui/login_bg.png) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
-
 .content{
 	width: 998px;
 	border:0px;
@@ -38,10 +40,10 @@ body {
 }
 
 .banner1{
-	width:998px;
-	height:90px;
+	width:1064px;
+	height:70px;
 	background:url(images/New_ui/title_bg.png) 0 0 no-repeat;
-	margin:0px auto;
+	margin:0px auto 30px auto;
 }	
 #banner3{
 	width:983px;
@@ -50,31 +52,34 @@ body {
 }
 /*=================================1 Button Home================================*/
 .menu {
-	font-weight:bold;
 	text-shadow: 1px 1px 0px black;	
-	width:185px;
-	height:48px;
-	font-family:Verdana;
-	font-size:12px;
+	width: 192px;
+	height: 48px;
+	font-family: Roboto, 'Microsoft Jhenghei', Arial, sans-serif;
+	font-size: 13px;
 	text-align:left;
 	position:relative;
 	cursor: pointer;
+	color: #848c98;
 	background:url('/images/New_ui/btn_underline.png') no-repeat;
+}
+.menu >table{
+	height: 100%;
 }
 .menu_blocked {
 	font-weight:bold;
 	text-shadow: 1px 1px 0px black;	
-	width:185px;
+	width: 192px;
 	height:48px;
 	font-family:Verdana;
-	font-size:12px;
+	font-size: 13px;
 	text-align:left;
 	position:relative;
 	cursor: pointer;
 }
 
 .menu:hover, .menu:active{
-	background:url('/images/New_ui/btn_hover.png') no-repeat;
+	color: #FFFFFF;
 }
 .menu a {height:44px; text-decoration:none;	position:relative;}
 .menu a:link, .menu a:visited {
@@ -354,19 +359,16 @@ body {
 .copyright {font-family :Verdana;font-size : 11px;text-align:right;color:#FFFFFF;padding-right:10px; margin:0 auto; width:983px;}
 
 .popup_bg{
-	position:absolute;	
-	margin: auto;
+	position:fixed;	
 	top: 0;
 	left: 0;
-	width:100%;
-	height:100%;
-	z-index:9999;
-	background-color: #444F53;
-	filter:alpha(opacity=94);  /*IE5、IE5.5、IE6、IE7*/
-	opacity: .94;  /*Opera9.0+、Firefox1.5+、Safari、Chrome*/
-	background-repeat: repeat;
-	visibility:hidden;
-	overflow:hidden;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-color: rgba(38, 38, 38, 0.9);
+	filter: alpha(opacity=94);  /*IE5、IE5.5、IE6、IE7*/
+	visibility: hidden;
+	overflow: hidden;
 }
 .popup_bar_bg{
 	position:absolute;	
@@ -615,11 +617,11 @@ width:122px;
 }
 
 .modelName_top{
-	font:Impact;
-	font-size:22px;
+	font-family: ROG;
+	font-size: 32px;
 	float:left;
 	font-weight:bolder;
-	margin: 20px 0 0 25px;
+	margin: 7px 0 0 25px;
 	text-shadow: 3px 2px #000;
 }
 .cloud_main_radius{
@@ -743,8 +745,10 @@ width:122px;
 }
 
 .menu_Icon{
-	width: 36px;
-	height: 36px;
+	width: 18px;
+	height: 18px;
+	background-repeat: no-repeat;
+	margin: 0 6px;
 }
 .menu_QIS_title{
 	background:url('images/New_ui/menu_QIS_title.png') no-repeat;
@@ -752,152 +756,149 @@ width:122px;
 	height:54px;
 }
 .menu_Desc{
-	font-size:12px;
-	font-weight: bold;
 }
 .menu_Split{
 	margin-top:10px;
 	width:188px;
-	text-align:center;
 	font-family:Verdana;
-	color:#ffffff;
+	color:#FFF; ;
 	padding-top:0px;
 	position:relative;
-	text-shadow: 1px 1px 0px black;
 	border-radius:4px;
 	height:auto;
 	min-height:42px;
 	background:url('images/New_ui/menu_title.png') no-repeat;
-	font-size:14px;
+	background-position: bottom;
+	font-size:16px;
 }
 .menu_Split table{
 	height: 42px !important;
 }
 .menu_Alexa_IFTTT{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: 0px -324px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: 0px -162px;
 }
 .menu_QIS{
-	background: url(images/New_ui/icon_indexes.png);
+	background-image: url(images/New_ui/icon_indexes.png);
 	background-position: -0px -0px;
 }
 .menu_Index{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -36px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -18px;
 }
 .menu_GuestNetwork{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -72px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -36px;
 }
 .menu_PermissionManagement{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -288px;
-}
-.menu_BandwidthMonitor{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -108px;
-}
-.menu_TrafficAnalyzer{
-	background: url(images/New_ui/icon_indexes.png);
+	background-image: url(images/New_ui/icon_indexes.png);
 	background-position: -0px -144px;
 }
+.menu_BandwidthMonitor{
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -54px;
+}
+.menu_TrafficAnalyzer{
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -72px;
+}
 .menu_QoS{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -108px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -54px;
 }
 .menu_AccessControl{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -180px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -90px;
 }
 .menu_AiProtection{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -180px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -90px;
 }
 .menu_ParentalControl{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -180px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -90px;
 }
 .menu_APP{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -216px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -108px;
 }
 .menu_AiCloud{
-	background: url(images/New_ui/icon_indexes.png);
-	background-position: -0px -252px;
+	background-image: url(images/New_ui/icon_indexes.png);
+	background-position: -0px -126px;
 }
 .menu_Wireless{
-	background: url(images/New_ui/icon_menues.png);
+	background-image: url(images/New_ui/icon_menues.png);
 	background-position: 0px 0px;
 }
 .menu_LAN{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: 0px -36px;  
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: 0px -18px;  
 }
 .menu_WAN{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: 0px -72px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: 0px -36px;
 }
 .menu_IPv6{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: 0px -108px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: 0px -54px;
 }
 .menu_VPN{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: 0px -144px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: 0px -72px;
 }
 .menu_VLAN{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -144px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -72px;
 }
 .menu_Firewall{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -180px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -90px;
 }
 .menu_Setting{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -216px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -108px;
 }
 .menu_Log{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -252px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -126px;
 }
 .menu_Report{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -252px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -126px;
 }
 .menu_NekworkTool{
-	background: url(images/New_ui/icon_menues.png);
-	background-position: -0px -288px;
+	background-image: url(images/New_ui/icon_menues.png);
+	background-position: -0px -144px;
 }
 
 .menu_Dashboard{
-	background: url(images/New_ui/icon_Gamecenter.png);
+	background-image: url(images/New_ui/icon_Gamecenter.png);
 	background-position: -0px 0px;
 }
 .menu_Wtfast{
-	background: url(images/New_ui/icon_Gamecenter.png);
-	background-position: -0px -36px;
+	background-image: url(images/New_ui/icon_Gamecenter.png);
+	background-position: -0px -18px;
 }
 .menu_GameBoost{
-	background: url(images/New_ui/icon_Gamecenter.png);
-	background-position: 0px -72px;
+	background-image: url(images/New_ui/icon_Gamecenter.png);
+	background-position: 0px -36px;
 }
 .menu_GameRadar{
-	background: url(images/New_ui/icon_Gamecenter.png);
-	background-position: -0px -108px;
+	background-image: url(images/New_ui/icon_Gamecenter.png);
+	background-position: -0px -54px;
 }
 .menu_WifiRadar{
-	background: url(images/New_ui/icon_Gamecenter.png);
-	background-position: -0px -144px;
+	background-image: url(images/New_ui/icon_Gamecenter.png);
+	background-position: -0px -72px;
 }
 .menu_GameProfile{
-	background: url(images/New_ui/icon_Gamecenter.png);
-	background-position: -0px -180px;
+	background-image: url(images/New_ui/icon_Gamecenter.png);
+	background-position: -0px -90px;
 }
 .menuClicked{
 	width: 192px;
-	height:54px;
-	background: url('/images/New_ui/btn_hover.png') no-repeat;
+	height: 48px;
+	color: #FFFFFF;
 }
 .tab:hover{
 	background: rgb(207,10,44);

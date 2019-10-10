@@ -16,7 +16,6 @@
 <script language="JavaScript" type="text/javascript" src="/state.js"></script>
 <script language="JavaScript" type="text/javascript" src="/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="/popup.js"></script>
-<script type="text/javascript" language="JavaScript" src="/merlin.js"></script>
 <script language="JavaScript" type="text/javascript" src="/validator.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/switcherplugin/jquery.iphone-switch.js"></script>
@@ -222,6 +221,7 @@ function show_warning_message(){
 	}
 }
 
+<% get_realip(); %>
 function get_real_ip(){
 	$.ajax({
 		url: 'get_real_ip.asp',
@@ -772,7 +772,7 @@ function update_vpn_server_state() {
 				document.getElementById('openvpn_error_message').innerHTML = "<span><#vpn_openvpn_fail1#></span>";
 				document.getElementById('openvpn_error_message').style.display = "";
 			}
-			else if(vpnd_state != '2' && vpn_server1_errno == '4'){
+			else if(vpnd_state != '2' && (vpn_server1_errno == '4' || vpn_server1_errno == '7')){
 				document.getElementById('openvpn_initial').style.display = "none";
 				document.getElementById('openvpn_error_message').innerHTML = "<span><#vpn_openvpn_fail2#></span>";
 				document.getElementById('openvpn_error_message').style.display = "";
@@ -1176,7 +1176,7 @@ function callback_upload_cert(_flag) {
 	if(_flag) {
 		var waiting_time = parseInt(document.form.action_wait.value);
 		showLoading(waiting_time);
-		setTimeout(function(){location.href = location.href;}, waiting_time*1000);
+		setTimeout(function(){location.href= location.href}, waiting_time*1000);
 	}
 	else {
 		alert("<#SET_fail_desc#>");
@@ -1185,7 +1185,7 @@ function callback_upload_cert(_flag) {
 }
 </script>
 </head>
-<body onload="initial();">
+<body onload="initial();" class="bg">
 <div id="tlsKey_panel"  class="contentM_qis">
 	<!--===================================Beginning of tls Content===========================================-->
 	<table class="QISform_wireless" border=0 align="center" cellpadding="5" cellspacing="0">
@@ -1610,6 +1610,7 @@ function callback_upload_cert(_flag) {
 														<option value="no" <% nvram_match("vpn_server_comp","no","selected"); %> ><#wl_securitylevel_0#></option>
 														<option value="yes" <% nvram_match("vpn_server_comp","yes","selected"); %> ><#WLANConfig11b_WirelessCtrl_button1name#></option>
 														<option value="adaptive" <% nvram_match("vpn_server_comp","adaptive","selected"); %> ><#Adaptive#></option>
+														<option value="lz4" <% nvram_match("vpn_server_comp","lz4","selected"); %> >LZ4</option>
 													</select>
 												</td>
 											</tr>
@@ -1647,7 +1648,7 @@ function callback_upload_cert(_flag) {
 												</td>
 											</tr>
 											<tr>
-												<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(32,8);">RSA Encryption</a><!--untranslated--></th>
+												<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(32,8);"><#RSA_Encryption#></a></th>
 												<td>
 													<input type="radio" name="vpn_server_tls_keysize_adv" id="vpn_server_tls_keysize_adv_0" class="input" value="0" <% nvram_match_x("", "vpn_server_tls_keysize", "0", "checked"); %> onchange="vpnServerTlsKeysize(this);">
 													<label for='vpn_server_tls_keysize_adv_0'>1024 bit<!--untranslated--></label>

@@ -1,4 +1,4 @@
-/* dnsmasq is Copyright (c) 2000-2017 Simon Kelley
+/* dnsmasq is Copyright (c) 2000-2018 Simon Kelley
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -221,21 +221,25 @@ static int dhcp6_maybe_relay(struct state *state, void *inbuff, size_t sz,
       if (opt6_ptr(opt, 0) + opt6_len(opt) > end) 
         return 0;
      
-      int o = new_opt6(opt6_type(opt));
-      if (opt6_type(opt) == OPTION6_RELAY_MSG)
+      /* Don't copy MAC address into reply. */
+      if (opt6_type(opt) != OPTION6_CLIENT_MAC)
 	{
-	  struct in6_addr align;
-	  /* the packet data is unaligned, copy to aligned storage */
-	  memcpy(&align, inbuff + 2, IN6ADDRSZ); 
-	  state->link_address = &align;
-	  /* zero is_unicast since that is now known to refer to the 
-	     relayed packet, not the original sent by the client */
-	  if (!dhcp6_maybe_relay(state, opt6_ptr(opt, 0), opt6_len(opt), client_addr, 0, now))
-	    return 0;
+	  int o = new_opt6(opt6_type(opt));
+	  if (opt6_type(opt) == OPTION6_RELAY_MSG)
+	    {
+	      struct in6_addr align;
+	      /* the packet data is unaligned, copy to aligned storage */
+	      memcpy(&align, inbuff + 2, IN6ADDRSZ); 
+	      state->link_address = &align;
+	      /* zero is_unicast since that is now known to refer to the 
+		 relayed packet, not the original sent by the client */
+	      if (!dhcp6_maybe_relay(state, opt6_ptr(opt, 0), opt6_len(opt), client_addr, 0, now))
+		return 0;
+	    }
+	  else
+	    put_opt6(opt6_ptr(opt, 0), opt6_len(opt));
+	  end_opt6(o);
 	}
-      else if (opt6_type(opt) != OPTION6_CLIENT_MAC)
-	put_opt6(opt6_ptr(opt, 0), opt6_len(opt));
-      end_opt6(o);	    
     }
   
   return 1;
@@ -498,11 +502,16 @@ static int dhcp6_no_relay(struct state *state, int msg_type, void *inbuff, size_
 	}
       else if (state->client_hostname)
 	{
+	  struct dhcp_match_name *m;
+	  size_t nl;
+
 	  state->domain = strip_hostname(state->client_hostname);
+	  nl = strlen(state->client_hostname);
 	  
 	  if (strlen(state->client_hostname) != 0)
 	    {
 	      state->hostname = state->client_hostname;
+	      
 	      if (!config)
 		{
 		  /* Search again now we have a hostname. 
@@ -511,6 +520,30 @@ static int dhcp6_no_relay(struct state *state, int msg_type, void *inbuff, size_
 		  struct dhcp_config *new = find_config(daemon->dhcp_conf, state->context, NULL, 0, NULL, 0, 0, state->hostname);
 		  if (new && !have_config(new, CONFIG_CLID) && !new->hwaddr)
 		    config = new;
+		}
+	      
+	      for (m = daemon->dhcp_name_match; m; m = m->next)
+		{
+		  size_t ml = strlen(m->name);
+		  char save = 0;
+		  
+		  if (nl < ml)
+		    continue;
+		  if (nl > ml)
+		    {
+		      save = state->client_hostname[ml];
+		      state->client_hostname[ml] = 0;
+		    }
+		  
+		  if (hostname_isequal(state->client_hostname, m->name) &&
+		      (save == 0 || m->wildcard))
+		    {
+		      m->netid->next = state->tags;
+		      state->tags = m->netid;
+		    }
+		  
+		  if (save != 0)
+		    state->client_hostname[ml] = save;
 		}
 	    }
 	}
@@ -884,7 +917,7 @@ static int dhcp6_no_relay(struct state *state, int msg_type, void *inbuff, size_
 
 	     if (!ia_option)
 	       {
-		 /* If we get a request with a IA_*A without addresses, treat it exactly like
+		 /* If we get a request with an IA_*A without addresses, treat it exactly like
 		    a SOLICT with rapid commit set. */
 		 save_counter(start);
 		 goto request_no_address; 
@@ -1643,7 +1676,7 @@ static void end_ia(int t1cntr, unsigned int min_time, int do_fuzz)
 {
   if (t1cntr != 0)
     {
-      /* go back an fill in fields in IA_NA option */
+      /* go back and fill in fields in IA_NA option */
       int sav = save_counter(t1cntr);
       unsigned int t1, t2, fuzz = 0;
 
@@ -2094,7 +2127,7 @@ void relay_upstream6(struct dhcp_relay *relay, ssize_t sz,
 {
   /* ->local is same value for all relays on ->current chain */
   
-  struct all_addr from;
+  union all_addr from;
   unsigned char *header;
   unsigned char *inbuff = daemon->dhcp_packet.iov_base;
   int msg_type = *inbuff;
@@ -2107,7 +2140,7 @@ void relay_upstream6(struct dhcp_relay *relay, ssize_t sz,
   get_client_mac(peer_address, scope_id, mac, &maclen, &mactype, now);
 
   /* source address == relay address */
-  from.addr.addr6 = relay->local.addr.addr6;
+  from.addr6 = relay->local.addr6;
     
   /* Get hop count from nested relayed message */ 
   if (msg_type == DHCP6RELAYFORW)
@@ -2127,7 +2160,7 @@ void relay_upstream6(struct dhcp_relay *relay, ssize_t sz,
 
       header[0] = DHCP6RELAYFORW;
       header[1] = hopcount;
-      memcpy(&header[2],  &relay->local.addr.addr6, IN6ADDRSZ);
+      memcpy(&header[2],  &relay->local.addr6, IN6ADDRSZ);
       memcpy(&header[18], peer_address, IN6ADDRSZ);
  
       /* RFC-6939 */
@@ -2148,12 +2181,12 @@ void relay_upstream6(struct dhcp_relay *relay, ssize_t sz,
 	  union mysockaddr to;
 	  
 	  to.sa.sa_family = AF_INET6;
-	  to.in6.sin6_addr = relay->server.addr.addr6;
+	  to.in6.sin6_addr = relay->server.addr6;
 	  to.in6.sin6_port = htons(DHCPV6_SERVER_PORT);
 	  to.in6.sin6_flowinfo = 0;
 	  to.in6.sin6_scope_id = 0;
 
-	  if (IN6_ARE_ADDR_EQUAL(&relay->server.addr.addr6, &multicast))
+	  if (IN6_ARE_ADDR_EQUAL(&relay->server.addr6, &multicast))
 	    {
 	      int multicast_iface;
 	      if (!relay->interface || strchr(relay->interface, '*') ||
@@ -2192,7 +2225,7 @@ unsigned short relay_reply6(struct sockaddr_in6 *peer, ssize_t sz, char *arrival
   memcpy(&link, &inbuff[2], IN6ADDRSZ); 
   
   for (relay = daemon->relay6; relay; relay = relay->next)
-    if (IN6_ARE_ADDR_EQUAL(&link, &relay->local.addr.addr6) &&
+    if (IN6_ARE_ADDR_EQUAL(&link, &relay->local.addr6) &&
 	(!relay->interface || wildcard_match(relay->interface, arrival_interface)))
       break;
       

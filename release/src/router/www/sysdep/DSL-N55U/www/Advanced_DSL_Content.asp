@@ -1282,7 +1282,7 @@ function ppp_echo_control(flag){
 										<tr>
 											<th><#prtcl_JS_encmode#></th>
 											<td align="left">
-												<select id="" class="input_option" name="dsl_encap" onchange="">
+												<select class="input_option" name="dsl_encap" onchange="">
 													<option value="0" <% nvram_match("dsl_encap", "0", "selected"); %>>LLC</option>
 													<option value="1" <% nvram_match("dsl_encap", "1", "selected"); %>>VC-Mux</option>
 												</select>
@@ -1291,7 +1291,7 @@ function ppp_echo_control(flag){
 										<tr>
 											<th><#pvccfg_service#></th>
 											<td align="left">
-												<select id="" class="input_option" name="dsl_svc_cat" onchange="change_svc_cat(this.value);">
+												<select class="input_option" name="dsl_svc_cat" onchange="change_svc_cat(this.value);">
 													<option value="0" <% nvram_match("dsl_svc_cat", "0", "selected"); %>>UBR without PCR</option>
 													<option value="1" <% nvram_match("dsl_svc_cat", "1", "selected"); %>>UBR with PCR</option>
 													<option value="2" <% nvram_match("dsl_svc_cat", "2", "selected"); %>>CBR</option>
@@ -1478,7 +1478,7 @@ function ppp_echo_control(flag){
 										<tr>
 											<th><#WAN_PPP_AuthText#></th>
 											<td align="left">
-												<select id="" class="input_option" name="dslx_pppoe_auth">
+												<select class="input_option" name="dslx_pppoe_auth">
 													<option value="" <% nvram_match("dslx_pppoe_auth", "", "selected"); %>>AUTO</option>
 													<option value="pap" <% nvram_match("dslx_pppoe_auth", "pap", "selected"); %>>PAP</option>
 													<option value="chap" <% nvram_match("dslx_pppoe_auth", "chap", "selected"); %>>CHAP</option>

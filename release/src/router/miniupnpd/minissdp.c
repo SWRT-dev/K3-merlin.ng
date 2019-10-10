@@ -505,6 +505,9 @@ static struct {
 #ifdef ENABLE_6FC_SERVICE
 	{"urn:schemas-upnp-org:service:WANIPv6FirewallControl:", 1, uuidvalue_wcd},
 #endif
+#ifdef ENABLE_NVGFN
+	{"urn:nvidia-com:service:GeForceNow:", 1, uuidvalue_igd},
+#endif
 /* we might want to support urn:schemas-wifialliance-org:device:WFADevice:1
  * urn:schemas-wifialliance-org:device:WFADevice:1
  * in the future */

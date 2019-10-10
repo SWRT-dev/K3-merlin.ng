@@ -144,7 +144,7 @@ function collect_info(){
 function generate_group_table(){
 	var code = "";	
 	code += '<tr>';
-	//code += '<th style="width:50px;"><input id="" type="checkbox" onclick="" value=""></th>';
+	//code += '<th style="width:50px;"><input type="checkbox" onclick="" value=""></th>';
 	code += '<th style="width:450px;"><#PM_Group_Name#></th>';
 	code += '<th style="width:450px;"><#Description#></th>';	
 	code += '<th style="width:60px;"><#CTL_modify#></th>';	

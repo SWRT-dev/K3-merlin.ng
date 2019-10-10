@@ -7,6 +7,7 @@
 #include <linux/if_link.h>
 #include <linux/if_addr.h>
 #include <linux/neighbour.h>
+#include <string.h>
 
 struct rtnl_handle
 {
@@ -70,6 +71,29 @@ extern int __parse_rtattr_nested_compat(struct rtattr *tb[], int max, struct rta
 #define parse_rtattr_nested_compat(tb, max, rta, data, len) \
 ({	data = RTA_PAYLOAD(rta) >= len ? RTA_DATA(rta) : NULL; \
 	__parse_rtattr_nested_compat(tb, max, rta, len); })
+
+static inline __u8 rta_getattr_u8(const struct rtattr *rta)
+{
+	return *(__u8 *)RTA_DATA(rta);
+}
+static inline __u16 rta_getattr_u16(const struct rtattr *rta)
+{
+	return *(__u16 *)RTA_DATA(rta);
+}
+static inline __u32 rta_getattr_u32(const struct rtattr *rta)
+{
+	return *(__u32 *)RTA_DATA(rta);
+}
+static inline __u64 rta_getattr_u64(const struct rtattr *rta)
+{
+	__u64 tmp;
+	memcpy(&tmp, RTA_DATA(rta), sizeof(__u64));
+	return tmp;
+}
+static inline const char *rta_getattr_str(const struct rtattr *rta)
+{
+	return RTA_DATA(rta);
+}
 
 extern int rtnl_listen(struct rtnl_handle *, rtnl_filter_t handler,
 		       void *jarg);

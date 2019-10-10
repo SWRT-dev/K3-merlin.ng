@@ -692,7 +692,7 @@ int asus_private(void)
 	int i, l, c;
 	unsigned long secret;
 	unsigned char *p, user[256], hwaddr[6], hwaddr_str[18], key[64], msg[256], ipbuf[20], bin_pwd[16];
-#if defined(RTCONFIG_SOC_IPQ8064)
+#if defined(RTCONFIG_SOC_IPQ8064) || defined(RTCONFIG_SOC_IPQ8074)
 	unsigned char mac_buf[6], mac_buf_str[18];
 #endif
 
@@ -709,7 +709,7 @@ int asus_private(void)
 		return -1;
 	}
 
-#if defined(RTCONFIG_SOC_IPQ8064)
+#if defined(RTCONFIG_SOC_IPQ8064) || defined(RTCONFIG_SOC_IPQ8074)
 	/* Make sure last bytes of MAC address is aligned to 4. */
 	ether_atoe(p, mac_buf);
 	mac_buf[5] &= 0xFC;

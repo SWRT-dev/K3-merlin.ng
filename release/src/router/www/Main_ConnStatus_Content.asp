@@ -18,7 +18,7 @@
 <script></script>
 </head>
 
-<body onload="show_menu();">
+<body onload="show_menu();" class="bg">
 <div id="TopBanner"></div>
 <div id="Loading" class="popup_bg"></div>
 
