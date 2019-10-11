@@ -28,3 +28,8 @@ extern void k3_init(void);
 extern void k3_init_done(void);
 extern int start_k3screen(void);
 extern int GetPhyStatusk3(int verbose);
+#ifdef RTCONFIG_FRS_LIVE_UPDATE
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(R7900P)
+extern int merlinr_firmware_check_update_main(int argc, char *argv[]);
+#endif
+#endif

@@ -7845,7 +7845,11 @@ int init_nvram(void)
 
 		if (!nvram_get("ct_max"))
 			nvram_set("ct_max", "300000");
+#if defined(K3)
+		add_rc_support("mssid 2.4G 5G update usbX1");
+#else
 		add_rc_support("mssid 2.4G 5G update usbX2");
+#endif
 		add_rc_support("switchctrl"); // broadcom: for jumbo frame only
 		add_rc_support("manual_stb");
 		add_rc_support("pwrctrl");
