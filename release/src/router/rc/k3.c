@@ -1145,6 +1145,14 @@ void k3_init_done(){
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 
 	start_k3screen();
+	//华硕似乎实现了aimesh的webui和aimesh核心剥离，从而实现382和384共用一个webui，384则强制显示aimesh界面，禁掉它，防止误导
+	if( !pids("cfg_server") && !pids("cfg_client") ){
+		nvram_set_int("merlinr_amas",0);
+		del_rc_support("amasRouter");
+		del_rc_support("amas");
+	}else
+		nvram_set_int("merlinr_amas",1);
+	nvram_commit();
 }
 
 int GetPhyStatusk3(int verbose)

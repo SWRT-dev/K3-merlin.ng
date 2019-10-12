@@ -312,6 +312,7 @@ var qos_enable_flag = ('<% nvram_get("qos_enable"); %>' == 1) ? true : false;
 var bwdpi_app_rulelist = "<% nvram_get("bwdpi_app_rulelist"); %>".replace(/&#60/g, "<");
 var qos_type_flag = "<% nvram_get("qos_type"); %>";
 var exist_firmver="<% nvram_get("firmver"); %>";
+var merlinr_amas="<% nvram_get("merlinr_amas"); %>";
 
 //territory_code sku
 function in_territory_code(_ptn){
@@ -543,7 +544,10 @@ var wifiproxy_support = isSupport("wifiproxy");
 var lyra_hide_support = isSupport("lyra_hide");
 var port2_device = isSupport("port2_device");
 var hdspindown_support = isSupport("hdspindown");
-var amesh_support = isSupport("amas");
+if(merlinr_amas == 1)
+	var amesh_support = isSupport("amas");
+else
+	var amesh_support = 0;
 var ameshRouter_support = isSupport("amasRouter");
 var ameshNode_support = isSupport("amasNode");
 var ifttt_support = isSupport("ifttt");
