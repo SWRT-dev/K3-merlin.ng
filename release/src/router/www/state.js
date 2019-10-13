@@ -312,7 +312,6 @@ var qos_enable_flag = ('<% nvram_get("qos_enable"); %>' == 1) ? true : false;
 var bwdpi_app_rulelist = "<% nvram_get("bwdpi_app_rulelist"); %>".replace(/&#60/g, "<");
 var qos_type_flag = "<% nvram_get("qos_type"); %>";
 var exist_firmver="<% nvram_get("firmver"); %>";
-var merlinr_amas="<% nvram_get("merlinr_amas"); %>";
 
 //territory_code sku
 function in_territory_code(_ptn){
@@ -544,10 +543,7 @@ var wifiproxy_support = isSupport("wifiproxy");
 var lyra_hide_support = isSupport("lyra_hide");
 var port2_device = isSupport("port2_device");
 var hdspindown_support = isSupport("hdspindown");
-if(merlinr_amas == 1)
-	var amesh_support = isSupport("amas");
-else
-	var amesh_support = 0;
+var amesh_support = isSupport("amas");
 var ameshRouter_support = isSupport("amasRouter");
 var ameshNode_support = isSupport("amasNode");
 var ifttt_support = isSupport("ifttt");
@@ -560,8 +556,10 @@ var meoVoda_support = isSupport("meoVoda");
 var movistarTriple_support = isSupport("movistarTriple");
 var utf8_ssid_support = isSupport("utf8_ssid");
 var wpa3_support = isSupport('wpa3');
-var uu_support = isSupport('uu_accel');
-
+if(based_modelid == "RT-AC3100")
+	var uu_support = 1;
+else
+	var uu_support = isSupport('uu_accel');
 var QISWIZARD = "QIS_wizard.htm";
 
 var wl_version = "<% nvram_get("wl_version"); %>";

@@ -17,13 +17,17 @@
 <script type="text/javascript" src="/help.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script>
-	var label_mac = <% get_label_mac(); %>;
+var label_mac = <% get_label_mac(); %>;
+var modelname = "<% nvram_get("modelname"); %>";
 function initial(){
 	show_menu();
 
 }
 function uuRegister(mac){
 	var _mac = mac.toLowerCase();
+	if(modelname == "K3")
+	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt-merlin', '_blank');
+	else
 	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt', '_blank');
 }
 </script>
