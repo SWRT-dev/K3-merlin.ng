@@ -1139,9 +1139,10 @@ static void server_open(skipd_server* server) {
             n = atoi(nbuf);
         }
         server->curr_db = n;
+		skipd_log(SKIPD_DEBUG, "debug:read db:%d",n);
     }
 	if((server->curr_db != 0) && (server->curr_db != 1)){
-		skipd_log(SKIPD_DEBUG, "db:%d is wrong,reset to 0",server->db_path,server->curr_db);
+		skipd_log(SKIPD_DEBUG, "db:%d is wrong,reset to 0",server->curr_db);
 		server->curr_db = 0;
 	}
     sf = open(real_path, O_TRUNC | O_RDWR | O_CREAT, 0640);
@@ -1188,7 +1189,7 @@ static void server_switch(skipd_server* server) {
 
     server->db = other;
     server->curr_db = n2;
-
+    skipd_log(SKIPD_DEBUG, "switch|use path:%s db:%d",server->db_path,server->curr_db);
     SkipDB_delete(tmp);
     SkipDB_free(tmp);
 }
@@ -1469,7 +1470,7 @@ int main(int argc, char **argv)
     signal(SIGABRT, SIG_IGN);
     ev_signal_init (&signal_watcher, sigint_cb, SIGINT);
     ev_signal_start (EV_A_ &signal_watcher);
-    ev_signal_init (&signal_watcher2, sigint_cb, SIGUSR2);
+    ev_signal_init (&signal_watcher2, sigint_cb, SIGTERM);
     ev_signal_start (EV_A_ &signal_watcher2);
 
     // Create unix socket in non-blocking fashion
