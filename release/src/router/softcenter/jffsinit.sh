@@ -32,7 +32,9 @@ chmod 755 /jffs/softcenter/perp/*
 chmod 755 /jffs/softcenter/perp/.boot/*
 chmod 755 /jffs/softcenter/perp/.control/*
 echo 1.2.0 > /jffs/softcenter/.soft_ver
-
+dbus set softcenter_firmware_version=`nvram get extendno|cut -d "_" -f2|cut -d "-" -f1|cut -c2-5`
+dbus set softcenter_arch=`uname -m`
+dbus set softcenter_api=`cat /jffs/softcenter/.soft_ver`
 
 # creat wan-start file
 mkdir -p /jffs/scripts

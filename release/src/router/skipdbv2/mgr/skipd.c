@@ -1140,6 +1140,10 @@ static void server_open(skipd_server* server) {
         }
         server->curr_db = n;
     }
+	if((server->curr_db != 0) && (server->curr_db != 1)){
+		skipd_log(SKIPD_DEBUG, "db:%d is wrong,reset to 0",server->db_path,server->curr_db);
+		server->curr_db = 0;
+	}
     sf = open(real_path, O_TRUNC | O_RDWR | O_CREAT, 0640);
     if (sf < 0) {
         skipd_log(SKIPD_DEBUG, "cannot write swich file");
@@ -1148,7 +1152,7 @@ static void server_open(skipd_server* server) {
     n = sprintf(nbuf, "%d", server->curr_db);
     write(sf, nbuf, n);
     close(sf);
-
+    skipd_log(SKIPD_DEBUG, "use path:%s db:%d",server->db_path,server->curr_db);
     sprintf(real_path, "%s/%d", server->db_path, server->curr_db);
     server->db = SkipDB_new();
     SkipDB_setPath_(server->db, real_path);
