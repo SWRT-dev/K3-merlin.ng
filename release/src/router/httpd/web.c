@@ -6006,8 +6006,7 @@ static int get_fanctrl_info(int eid, webs_t wp, int argc, char_t **argv)
 }
 #endif
 
-#if defined(RTCONFIG_BCMARM) || \
-    (defined(RTCONFIG_QCA) && defined(RTCONFIG_FANCTRL))
+#if defined(RTCONFIG_BCMARM) || (defined(RTCONFIG_QCA) && defined(RTCONFIG_FANCTRL)) || defined(RTCONFIG_LANTIQ)
 static int get_cpu_temperature(int eid, webs_t wp, int argc, char_t **argv)
 {
 #ifdef HND_ROUTER
@@ -6020,6 +6019,17 @@ static int get_cpu_temperature(int eid, webs_t wp, int argc, char_t **argv)
 	}
 
 	return websWrite(wp, "%3.3f", (double) temperature / 1000);
+#elif  defined(RTCONFIG_LANTIQ)
+	FILE *fp;
+	int temperature;
+	system("awk 'NR==1' /sys/kernel/debug/ltq_tempsensor/allsensors | cut -c25-26 >/tmp/allsensors.txt");
+	if ((fp = fopen("/tmp/allsensors.txt", "r")) != NULL) {
+		fscanf(fp, "%d", &temperature);
+		fclose(fp);
+	}
+	unlink("/tmp/allsensors.txt");
+
+	return websWrite(wp, "%d", temperature);
 #elif defined(RTCONFIG_QCA)
 	char temperature[6] = { 0 };
 
@@ -16222,6 +16232,24 @@ applydb_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
 		strncpy(notify_cmd, action_script, 128);
 		strcat(scPath, notify_cmd);
 		snprintf(db_cmd, sizeof(db_cmd), " clean");
+		strcat(scPath, db_cmd);
+		strlcpy(SystemCmd, scPath, sizeof(SystemCmd));
+		sys_script("syscmd.sh");
+	}
+	else if(!strcmp(action_mode, "ks_app_install")){
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/scripts/");
+		strncpy(notify_cmd, action_script, 128);
+		strcat(scPath, notify_cmd);
+		snprintf(db_cmd, sizeof(db_cmd), " ks_app_install");
+		strcat(scPath, db_cmd);
+		strlcpy(SystemCmd, scPath, sizeof(SystemCmd));
+		sys_script("syscmd.sh");
+	}
+	else if(!strcmp(action_mode, "ks_app_remove")){
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/scripts/");
+		strncpy(notify_cmd, action_script, 128);
+		strcat(scPath, notify_cmd);
+		snprintf(db_cmd, sizeof(db_cmd), " ks_app_remove");
 		strcat(scPath, db_cmd);
 		strlcpy(SystemCmd, scPath, sizeof(SystemCmd));
 		sys_script("syscmd.sh");
