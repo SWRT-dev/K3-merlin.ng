@@ -37,7 +37,18 @@ BIN_NAME="${BIN_NAME%.*}"
 if [ "$ACTION" != "" ]; then
 	BIN_NAME=$ACTION
 fi
-
+ARCH=`uname -m`
+if [ "$ARCH" == "armv7l" ]; then
+	ARCH_SUFFIX="arm"
+elif [ "$ARCH" == "aarch64" ]; then
+	ARCH_SUFFIX="arm64"
+elif [ "$ARCH" == "mips" ]; then
+	ARCH_SUFFIX="mips"
+elif [ "$ARCH" == "mipsle" ]; then
+	ARCH_SUFFIX="mipsle"
+else
+	ARCH_SUFFIX="arm"
+fi
 VER_SUFFIX=_version
 MD5_SUFFIX=_md5
 INSTALL_SUFFIX=_install
@@ -79,7 +90,30 @@ install_module() {
 	URL_SPLIT="/"
 	#OLD_MD5=`dbus get softcenter_module_$softcenter_installing_module$MD5_SUFFIX`
 	OLD_VERSION=`dbus get softcenter_module_$softcenter_installing_module$VER_SUFFIX`
-	HOME_URL=`dbus get softcenter_home_url`
+	if [ -z "$(dbus get softcenter_server_tcode)" ]; then
+		modelname=`nvram get modelname`
+		if [ "$modelname" == "K3" ]; then
+			dbus set softcenter_server_tcode=CN
+		elif [ "$modelname" == "SBR-AC1900P" -o "$modelname" == "SBR-AC3200P" -o "$modelname" == "R7900P" ]; then
+			dbus set softcenter_server_tcode=ALI
+		elif [ "$modelname" == "GT-AC2900" -o "$modelname" == "GT-AC5300" -o "$modelname" == "RT-AX58U" ]; then
+			dbus set softcenter_server_tcode=CN1
+		else
+			dbus set softcenter_server_tcode=`nvram get territory_code |cut -c 1-2`
+		fi
+	fi
+	eval `dbus export softcenter_server_tcode`
+	if [ "$softcenter_server_tcode" == "CN" ]; then
+		HOME_URL="http://update.wifi.com.cn/$ARCH_SUFFIX"
+	elif [ "$softcenter_server_tcode" == "CN1" ]; then
+		HOME_URL="https://123.56.45.194/$ARCH_SUFFIX"
+	elif [ "$softcenter_server_tcode" == "ALI" ]; then
+		HOME_URL="https://121.40.153.145/$ARCH_SUFFIX"
+	else
+		HOME_URL="https://sc.paldier.com/$ARCH_SUFFIX"
+	fi
+
+	#HOME_URL=`dbus get softcenter_home_url`
 	TAR_URL=$HOME_URL$URL_SPLIT$softcenter_installing_tar_url
 	FNAME=`basename $softcenter_installing_tar_url`
 
@@ -233,19 +267,6 @@ uninstall_module() {
 		rm -f /jffs/softcenter/webs/Module_$softcenter_installing_todo.asp
         rm -f /jffs/softcenter/init.d/S*$softcenter_installing_todo.sh
 	fi
-	if [ -z "$softcenter_server_tcode" ]; then
-		modelname=`nvram get modelname`
-		if [ "$modelname" == "K3" -o "$modelname" == "SBR-AC3200P" ]; then
-			dbus set softcenter_server_tcode=CN
-		else
-			dbus set softcenter_server_tcode=`nvram get territory_code |cut -c 1-2`
-		fi
-	fi
-	if [ "$(dbus get softcenter_server_tcode)" == "CN" ]; then
-		curl -s http://update.wifi.com.cn/"$softcenter_installing_module"/"$softcenter_installing_module"/install.sh >/dev/null 2>&1
-	else
-		curl -s https://scarm.paldier.com/"$softcenter_installing_module"/"$softcenter_installing_module"/install.sh >/dev/null 2>&1
-	fi
 }
 
 #LOGGER $BIN_NAME
@@ -271,3 +292,4 @@ ks_app_remove)
 	install_module
 	;;
 esac
+

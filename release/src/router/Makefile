@@ -3286,8 +3286,8 @@ ntfs-3g: ntfs-3g/stamp-h1
 	@$(MAKE) -C ntfs-3g
 
 ntfs-3g-clean:
-	-@$(MAKE) -C ntfs-3g clean
-	@rm -f ntfs-3g/stamp-h1
+	#-@$(MAKE) -C ntfs-3g clean
+	#@rm -f ntfs-3g/stamp-h1
 
 ntfs-3g-install: ntfs-3g
 	install -D ntfs-3g/src/ntfs-3g $(INSTALLDIR)/ntfs-3g/bin/ntfs-3g
@@ -4052,8 +4052,8 @@ fprobe-1.1-install: fprobe-1.1
 	install -D fprobe-1.1/fprobe $(INSTALLDIR)/fprobe-1.1/usr/bin/fprobe
 
 fprobe-1.1-clean:
-	@$(SEP)
-	@$(MAKE) -C fprobe-1.1 clean
+	#@$(SEP)
+	#@$(MAKE) -C fprobe-1.1 clean
 
 libpcap/stamp-h1:
 	cd libpcap && $(CONFIGURE) --with-pcap=linux
@@ -4102,8 +4102,8 @@ traceroute-2.1.0-install: traceroute-2.1.0
 	$(STRIP) $(INSTALLDIR)/traceroute-2.1.0/usr/sbin/traceroute
 
 traceroute-2.1.0-clean:
-	-$(MAKE) -C traceroute-2.1.0 clean
-	@rm -f traceroute-2.1.0/stamp-h1
+	#-$(MAKE) -C traceroute-2.1.0 clean
+	#@rm -f traceroute-2.1.0/stamp-h1
 
 libqcsapi_client-install: libqcsapi_client
 	install -d $(INSTALLDIR)/libqcsapi_client/usr/lib/
@@ -6023,11 +6023,11 @@ madwimax-0.1.1-install: madwimax-0.1.1
 	$(STRIP) $(INSTALLDIR)/madwimax-0.1.1/usr/sbin/madwimax
 
 madwimax-0.1.1-clean:
-	-@$(MAKE) -C madwimax-0.1.1 clean
-	@cd $(TOP)/madwimax-0.1.1 && rm -f config.log config.status
-	@cd $(TOP)/madwimax-0.1.1 && rm -f `find -name Makefile`
-	@cd $(TOP)/madwimax-0.1.1 && rm -rf include/config.h scripts/udev/z60_madwimax.rules src/.deps
-	@rm -f madwimax-0.1.1/stamp-h1
+	#-@$(MAKE) -C madwimax-0.1.1 clean
+	#@cd $(TOP)/madwimax-0.1.1 && rm -f config.log config.status
+	#@cd $(TOP)/madwimax-0.1.1 && rm -f `find -name Makefile`
+	#@cd $(TOP)/madwimax-0.1.1 && rm -rf include/config.h scripts/udev/z60_madwimax.rules src/.deps
+	#@rm -f madwimax-0.1.1/stamp-h1
 
 ufsd: kernel_header kernel
 	@$(MAKE) -C ufsd all
@@ -6079,7 +6079,7 @@ tftp:
 	cd tftp && CC=$(CC) && $(MAKE)
 
 tftp-clean:
-	cd tftp && $(MAKE) clean
+	#cd tftp && $(MAKE) clean
 
 tftp-install:
 	# TPTP server
@@ -6113,7 +6113,7 @@ traffic_limiter: sqlite
 	cd traffic_limiter && CC=$(CC) && $(MAKE)
 
 traffic_limiter-clean:
-	cd traffic_limiter && $(MAKE) clean
+	#cd traffic_limiter && $(MAKE) clean
 
 traffic_limiter-install: traffic_limiter
 
@@ -6424,10 +6424,10 @@ diskdev_cmds-332.14-install: diskdev_cmds-332.14
 	ln -s fsck.hfsplus fsck.hfs
 
 diskdev_cmds-332.14-clean:
-	cd $(TOP)/diskdev_cmds-332.14 && \
-	make -f Makefile.lnx clean
-	rm -f $(INSTALLDIR)/diskdev_cmds-332.14/usr/sbin/mkfs.hfs
-	rm -f $(INSTALLDIR)/diskdev_cmds-332.14/usr/sbin/fsck.hfs
+	#cd $(TOP)/diskdev_cmds-332.14 && \
+	#make -f Makefile.lnx clean
+	#rm -f $(INSTALLDIR)/diskdev_cmds-332.14/usr/sbin/mkfs.hfs
+	#rm -f $(INSTALLDIR)/diskdev_cmds-332.14/usr/sbin/fsck.hfs
 
 GeoIP-1.6.2/stamp-h1:
 	cd GeoIP-1.6.2 && autoreconf -i -f && $(CONFIGURE) \
@@ -6643,7 +6643,7 @@ i2c-tools-2013-12-15:
 	$(MAKE) -C $@
 
 i2c-tools-2013-12-15-clean:
-	$(MAKE) -C i2c-tools-2013-12-15 clean
+	#$(MAKE) -C i2c-tools-2013-12-15 clean
 
 i2c-tools-2013-12-15-install: i2c-tools-2013-12-15
 	install -D i2c-tools-2013-12-15/tools/i2cdump $(INSTALLDIR)/i2c-tools-2013-12-15/usr/bin/i2cdump
@@ -6664,7 +6664,7 @@ i2c-tools-3.1.2:
 	$(MAKE) -C $@
 
 i2c-tools-3.1.2-clean:
-	$(MAKE) -C i2c-tools-3.1.2 clean
+	#$(MAKE) -C i2c-tools-3.1.2 clean
 
 i2c-tools-3.1.2-install: i2c-tools-3.1.2
 	install -D i2c-tools-3.1.2/tools/i2cdump $(INSTALLDIR)/i2c-tools-3.1.2/usr/bin/i2cdump
@@ -7276,7 +7276,7 @@ quicksec-7.0-install:
 	@$(STRIP) $(INSTALLDIR)/quicksec-7.0/usr/sbin/quicksecpm
 
 quicksec-7.0-clean:
-	-@$(MAKE) -C quicksec-7.0/build/quicksec/linux/policymanager clean
+	#-@$(MAKE) -C quicksec-7.0/build/quicksec/linux/policymanager clean
 	
 PMS_DBapis/stamp-h1:
 	@touch $@ 
@@ -7285,8 +7285,8 @@ PMS_DBapis:PMS_DBapis/stamp-h1
 	CC=$(CC) $(MAKE) -C PMS_DBapis
 
 PMS_DBapis-clean:
-	cd PMS_DBapis && $(MAKE) clean
-	-@rm -f PMS_DBapis/stamp-h1
+	#cd PMS_DBapis && $(MAKE) clean
+	#-@rm -f PMS_DBapis/stamp-h1
 
 PMS_DBapis-install:PMS_DBapis
 	cd PMS_DBapis && CC=$(CC) && $(MAKE) install
