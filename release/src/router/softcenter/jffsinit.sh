@@ -21,6 +21,9 @@ cp -rf /rom/etc/softcenter/res/* /jffs/softcenter/res/
 cp -rf /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
 cp -rf /rom/etc/softcenter/bin/* /jffs/softcenter/bin/
 cp -rf /rom/etc/softcenter/perp /jffs/softcenter/
+if [ "`nvram get model`" == "GT-AC5300" ] || [ "`nvram get model`" == "GT-AC2900" ];then
+rm -rf /jffs/softcenter/ROG
+fi
 ln -sf /jffs/softcenter/bin/base64_encode /jffs/softcenter/bin/base64_decode
 ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
 ln -sf  /jffs/softcenter/bin/softcenter.sh /jffs/.asusrouter
@@ -32,10 +35,13 @@ chmod 755 /jffs/softcenter/perp/*
 chmod 755 /jffs/softcenter/perp/.boot/*
 chmod 755 /jffs/softcenter/perp/.control/*
 echo 1.2.0 > /jffs/softcenter/.soft_ver
-dbus set softcenter_firmware_version=`nvram get extendno|cut -d "_" -f2|cut -d "-" -f1|cut -c2-5`
+dbus set softcenter_firmware_version=`nvram get extendno|cut -d "_" -f2|cut -d "-" -f1|cut -c2-6`
 dbus set softcenter_arch=`uname -m`
 dbus set softcenter_api=`cat /jffs/softcenter/.soft_ver`
-
+if [ "`nvram get model`" == "GT-AC5300" ] || [ "`nvram get model`" == "GT-AC2900" ];then
+	cp -rf /rom/etc/softcenter/ROG/webs/* /jffs/softcenter/webs/
+	cp -rf /rom/etc/softcenter/ROG/res/* /jffs/softcenter/res/
+fi
 # creat wan-start file
 mkdir -p /jffs/scripts
 
@@ -70,7 +76,7 @@ if [ ! -f "/jffs/scripts/post-mount" ];then
 	EOF
 	chmod +x /jffs/scripts/post-mount
 else
-	STARTCOMAND2=`cat /jffs/scripts/post-mount | grep "/jffs/softcenter/bin/softcenter-mount.sh start"`
+	STARTCOMAND2=`cat /jffs/scripts/post-mount | grep -c "/jffs/softcenter/bin/softcenter-mount.sh start"`
 	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-mount.sh/d' /jffs/scripts/post-mount && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
 	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
 fi

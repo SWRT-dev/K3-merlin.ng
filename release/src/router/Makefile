@@ -111,6 +111,8 @@ export CFLAGS += -D$(MODEL)
 export $(MODEL)=y
 export CFLAGS += -D$(MERLINR_NAME)
 export $(MERLINR_NAME)=y
+export CFLAGS += -DMERLINR_VER_MAJOR_$(MERLINR_VER_MAJOR)
+export $(MERLINR_VER_MAJOR)=y
 endif
 
 export OLD_SRC=$(SRCBASE)/../src
@@ -3120,6 +3122,18 @@ k3screenctrl-install: k3screenctrl
 	install -D k3screenctrl/src/k3screend $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
+endif
+
+ifeq ($(RTCONFIG_SMARTDNS),y)
+smartdns:
+	$(MAKE) -C smartdns/src
+
+smartdns-clean:
+	[ ! -f smartdns/src/Makefile ] || $(MAKE) -C smartdns/src clean
+
+smartdns-install: smartdns
+	install -D smartdns/src/smartdns $(INSTALLDIR)/smartdns/usr/sbin/smartdns
+	$(STRIP) $(INSTALLDIR)/smartdns/usr/sbin/smartdns
 endif
 
 libmnl/stamp-h1:

@@ -556,7 +556,7 @@ var meoVoda_support = isSupport("meoVoda");
 var movistarTriple_support = isSupport("movistarTriple");
 var utf8_ssid_support = isSupport("utf8_ssid");
 var wpa3_support = isSupport('wpa3');
-if(based_modelid == "RT-AC3100")
+if(based_modelid == "RT-AC3100" || based_modelid == "RT-AC3200")
 	var uu_support = 1;
 else
 	var uu_support = isSupport('uu_accel');

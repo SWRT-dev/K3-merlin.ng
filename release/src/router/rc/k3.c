@@ -60,6 +60,13 @@ void k3_init()
 		nvram_set("model", "RT-AC3100");
 	if (!nvram_get("modelname"))
 		nvram_set("modelname", "K3");
+#if defined(MERLINR_VER_MAJOR_B)
+	if (!nvram_get("modelmajor"))
+		nvram_set("modelmajor", "B");
+#elif defined(MERLINR_VER_MAJOR_R)
+	if (!nvram_get("modelmajor"))
+		nvram_set("modelmajor", "R");
+#endif
 	if (!nvram_get("productid"))
 		nvram_set("productid", "RT-AC3100");
 	if (!nvram_get("bootflags"))

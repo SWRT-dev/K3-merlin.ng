@@ -1129,7 +1129,7 @@ static void server_open(skipd_server* server) {
     char real_path[SK_PATH_MAX];
     char nbuf[10];
     int n, sf;
-
+#if 0
     sprintf(real_path, "%s/switch", server->db_path);
     sf = open(real_path, O_RDONLY);
     if(sf > 0) {
@@ -1139,7 +1139,7 @@ static void server_open(skipd_server* server) {
             n = atoi(nbuf);
         }
         server->curr_db = n;
-		skipd_log(SKIPD_DEBUG, "debug:read db:%d",n);
+		skipd_log(SKIPD_DEBUG, "debug:read db:%s",nbuf);
     }
 	if((server->curr_db != 0) && (server->curr_db != 1)){
 		skipd_log(SKIPD_DEBUG, "db:%d is wrong,reset to 0",server->curr_db);
@@ -1153,6 +1153,9 @@ static void server_open(skipd_server* server) {
     n = sprintf(nbuf, "%d", server->curr_db);
     write(sf, nbuf, n);
     close(sf);
+    skipd_log(SKIPD_DEBUG, "use path:%s db:%d",server->db_path,server->curr_db);
+#endif
+	server->curr_db = 0;
     skipd_log(SKIPD_DEBUG, "use path:%s db:%d",server->db_path,server->curr_db);
     sprintf(real_path, "%s/%d", server->db_path, server->curr_db);
     server->db = SkipDB_new();

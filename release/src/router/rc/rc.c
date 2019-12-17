@@ -1212,7 +1212,7 @@ static const applets_t applets[] = {
 #endif
 	{ "firmware_check",		firmware_check_main		},
 #if defined(RTCONFIG_FRS_LIVE_UPDATE)
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(R7900P)
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_HND_ROUTER)
 	{ "firmware_check_update",	merlinr_firmware_check_update_main	},
 #else
 	{ "firmware_check_update",	firmware_check_update_main	},

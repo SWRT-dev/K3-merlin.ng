@@ -28,8 +28,12 @@ extern void k3_init(void);
 extern void k3_init_done(void);
 extern int start_k3screen(void);
 extern int GetPhyStatusk3(int verbose);
+extern int merlinr_toolbox(int argc, char **argv);
+#ifdef RTCONFIG_UUPLUGIN
+extern void exec_uu(void);
+#endif
 #ifdef RTCONFIG_FRS_LIVE_UPDATE
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(R7900P)
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_HND_ROUTER)
 extern int merlinr_firmware_check_update_main(int argc, char *argv[]);
 #endif
 #endif

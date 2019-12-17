@@ -17,7 +17,7 @@
 <script type="text/javascript" src="/help.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script>
-var label_mac = <% get_label_mac(); %>;
+	var label_mac = <% get_label_mac(); %>;
 var modelname = "<% nvram_get("modelname"); %>";
 function initial(){
 	show_menu();
@@ -25,7 +25,7 @@ function initial(){
 }
 function uuRegister(mac){
 	var _mac = mac.toLowerCase();
-	if(modelname == "K3")
+	if(modelname == "K3" || modelname == "K3C" || modelname == "SBRAC1900P" || modelname == "SBRAC3200P" || modelname == "R8000P" || modelname == "R7900P" || modelname == "RTAC3100" || modelname == "RTAC3200" || modelname == "RTACRH17" )
 	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt-merlin', '_blank');
 	else
 	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt', '_blank');

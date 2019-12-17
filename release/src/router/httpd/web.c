@@ -11907,10 +11907,23 @@ wps_finish:
 		char event_msg[64] = {0};
 
 		if (!strcmp(action_mode, "firmware_check"))
+#if defined(MERLINR_VER_MAJOR_B)
+		{
+#endif
 			snprintf(event_msg, sizeof(event_msg), HTTPD_GENERIC_MSG, EID_HTTPD_FW_CHECK);
+#if defined(MERLINR_VER_MAJOR_B)
+			system("/usr/sbin/webs_update.sh");
+		}
+#endif
 		else if (!strcmp(action_mode, "firmware_upgrade"))
+#if defined(MERLINR_VER_MAJOR_B)
+		{
+#endif
 			snprintf(event_msg, sizeof(event_msg), HTTPD_GENERIC_MSG, EID_HTTPD_FW_UPGRADE);
-
+#if defined(MERLINR_VER_MAJOR_B)
+			system("/usr/sbin/webs_upgrade.sh");
+		}
+#endif
 		if (strlen(event_msg))
 			send_cfgmnt_event(event_msg);
 	}
