@@ -10,6 +10,9 @@ install:
 	install -d $(INSTALLDIR)/usr/share
 	install -d $(INSTALLDIR)/usr/lib
 	install -d $(INSTALLDIR)/mcu
+	install -d $(INSTALLDIR)/www
+	install -d $(INSTALLDIR)/www/js
+	install -d $(INSTALLDIR)/www/res
 	install -d $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -d $(INSTALLDIR)/rom/etc/softcenter/res
 	install -d $(INSTALLDIR)/rom/etc/softcenter/res/layer
@@ -77,5 +80,11 @@ install:
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 libwlcr.so $(INSTALLDIR)/usr/share
 	install -m 0644 cfe.bin $(INSTALLDIR)/rom/cfe/
+	install -m 0755 i18n.js $(INSTALLDIR)/www/js
+	install -m 0755 scCN.json $(INSTALLDIR)/www/res
+	install -m 0755 scEN.json $(INSTALLDIR)/www/res
+	install -m 0755 scTW.json $(INSTALLDIR)/www/res
+	install -m 0755 Softcenter.asp $(INSTALLDIR)/www
+	install -m 0755 Softcenter_mount.asp $(INSTALLDIR)/www
 
 clean:

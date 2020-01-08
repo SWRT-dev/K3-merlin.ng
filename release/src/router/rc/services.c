@@ -1202,6 +1202,11 @@ void start_dnsmasq(void)
 			}
 		}
 #endif
+#if defined(RTCONFIG_SOFTCENTER)
+//anti dns hijacking
+		fprintf(fp, "121.40.153.145 wufan.softcenter.site\n");
+		fprintf(fp, "123.56.45.194 sc.softcenter.site\n");
+#endif
 		fclose(fp);
 	} else
 		perror("/etc/hosts");
@@ -1721,7 +1726,7 @@ int dnsmasq_script_main(int argc, char **argv)
 #endif
 #if defined(RTCONFIG_SOFTCENTER)
 	if(nvram_get("sc_dhcp_script"))
-		doSystem("/jffs/softcenter/scripts/%s",nvram_get("sc_dhcp_script"));
+		doSystem("/jffs/softcenter/scripts/%s &",nvram_get("sc_dhcp_script"));
 #endif
 	return 0;
 }
@@ -4713,7 +4718,7 @@ start_skipd(void)
 	}
 	if (pids("skipd"))
 		killall_tk("skipd");
-	logmessage(LOGNAME, "start skipd:%d", pid);
+	logmessage(LOGNAME, "start skipd");
 	_eval(skipd_argv, NULL, 0, &pid);
 
 }
@@ -8627,9 +8632,6 @@ start_services(void)
 	start_fprobe();
 #endif
 
-#if defined(K3C)
-	doSystem("/usr/sbin/k3c-init.sh");
-#endif
 	run_custom_script("services-start", 0, NULL, NULL);
 	
 	return 0;

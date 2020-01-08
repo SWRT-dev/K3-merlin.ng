@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA 02111-1307 USA
  *
- * Copyright 2018-2019, paldier <paldier@hotmail.com>.
+ * Copyright 2018-2020, paldier <paldier@hotmail.com>.
  * All Rights Reserved.
  * 
  * THIS SOFTWARE IS OFFERED "AS IS", AND ASUS GRANTS NO WARRANTIES OF ANY
@@ -24,6 +24,8 @@
  *
  */
 
+#ifndef __MERLINR_H__
+#define __MERLINR_H__
 extern void k3_init(void);
 extern void k3_init_done(void);
 extern int start_k3screen(void);
@@ -33,7 +35,14 @@ extern int merlinr_toolbox(int argc, char **argv);
 extern void exec_uu(void);
 #endif
 #ifdef RTCONFIG_FRS_LIVE_UPDATE
-#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_HND_ROUTER)
 extern int merlinr_firmware_check_update_main(int argc, char *argv[]);
+#endif
+#if defined(RTCONFIG_SOFTCENTER)
+enum {
+	SOFTCENTER_WAN=1,
+	SOFTCENTER_NAT,
+	SOFTCENTER_MOUNT
+};
+extern void softcenter_eval(int sig);
 #endif
 #endif

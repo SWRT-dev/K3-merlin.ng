@@ -112,7 +112,7 @@ export $(MODEL)=y
 export CFLAGS += -D$(MERLINR_NAME)
 export $(MERLINR_NAME)=y
 export CFLAGS += -DMERLINR_VER_MAJOR_$(MERLINR_VER_MAJOR)
-export $(MERLINR_VER_MAJOR)=y
+export MERLINR_VER_MAJOR_$(MERLINR_VER_MAJOR)=y
 endif
 
 export OLD_SRC=$(SRCBASE)/../src

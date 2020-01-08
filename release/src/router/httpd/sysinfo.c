@@ -129,7 +129,7 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 			char *buffer = read_whole_file("/proc/cpuinfo");
 
 			if (buffer) {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 				int count = 0;
 				char model[64];
 
@@ -153,7 +153,7 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 					    && !strcmp(variant, "0x0")
 					    && !strcmp(part, "0x100")
 					    && !strcmp(arch, "8"))
-						strcpy(model, "Cortex B53 ARMv8");
+						strcpy(model, "Cortex A53 ARMv8");
 					else
 						sprintf(model, "Implementer: %s, Part: %s, Variant: %s, Arch: %s",impl, part, variant, arch);
 				}
@@ -168,16 +168,41 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				} else {
 					strcpy(result, model);
 				}
-#else
-                                tmp = strstr(buffer, "system type");
-                                if (tmp)
-                                        sscanf(tmp, "system type  :  %[^\n]", result);
+#elif defined(RTCONFIG_LANTIQ)
+				tmp = strstr(buffer, "system type");
+				if (tmp)
+					sscanf(tmp, "system type  :  %[^\n]", result);
+				else
+					strcpy(result, "GRX500 rev 1.2");
+#elif  defined(RTCONFIG_QCA)
+				char model[64];
+
+				char impl[8], arch[8], variant[8], part[10];
+				impl[0]='\0'; arch[0]='\0'; variant[0]='\0'; part[0]='\0';
+				tmp = strstr(buffer, "CPU implementer");
+				sscanf(tmp, "CPU implementer  :  %7[^\n]s", impl);
+				tmp = strstr(buffer, "CPU architecture");
+				sscanf(tmp, "CPU architecture  :  %7[^\n]s", arch);
+				tmp = strstr(buffer, "CPU variant");
+				sscanf(tmp, "CPU variant  :  %7[^\n]s", variant);
+				tmp = strstr(buffer, "CPU part");
+				sscanf(tmp, "CPU part  :  %9[^\n]s", part);
+
+				if (!strcmp(impl, "0x41")
+				    && !strcmp(variant, "0x0")
+				    && !strcmp(part, "0xc07")
+				    && !strcmp(arch, "7"))
+					strcpy(model, "IPQ4019");
+				else
+					sprintf(model, "Implementer: %s, Part: %s, Variant: %s, Arch: %s",impl, part, variant, arch);
+				strcpy(result, model);
 #endif
 				free(buffer);
 			}
 
 		} else if(strcmp(type,"cpu.freq") == 0) {
-#ifdef HND_ROUTER
+#if defined(RTCONFIG_BCMARM) || defined(HND_ROUTER)
+#if defined(HND_ROUTER)
 			int freq = 0;
 			char *buffer;
 
@@ -195,6 +220,21 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				if (tmp)
 					sscanf(tmp,"%[^,]s", result);
 			}
+#elif defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA)		
+			int freq = 0;
+			char *buffer;
+
+			buffer = read_whole_file("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
+
+			if (buffer) {
+				sscanf(buffer, "%d", &freq);
+				free(buffer);
+				sprintf(result, "%d", (freq/1000));
+			}
+			else
+				strcpy(result, "0");//bug?
+
+#endif
 		} else if(strcmp(type,"memory.total") == 0) {
 			sysinfo(&sys);
 			sprintf(result,"%.2f",(sys.totalram/(float)MBYTES));
@@ -320,6 +360,9 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				fclose(fp);
 			}
 		} else if(strncmp(type,"conn.wifi",9) == 0) {
+#if defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK)
+			strcpy(result,"<i>off</i>");
+#elif defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 			int count, radio;
 			char command[10];
 
@@ -338,8 +381,9 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				strcpy(result,"<i>off</i>");
 			else
 				sprintf(result,"%d",count);
-
+#endif
 		} else if(strcmp(type,"driver_version") == 0 ) {
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 			system("/usr/sbin/wl ver >/tmp/output.txt");
 
 			char *buffer = read_whole_file("/tmp/output.txt");
@@ -353,12 +397,29 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				free(buffer);
 			}
 			unlink("/tmp/output.txt");
+#elif defined(RTCONFIG_LANTIQ)
+			char *buffer = read_whole_file("/rom/opt/lantiq/etc/wave_components.ver");
+
+			if (buffer) {
+				tmp = strstr(buffer, "wave_release_minor=");
+				if (tmp)
+					sscanf(tmp, "wave_release_minor=%s", result);
+				else
+					strcpy(result,"Unknow");
+
+				free(buffer);
+			}
+			unlink("/rom/opt/lantiq/etc/wave_components.ver");
+#elif defined(RTCONFIG_QCA)
+					strcpy(result,"Unknow");
+#endif
 #ifdef RTCONFIG_QTN
                 } else if(strcmp(type,"qtn_version") == 0 ) {
 
 			if (!get_qtn_version(result, sizeof(result)))
 				strcpy(result,"<unknown>");
 #endif
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 		} else if(strcmp(type,"cfe_version") == 0 ) {
 #if defined(RTCONFIG_CFEZ)
 			snprintf(result, sizeof result, "%s", nvram_get("bl_version"));
@@ -378,6 +439,7 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 				free(buffer);
 			}
 			unlink("/tmp/output.txt");
+#endif
 #endif
 		} else if(strncmp(type,"pid",3) ==0 ) {
 			char service[32];
@@ -440,6 +502,7 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 					}
 				}
 			}
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 		} else if(strcmp(type,"ethernet.rtk") == 0 ) {
 #ifdef RTCONFIG_EXT_RTL8365MB
 			int states[4];
@@ -459,8 +522,9 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 #else
 			strcpy(result, "[]");
 #endif
-
+#endif
 		} else if(strcmp(type,"ethernet") == 0 ) {
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 #ifndef HND_ROUTER
 			int len, j;
 
@@ -485,13 +549,15 @@ int ej_show_sysinfo(int eid, webs_t wp, int argc, char_t ** argv)
 
 			}
 			unlink("/tmp/output.txt");
-#else	// HND lacks robocfg support
+#else // HND lacks robocfg support
 			strcpy(result, "[]");
+#endif
+#elif defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK)
+			strcpy(result,"<i>off</i>");
 #endif
 		} else {
 			strcpy(result,"Not implemented");
 		}
-
 	}
 
 	retval += websWrite(wp, result);
@@ -553,6 +619,7 @@ unsigned int get_qtn_version(char *version, int len)
 
 unsigned int get_phy_temperature(int radio)
 {
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 	int ret = 0;
 	unsigned int *temp;
 	char buf[WLC_IOCTL_SMLEN];
@@ -574,9 +641,66 @@ unsigned int get_phy_temperature(int radio)
 		temp = (unsigned int *)buf;
 		return *temp / 2 + 20;
 	}
+#elif defined(RTCONFIG_LANTIQ)
+	int temp = 0, retval = 0;
+	char *tmp;
+	if (radio == 2) {
+		system("iwpriv wlan0 gTemperature >/tmp/output.txt");
+	} else if (radio == 5) {
+		system("iwpriv wlan2 gTemperature >/tmp/output.txt");
+	} else if (radio == 7) {
+		system("cut -c25-26 /sys/kernel/debug/ltq_tempsensor/allsensors >/tmp/output.txt");
+	} else {
+		return retval;
+	}
+	char *buffer = read_whole_file("/tmp/output.txt");
+
+	if (buffer) {
+		if (radio == 7) {
+			sscanf(buffer, "%d", &temp);
+			free(buffer);
+			retval = temp;
+		} else {
+			tmp = strstr(buffer, "gTemperature:");
+			if (tmp) {
+				sscanf(tmp, "gTemperature:%d", &temp);
+				free(buffer);			
+				retval = temp;
+			} else {
+				free(buffer);
+				retval = 0;
+			}
+		}
+	} else { retval = 99; }
+	unlink("/tmp/output.txt");
+	return retval;
+#elif defined(RTCONFIG_QCA)
+	int temp = 0, retval = 0;
+	if (radio == 2) {
+		system("thermaltool -i wifi0 -get |grep temperature | awk '{print $3}' >/tmp/output.txt");
+	} else if (radio == 5) {
+		system("thermaltool -i wifi1 -get |grep temperature | awk '{print $3}' >/tmp/output.txt");
+	} else if (radio == 7) {
+		retval = 0;
+	} else {
+		return retval;
+	}
+	char *buffer = read_whole_file("/tmp/output.txt");
+	if (buffer) {
+		if (radio != 7) {
+			sscanf(buffer, " %d,", &temp);
+			free(buffer);			
+			retval = temp;
+		}
+	} else { retval = 0; }
+	unlink("/tmp/output.txt");
+	return retval;
+#elif defined(RTCONFIG_RALINK)
+    return 0;
+#endif
 }
 
-
+#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
 unsigned int get_wifi_clients(int unit, int querytype)
 {
 	char *name, prefix[8];
@@ -736,3 +860,60 @@ void GetPhyStatus_rtk(int *states)
 	states[3] = (pS.link[o[3]] == 1) ? (pS.speed[o[3]] == 2) ? 1000 : 100 : 0;
 }
 #endif
+#endif
+
+#if defined(RTCONFIG_LANTIQ)
+int ej_kool_info(int eid, webs_t wp, int argc, char_t ** argv)
+{
+	char *type;
+	char result[2048];
+	int retval = 0;
+	strcpy(result,"None");
+
+	if (ejArgs(argc, argv, "%s", &type) < 1) {
+		websError(wp, 400, "Insufficient args\n");
+		return retval;
+	}
+	if (type) {
+		if (strcmp(type,"version") == 0) {
+			if (nvram_get_int("adblock_mode") == 0) {
+				char pathad[2048];
+				sprintf(pathad,"/tmp/mnt/%s/adbyby/adbyby", nvram_get("k3c_disk"));
+				//if (!d_exists("/tmp/mnt/%s/adbyby"))
+				if((access(pathad, F_OK)) != -1) {
+					eval("/tmp/mnt/%s/adbyby/adbyby", "--version|awk '{print $3}'|awk -F '(' '{print $1}' > /tmp/kool.ver 2>/dev/null", nvram_get("k3c_disk"));
+					char *buffer = read_whole_file("/tmp/kool.ver");
+
+					if (buffer) {
+						sscanf(buffer, "%s", result);
+						free(buffer);
+					} else {
+						strcpy(result,"None");
+					}
+					unlink("/tmp/kool.ver");
+				}
+				else
+					strcpy(result,"None");
+			} else {
+				if((access("/tmp/koolproxy/koolproxy", F_OK) != -1)) {
+					eval("/tmp/koolproxy/koolproxy", "-v > /tmp/kool.ver 2>/dev/null");
+					char *buffer = read_whole_file("/tmp/kool.ver");
+
+					if (buffer) {
+						sscanf(buffer, "%s", result);
+						free(buffer);
+					} else {
+						strcpy(result,"None");
+					}
+					unlink("/tmp/kool.ver");
+				}
+				else
+					strcpy(result,"None");
+			}
+		}
+	}
+	retval += websWrite(wp, result);
+	return retval;
+}
+#endif
+

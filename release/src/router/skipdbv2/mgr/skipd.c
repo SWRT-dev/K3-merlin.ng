@@ -1156,7 +1156,6 @@ static void server_open(skipd_server* server) {
     skipd_log(SKIPD_DEBUG, "use path:%s db:%d",server->db_path,server->curr_db);
 #endif
 	server->curr_db = 0;
-    skipd_log(SKIPD_DEBUG, "use path:%s db:%d",server->db_path,server->curr_db);
     sprintf(real_path, "%s/%d", server->db_path, server->curr_db);
     server->db = SkipDB_new();
     SkipDB_setPath_(server->db, real_path);
@@ -1192,7 +1191,6 @@ static void server_switch(skipd_server* server) {
 
     server->db = other;
     server->curr_db = n2;
-    skipd_log(SKIPD_DEBUG, "switch|use path:%s db:%d",server->db_path,server->curr_db);
     SkipDB_delete(tmp);
     SkipDB_free(tmp);
 }
@@ -1498,10 +1496,9 @@ int main(int argc, char **argv)
     //sync at exit
     SkipDB_beginTransaction(server->db);
     SkipDB_commitTransaction(server->db);
-
+	
     SkipDB_close(server->db);
     skipd_log(SKIPD_DEBUG, "exit..\n");
-
     // This point is only ever reached if the loop is manually exited
     close(server->fd);
     return EXIT_SUCCESS;

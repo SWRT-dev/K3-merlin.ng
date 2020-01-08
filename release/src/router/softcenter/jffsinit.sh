@@ -1,7 +1,9 @@
 #!/bin/sh
 
-VERSIONCMP=versioncmp
 
+SPACE_AVAL=$(df|grep jffs | awk '{print $2}')
+
+if [ $SPACE_AVAL -gt 51200 -a "$(nvram get sc_mount)" == 0 ];then
 if [ ! -d /jffs/softcenter ]; then
 	mkdir -p /jffs/softcenter
 	cp -rf /rom/etc/softcenter/* /jffs/softcenter/
@@ -16,6 +18,43 @@ mkdir -p /jffs/softcenter/ss
 mkdir -p /jffs/softcenter/lib
 mkdir -p /jffs/configs/dnsmasq.d
 mkdir -p /jffs/softcenter/configs
+else
+if [ "$(nvram get sc_mount)" == 1 ];then
+	mdisk=`nvram get sc_disk`
+	usb_disk="/tmp/mnt/$mdisk"
+	if [ "$(nvram get productid)" == "BLUECAVE" ];then
+		[ -n "$(mount |grep sda1 |grep tfat)" ] && logger "Unsupport TFAT!" && exit 1
+	fi
+	if [ ! -e "$usb_disk" ]; then
+		nvram set sc_mount="0"
+		nvram commit
+		logger "没有找到可用的USB磁盘！" 
+		exit 1
+	else
+		if [ ! -f "/jffs/softcenter/webs/Main_Soft_center.asp" ] ;then
+			mkdir -p /jffs/softcenter
+			mkdir -p $usb_disk/bin
+			mkdir -p $usb_disk/res
+			mkdir -p $usb_disk/webs
+			mkdir -p $usb_disk/scripts
+			mkdir -p /jffs/softcenter/etc
+			mkdir -p /jffs/softcenter/init.d
+			mkdir -p /jffs/softcenter/configs
+			mkdir -p /jffs/softcenter/ss
+			mkdir -p /jffs/softcenter/lib
+			mkdir -p /jffs/softcenter/perp
+			ln -sf $usb_disk/bin /jffs/softcenter/bin
+			ln -sf $usb_disk/res /jffs/softcenter/res
+			ln -sf $usb_disk/webs /jffs/softcenter/webs
+			ln -sf $usb_disk/scripts /jffs/softcenter/scripts
+		fi
+	fi
+else
+	logger "当前jffs分区剩余空间不足！"
+	logger "退出安装！"
+	exit 1
+fi
+fi
 cp -rf /rom/etc/softcenter/scripts/* /jffs/softcenter/scripts/
 cp -rf /rom/etc/softcenter/res/* /jffs/softcenter/res/
 cp -rf /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
@@ -26,7 +65,6 @@ rm -rf /jffs/softcenter/ROG
 fi
 ln -sf /jffs/softcenter/bin/base64_encode /jffs/softcenter/bin/base64_decode
 ln -sf /jffs/softcenter/scripts/ks_app_install.sh /jffs/softcenter/scripts/ks_app_remove.sh
-ln -sf  /jffs/softcenter/bin/softcenter.sh /jffs/.asusrouter
 chmod 755 /jffs/softcenter/scripts/*.sh
 chmod 755 /jffs/softcenter/configs/*.sh
 chmod 755 /jffs/softcenter/bin/*
@@ -36,50 +74,28 @@ chmod 755 /jffs/softcenter/perp/.boot/*
 chmod 755 /jffs/softcenter/perp/.control/*
 echo 1.2.0 > /jffs/softcenter/.soft_ver
 dbus set softcenter_firmware_version=`nvram get extendno|cut -d "_" -f2|cut -d "-" -f1|cut -c2-6`
-dbus set softcenter_arch=`uname -m`
+ARCH=`uname -m`
+KVER=`uname -r`
+if [ "$ARCH" == "armv7l" ]; then
+	if [ "$KVER" == "4.1.52" -o "$KVER" == "4.1.49" ];then
+		dbus set softcenter_arch="armng"
+	elif [ "$KVER" == "3.14.77" ];then
+		dbus set softcenter_arch="armqca"
+	else
+		dbus set softcenter_arch="$ARCH"
+	fi
+else
+	dbus set softcenter_arch="$ARCH"
+fi
+
 dbus set softcenter_api=`cat /jffs/softcenter/.soft_ver`
 if [ "`nvram get model`" == "GT-AC5300" ] || [ "`nvram get model`" == "GT-AC2900" ];then
 	cp -rf /rom/etc/softcenter/ROG/webs/* /jffs/softcenter/webs/
 	cp -rf /rom/etc/softcenter/ROG/res/* /jffs/softcenter/res/
 fi
+nvram set sc_installed=1
 # creat wan-start file
 mkdir -p /jffs/scripts
-
-if [ ! -f "/jffs/scripts/wan-start" ];then
-	cat > /jffs/scripts/wan-start <<-EOF
-	#!/bin/sh
-	/jffs/softcenter/bin/softcenter-wan.sh start
-	EOF
-	chmod +x /jffs/scripts/wan-start
-else
-	STARTCOMAND1=`cat /jffs/scripts/wan-start | grep -c "/jffs/softcenter/bin/softcenter-wan.sh start"`
-	[ "$STARTCOMAND1" -gt "1" ] && sed -i '/softcenter-wan.sh/d' /jffs/scripts/wan-start && sed -i '1a /jffs/softcenter/bin/softcenter-wan.sh start' /jffs/scripts/wan-start
-	[ "$STARTCOMAND1" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-wan.sh start' /jffs/scripts/wan-start
-fi
-
-if [ ! -f "/jffs/scripts/nat-start" ];then
-	cat > /jffs/scripts/nat-start <<-EOF
-	#!/bin/sh
-	/jffs/softcenter/bin/softcenter-net.sh start_nat
-	EOF
-	chmod +x /jffs/scripts/nat-start
-else
-	STARTCOMAND2=`cat /jffs/scripts/nat-start | grep -c "/jffs/softcenter/bin/softcenter-net.sh start"`
-	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-net.sh/d' /jffs/scripts/nat-start && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start_nat' /jffs/scripts/nat-start
-	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-net.sh start_nat' /jffs/scripts/nat-start
-fi
-
-if [ ! -f "/jffs/scripts/post-mount" ];then
-	cat > /jffs/scripts/post-mount <<-EOF
-	#!/bin/sh
-	/jffs/softcenter/bin/softcenter-mount.sh start
-	EOF
-	chmod +x /jffs/scripts/post-mount
-else
-	STARTCOMAND2=`cat /jffs/scripts/post-mount | grep -c "/jffs/softcenter/bin/softcenter-mount.sh start"`
-	[ "$STARTCOMAND2" -gt "1" ] && sed -i '/softcenter-mount.sh/d' /jffs/scripts/post-mount && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
-	[ "$STARTCOMAND2" == "0" ] && sed -i '1a /jffs/softcenter/bin/softcenter-mount.sh start' /jffs/scripts/post-mount
-fi
 
 # creat profile file
 if [ ! -f /jffs/configs/profile.add ]; then
@@ -92,4 +108,5 @@ export PERP_BASE=/softcenter/perp
 
 EOF
 fi
+
 
