@@ -63,13 +63,6 @@ void k3_init()
 		nvram_set("model", "RT-AC3100");
 	if (!nvram_get("modelname"))
 		nvram_set("modelname", "K3");
-#if defined(MERLINR_VER_MAJOR_B)
-	if (!nvram_get("modelmajor"))
-		nvram_set("modelmajor", "B");
-#elif defined(MERLINR_VER_MAJOR_R)
-	if (!nvram_get("modelmajor"))
-		nvram_set("modelmajor", "R");
-#endif
 	if (!nvram_get("productid"))
 		nvram_set("productid", "RT-AC3100");
 	if (!nvram_get("bootflags"))
@@ -848,6 +841,11 @@ void k3_init()
 		nvram_set("1:tssifloor5g", "0x0,0x3ff,0x335,0x318");
 		nvram_commit();
 	}
+#if defined(RTCONFIG_SOFTCENTER)
+	nvram_set("sc_wan_sig", "0");
+	nvram_set("sc_nat_sig", "0");
+	nvram_set("sc_mount_sig", "0");
+#endif
 }
 
 int k3screena(){
@@ -1127,17 +1125,23 @@ void k3_insmod(){
 void k3_init_done(){
 	_dprintf("############################ k3 init done #################################\n");
 #ifdef RTCONFIG_SOFTCENTER
-	if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh")){
+	if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh") && nvram_match("sc_mount","0")){
 		doSystem("/usr/sbin/jffsinit.sh &");
 		logmessage("软件中心", "开始安装......");
 		logmessage("软件中心", "1分钟后完成安装");
 		_dprintf("....softcenter ok....\n");
+	} else if (f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh") && nvram_match("sc_mount","0"))
+		nvram_set("sc_installed","1");
+	if(f_exists("/jffs/.asusrouter")){
+		unlink("/jffs/.asusrouter");
+		doSystem("sed -i '/softcenter-wan.sh/d' /jffs/scripts/wan-start");
+		doSystem("sed -i '/softcenter-net.sh/d' /jffs/scripts/nat-start");
+		doSystem("sed -i '/softcenter-mount.sh/d' /jffs/scripts/post-mount");
 	}
 #endif
-	if(!cfe_nvram_get("bl_version"))
-		logmessage("K3", "!!!WARNING!!! found phicomm cfe");
 
 	//移除这段代码会造成部分人变真砖，并且共享cfe也会造成变砖
+	//patch cfe,don't remove this
 	k3_nvram_patch();
 	if(!cfe_nvram_get("uuid")){
 		doSystem("nvram set uuid=`cat /proc/sys/kernel/random/uuid`");
@@ -1145,23 +1149,22 @@ void k3_init_done(){
 		sleep(2);
 	} else
 		nvram_set("uuid",cfe_nvram_get("uuid"));
-	//官方驱动有bug，制造bug解决官方bug
-	//if(cfe_nvram_get("territory_code") && strcmp(cfe_nvram_get("territory_code"), "US/01")!=0){
-		//k3_nvram_set("territory_code","US/01");
-		//nvram_set("location_code", "US");
-	//}
+
+	if(!cfe_nvram_get("territory_code") || !strcmp(cfe_nvram_get("territory_code"), "US/01")){
+		k3_nvram_set("territory_code","US/01");
+		nvram_set("location_code", "US");
+	}
 	k3_insmod();
 	logmessage("K3", "uuid:%s", nvram_get("uuid"));
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 
 	start_k3screen();
 	//华硕似乎实现了aimesh的webui和aimesh核心剥离，从而实现382和384共用一个webui，384则强制显示aimesh界面，禁掉它，防止误导
-	if( !pids("cfg_server") && !pids("cfg_client") ){
-		nvram_set_int("merlinr_amas",0);
-		del_rc_support("amasRouter");
-		del_rc_support("amas");
-	}else
-		nvram_set_int("merlinr_amas",1);
+	//disable aimesh webui
+#if defined(MERLINR_VER_MAJOR_B)
+	del_rc_support("amasRouter");
+	del_rc_support("amas");
+#endif
 	nvram_commit();
 }
 
