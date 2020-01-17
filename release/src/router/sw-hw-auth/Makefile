@@ -18,6 +18,9 @@ else
 TARGET_MODEL = $(subst -,,$(subst +,P,$(BUILD_NAME)))
 endif
 CFLAGS  += -D$(TARGET_MODEL)
+CFLAGS  += -D$(MERLINR_NAME)
+CFLAGS += -DMERLINR_VER_MAJOR_$(MERLINR_VER_MAJOR)
+CFLAGS  += -I$(TOP)/openssl/include
 
 TARGET_LIBS = -L$(TOP)/openssl -lssl -lcrypto -ldl -lm
 AUTHLIB_LIBS = -L$(TOP)/openssl -lssl -lcrypto -ldl -lm

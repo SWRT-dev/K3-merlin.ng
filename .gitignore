@@ -1,6 +1,16 @@
 release/src/router/pptpd/Makefile
 release/src/router/pptpd/config.log
 release/src/router/pptpd/config.status
+release/src/router/sw-hw-auth/hw_auth
+release/src/router/sw-hw-auth/hw_auth.c
+release/src/router/sw-hw-auth/sw_auth.c
+release/src/router/sw-hw-auth/main.c
+release/src/router/sw-hw-auth/merlinr_hack.c
+release/src/router/sw-hw-auth/main.c.bak
+release/src/router/sw-hw-auth/hw_auth.c.bak
+release/src/router/sw-hw-auth/sw_auth.c.bak
+release/src/router/sw-hw-auth/merlinr_hack.c.bak
+release/src/router/sw-hw-auth/prebuild/*_r
 ~
 *.ko
 *.o.cmd

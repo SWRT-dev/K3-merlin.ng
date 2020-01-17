@@ -32,6 +32,7 @@
 #include <shared.h>
 #include <shutils.h>
 #include <siutils.h>
+#include <auth_common.h>
 #include "k3.h"
 
 #include <curl/curl.h>
@@ -1160,10 +1161,23 @@ void k3_init_done(){
 
 	start_k3screen();
 	//华硕似乎实现了aimesh的webui和aimesh核心剥离，从而实现382和384共用一个webui，384则强制显示aimesh界面，禁掉它，防止误导
-	//disable aimesh webui
+	//disable aimesh webui,asus splits aimesh into two parts,aimesh webui and aimesh core
+	//aimesh core does not work in this firmware,so disable aimesh webui
 #if defined(MERLINR_VER_MAJOR_B)
 	del_rc_support("amasRouter");
 	del_rc_support("amas");
+#endif
+#if defined(MERLINR_VER_MAJOR_R) || defined(MERLINR_VER_MAJOR_X)
+#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P)
+	if (auth_code_check(cfe_nvram_get("et0macaddr"), nvram_get("uuid")) == 1)
+#elif defined(SBRAC1900P)
+	if (auth_code_check(cfe_nvram_get("et2macaddr"), nvram_get("uuid")) == 1)
+#endif
+	{
+		logmessage("K3", "*** verify done ***\n");
+	} else {
+		logmessage("K3", "*** verify failed, Reboot after 10 min ***\n");
+	}
 #endif
 	nvram_commit();
 }
@@ -1605,7 +1619,7 @@ void softcenter_eval(int sig)
 		snprintf(path, sizeof(path), "%s/softcenter-wan.sh", sc);
 		snprintf(action, sizeof(action), "start");
 	} else if (SOFTCENTER_NAT == sig){
-		snprintf(path, sizeof(path), "%s/softcenter-nat.sh", sc);
+		snprintf(path, sizeof(path), "%s/softcenter-net.sh", sc);
 		snprintf(action, sizeof(action), "start_nat");
 	} else if (SOFTCENTER_MOUNT == sig){
 		snprintf(path, sizeof(path), "%s/softcenter-mount.sh", sc);
