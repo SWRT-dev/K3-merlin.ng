@@ -476,8 +476,8 @@ function update_sysinfo(e){
 						<td id="rc_td"></td>
 					</tr>
 					<tr>
-						<th><#General_x_SystemUpTime_itemname#></th>
-						<td><span id="boot_days"></span> <#Day#> <span id="boot_hours"></span> <#Hour#> <span id="boot_minutes"></span> <#Minute#> <span id="boot_seconds"></span> <#Second#></td>
+						<th>System Up Time</th>
+						<td><span id="boot_days"></span> Day(s) <span id="boot_hours"></span> Hour(s) <span id="boot_minutes"></span> Minute(s) <span id="boot_seconds"></span> Second(s)</td>
 					</tr>
 
 					<tr>
