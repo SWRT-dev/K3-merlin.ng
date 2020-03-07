@@ -1400,6 +1400,10 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 	nvram_set("webs_state_error", "0");
 	nvram_set("webs_state_odm", "0");
 	nvram_set("webs_state_url", "");
+#ifdef RTCONFIG_AMAS
+	nvram_set("cfg_check", "0");
+	nvram_set("cfg_upgrade", "0");
+#endif
 	unlink("/tmp/webs_upgrade.log");
 	unlink("/tmp/wlan_update.txt");
 	unlink("/tmp/release_note0.txt");
@@ -1413,7 +1417,7 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 	download=curl_download_file(curlhandle , url,localupdate,8,3);
 	//system(log);
 	FWUPDATE_DBG("---- update dl_path_info for general %s/%s ----", serverurl, serverupdate);
-	_dprintf("%d\n",download);
+	//_dprintf("%d\n",download);
 	if(download)
 	{
 		fpupdate = fopen(localupdate, "r");
@@ -1440,7 +1444,10 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 						nvram_set("webs_state_REQinfo", info);
 						nvram_set("webs_state_flag", "1");
 						nvram_set("webs_state_update", "1");
-
+#ifdef RTCONFIG_AMAS
+//						nvram_set("cfg_check", "9");
+//						nvram_set("cfg_upgrade", "0");
+#endif
 						memset(url,'\0',sizeof(url));
 						memset(log,'\0',sizeof(log));
 						char releasenote_file[100];
@@ -1611,3 +1618,4 @@ void softcenter_eval(int sig)
 	_eval(eval_argv, NULL, 0, &pid);
 }
 #endif
+

@@ -6064,13 +6064,15 @@ static void softcenter_sig_check()
 	}
 }
 #endif
+#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P)
 #if defined(MERLINR_VER_MAJOR_R) || defined(MERLINR_VER_MAJOR_X)
 static void check_auth_code()
 {
-#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P)
 	static int i;
 	if (i==0)
-#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P)
+#if defined(K3C)
+		i=auth_code_check(nvram_get("et0macaddr"), nvram_get("uuid"));
+#elif defined(K3) || defined(R8000P) || defined(R7900P)
 		i=auth_code_check(cfe_nvram_get("et0macaddr"), nvram_get("uuid"));
 #elif defined(SBRAC1900P)
 		i=auth_code_check(cfe_nvram_get("et2macaddr"), nvram_get("uuid"));
@@ -6082,8 +6084,8 @@ static void check_auth_code()
 		if (count > 21)
 			doSystem("reboot");
 	}
-#endif
 }
+#endif
 #endif
 #ifdef RTCONFIG_NEW_USER_LOW_RSSI
 void roamast_check()
