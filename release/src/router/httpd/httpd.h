@@ -32,6 +32,7 @@
 #include <dmalloc.h>
 #endif
 #include <rtconfig.h>
+#include "merlinr.h"
 
 /* DEBUG DEFINE */
 #define HTTPD_DEBUG             "/tmp/HTTPD_DEBUG"
@@ -470,8 +471,5 @@ extern void do_feedback_mail_cgi(char *url, FILE *stream);
 extern void do_dfb_log_file(char *url, FILE *stream);
 extern int is_amas_support(void);
 extern void do_set_fw_path_cgi(char *url, FILE *stream);
-extern int inet_raddr6_pton(const char *src, void *dst, void *buf);
-extern void get_ipv6_client_info(void);
-extern void get_ipv6_client_list(void);
 #endif /* _httpd_h_ */
 

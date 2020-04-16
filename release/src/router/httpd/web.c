@@ -199,9 +199,6 @@ extern int ssl_stream_fd;
 
 #include <iboxcom.h>
 #include "sysinfo.h"
-#if defined(BCMARM)
-#include "data_arrays.h"
-#endif
 #ifdef RTCONFIG_SOFTCENTER
 #include "dbapi.h"
 #endif
@@ -295,6 +292,7 @@ extern void unescape(char *s);
 void response_nvram_config(webs_t wp, char *config_name, json_object *res, json_object *root);
 
 extern int get_lang_num();
+extern int get_lang_num_merlinr();
 extern int ej_get_iptvSettings(int eid, webs_t wp, int argc, char_t **argv);
 extern int config_iptv_vlan(char *isp);
 
@@ -1748,6 +1746,9 @@ int skip_log(char *message)
 	if(strstr(message, "mtdump") != NULL) return 1;
 	if(strstr(message, "hostapd") != NULL) return 1;
 	if(strstr(message, "mcastd") != NULL) return 1;
+#endif
+#ifdef RTCONFIG_HND_ROUTER_AX
+	if(strstr(message, "own address as source") != NULL) return 1;
 #endif
 	return 0;
 }
@@ -6306,9 +6307,7 @@ static int compare_back(FILE *fp, int current_line, char *buffer);
 static int check_mac_previous(char *mac);
 static char *value(FILE *fp, int line, int token);
 static void find_hostname_by_mac(char *mac, char *hostname);
-#if !defined(BCMARM)
 static void get_ipv6_client_info();
-#endif
 static int total_lines = 0;
 
 /* Init File and clear the content */
@@ -6492,11 +6491,8 @@ static void find_hostname_by_mac(char *mac, char *hostname)
 END:
 	strcpy(hostname, "");
 }
-#if defined(BCMARM)
-void get_ipv6_client_info()
-#else
+
 static void get_ipv6_client_info()
-#endif
 {
 	FILE *fp;
 	char buffer[128], ipv6_addr[128], mac[32];
@@ -6537,11 +6533,7 @@ static void get_ipv6_client_info()
 	fclose(fp);
 }
 
-#if defined(BCMARM)
-void get_ipv6_client_list()
-#else
 static void get_ipv6_client_list(void)
-#endif
 {
 	FILE *fp;
 	int line_index = 1;
@@ -6766,11 +6758,7 @@ const static struct {
 };
 
 #ifdef RTCONFIG_IPV6
-#if defined(BCMARM)
-int inet_raddr6_pton(const char *src, void *dst, void *buf)
-#else
 static int inet_raddr6_pton(const char *src, void *dst, void *buf)
-#endif
 {
 	char *sptr = (char *) src;
 	char *dptr = buf;
@@ -7459,6 +7447,12 @@ static int check_internetState(char *timeList) {
 				}
 				else if(week_start < system_week && week_end >= system_week) {
 					if(hour_end > system_hour) {
+						state = 1;
+						break;
+					}
+				}
+				else if(week_start == 0 && week_end == 0 && system_week == 7) {//for sunday
+					if(hour_start <= system_hour && hour_end > system_hour) {
 						state = 1;
 						break;
 					}
@@ -10600,6 +10594,7 @@ static int ej_usb_is_exist(int eid, webs_t wp, int argc, char_t **argv){
 #endif
 
 int ej_shown_language_css(int eid, webs_t wp, int argc, char **argv){
+	struct language_table *pLang = NULL;
 	char lang[4];
 	int len;
 #ifdef RTCONFIG_AUTODICT
@@ -10620,7 +10615,7 @@ int ej_shown_language_css(int eid, webs_t wp, int argc, char **argv){
 	memset(lang, 0, 4);
 	strcpy(lang, nvram_safe_get("preferred_lang"));
 
-	if(get_lang_num() == 1){
+	if(get_lang_num_merlinr() == 1){
 		websWrite(wp, "<li style=\"visibility:hidden;\"><dl><a href=\"#\"><dt id=\"selected_lang\"></dt></a>\\n");
 	}
 	else{
@@ -10646,7 +10641,7 @@ int ej_shown_language_css(int eid, webs_t wp, int argc, char **argv){
 				memset(target, 0, sizeof(target));
 				strncpy(target, follow_info, len);
 
-				if (check_lang_support(key) && strcmp(key,lang))
+					if (check_lang_support_merlinr(key) && strcmp(key,lang))
 					websWrite(wp, "<dd><a onclick=\"submit_language(this)\" id=\"%s\">%s</a></dd>\\n", key, target);
 			}
 			else
@@ -11910,7 +11905,7 @@ wps_finish:
 #endif
 			snprintf(event_msg, sizeof(event_msg), HTTPD_GENERIC_MSG, EID_HTTPD_FW_CHECK);
 #if defined(MERLINR_VER_MAJOR_B)
-			system("/usr/sbin/webs_update.sh");
+			doSystem("/usr/sbin/webs_update.sh");
 		}
 #endif
 		else if (!strcmp(action_mode, "firmware_upgrade"))
@@ -11919,7 +11914,7 @@ wps_finish:
 #endif
 			snprintf(event_msg, sizeof(event_msg), HTTPD_GENERIC_MSG, EID_HTTPD_FW_UPGRADE);
 #if defined(MERLINR_VER_MAJOR_B)
-			system("/usr/sbin/webs_upgrade.sh");
+			doSystem("/usr/sbin/webs_upgrade.sh");
 		}
 #endif
 		if (strlen(event_msg))
@@ -12222,7 +12217,7 @@ do_upgrade_post(char *url, FILE *stream, int len, char *boundary)
 	int count, cnt;
 	long filelen;
 	int offset;
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P)
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20)
 	int checkname=0;
 #endif
 #ifndef RTCONFIG_SMALL_FW_UPDATE
@@ -12272,11 +12267,17 @@ do_upgrade_post(char *url, FILE *stream, int len, char *boundary)
 #elif defined(SBRAC3200P)
 		if (strstr(buf, "SBRAC3200P"))
 			checkname=1;
+#elif defined(R8000P) || defined(R7900P)
+		if (strstr(buf, "R7900P")||strstr(buf, "R8000P"))
+			checkname=1;
+#elif  defined(RAX20)
+		if (strstr(buf, "RAX20"))
+			checkname=1;
 #endif
 		if (!strncasecmp(buf, "Content-Disposition:", 20) && strstr(buf, "name=\"file\""))
 			break;
 	}
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P)
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20)
 	if(checkname==0)
 		goto err;
 #endif
@@ -24535,7 +24536,7 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 	struct json_object *wanLanStatus = NULL;
 	struct json_object *wanLanLinkSpeed = NULL;
 	struct json_object *wanLanCount = NULL;
-#if defined(K3) || defined(R7900P)
+#if defined(K3) || defined(R8000P) || defined(R7900P)
 	fp = popen("rc Get_PhyStatus", "r");
 #else
 	fp = popen("ATE Get_WanLanStatus", "r");
@@ -25336,24 +25337,6 @@ struct ej_handler ej_handlers[] = {
 	{ "radio_status", ej_radio_status},
 	{ "asus_sysinfo", ej_sysinfo},
 	{ "sysinfo", ej_show_sysinfo},
-#if defined(BCMARM)	
-	{ "iptraffic", ej_iptraffic},
-	{ "iptmon", ej_iptmon},
-	{ "ipt_bandwidth", ej_ipt_bandwidth},
-#ifdef RTCONFIG_IPV6
-#ifdef RTCONFIG_IGD2
-	{ "ipv6_pinholes",  ej_ipv6_pinhole_array},
-#endif
-	{ "get_ipv6net_array", ej_lan_ipv6_network_array},
-#endif
-	{ "get_leases_array", ej_get_leases_array},
-	{ "get_vserver_array", ej_get_vserver_array},
-	{ "get_upnp_array", ej_get_upnp_array},
-	{ "get_route_array", ej_get_route_array},
-	{ "get_tcclass_array", ej_tcclass_dump_array},
-#else
-	{ "kool_info", ej_kool_info},
-#endif
 #ifdef RTCONFIG_OPENVPN
 	{ "vpn_server_get_parameter", ej_vpn_server_get_parameter},
 	{ "vpn_client_get_parameter", ej_vpn_client_get_parameter},
