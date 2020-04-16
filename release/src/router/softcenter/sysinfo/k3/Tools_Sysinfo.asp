@@ -222,11 +222,11 @@ function show_etherstate(){
 				continue;
 			} else {
 				if (port == "0")
-					port_array.unshift(["LAN2 ", (line[7] & 0xFFF), state2, devicename]);
+					port_array.push(["LAN2 ", (line[7] & 0xFFF), state2, devicename]);
 				else if (port == "1")
 					port_array.unshift(["LAN1 ", (line[7] & 0xFFF), state2, devicename]);
 				else if (port == "2")
-					port_array.unshift(["LAN3 ", (line[7] & 0xFFF), state2, devicename]);
+					port_array.push(["LAN3 ", (line[7] & 0xFFF), state2, devicename]);
 			}
 			} else {
 			if (port == "8") {		// CPU Port
