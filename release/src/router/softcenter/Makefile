@@ -64,6 +64,8 @@ endif
 	install -m 0755 softcenter/bin/softcenter-mount.sh $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/softcenter-net.sh $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/softcenter-wan.sh $(INSTALLDIR)/rom/etc/softcenter/bin
+	install -m 0755 softcenter/bin/softcenter-services.sh $(INSTALLDIR)/rom/etc/softcenter/bin
+	install -m 0755 softcenter/bin/softcenter-unmount.sh $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/perpboot $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/perpctl $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/perpd $(INSTALLDIR)/rom/etc/softcenter/bin
@@ -75,6 +77,7 @@ endif
 	install -m 0755 softcenter/bin/tinylog $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/bin/versioncmp $(INSTALLDIR)/rom/etc/softcenter/bin
 	install -m 0755 softcenter/res/icon-default.png $(INSTALLDIR)/rom/etc/softcenter/res
+	install -m 0755 softcenter/res/merlinr.png $(INSTALLDIR)/rom/etc/softcenter/res
 	install -m 0755 softcenter/res/upgrade.png $(INSTALLDIR)/rom/etc/softcenter/res
 	install -m 0755 softcenter/res/softcenter.js $(INSTALLDIR)/rom/etc/softcenter/res
 	install -m 0755 softcenter/res/softcenter.css $(INSTALLDIR)/rom/etc/softcenter/res
@@ -125,7 +128,6 @@ ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 endif
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
-
 ifeq ($(HND_ROUTER), y)
 	install -m 0755 i18n.js $(INSTALLDIR)/www/www/js
 	install -m 0755 scCN.json $(INSTALLDIR)/www/www/res
@@ -138,6 +140,9 @@ else
 	install -m 0755 scEN.json $(INSTALLDIR)/www/res
 	install -m 0755 scTW.json $(INSTALLDIR)/www/res
 	install -m 0755 Softcenter.asp $(INSTALLDIR)/www
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), SBRAC1900P SBRAC3200P))
+	install -m 0755 key.asp $(INSTALLDIR)/www
+endif
 endif
 ifeq ($(or $(RTCONFIG_LANTIQ),$(RTCONFIG_QCA),$(RTCONFIG_RALINK)),y)
 	install -m 0755 sysinfo/lantiq/Tools_Sysinfo.asp $(INSTALLDIR)/www/
