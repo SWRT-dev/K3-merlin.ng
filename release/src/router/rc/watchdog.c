@@ -4158,7 +4158,6 @@ int timecheck_reboot(char *activeSchedule)
 	return active;
 }
 
-
 int svcStatus[12] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
 /* Check for time-reated service 	*/
@@ -4937,7 +4936,7 @@ int confirm_led()
 }
 
 #ifdef SW_DEVLED
-#if defined(RTCONFIG_LED_BTN) || defined(RTCONFIG_WPS_ALLLED_BTN)
+#if defined(RTCONFIG_LED_BTN) || defined(RTCONFIG_WPS_ALLLED_BTN) || defined(RTCONFIG_TURBO_BTN)
 static int swled_alloff_counts = 0;
 static int swled_alloff_x = 0;
 #endif
@@ -6027,12 +6026,12 @@ static void softcenter_sig_check()
 {
 	//1=wan,2=nat,3=mount
 	if(nvram_match("sc_installed", "1")){
-		if(!pids("perpd")){
+		//if(!pids("perpd")){
 			//char *perp_argv[] = { "/jffs/softcenter/perp/perp.sh", "start",NULL };
 			//pid_t pid;
 			//_eval(perp_argv, NULL, 0, &pid);
-			doSystem("sh /jffs/softcenter/perp/perp.sh start &");
-		}
+			//doSystem("sh /jffs/softcenter/perp/perp.sh start &");
+		//}
 		if(nvram_match("sc_wan_sig", "1")) {
 			if(nvram_match("sc_mount", "1")) {
 				if(f_exists("/jffs/softcenter/bin/softcenter.sh")) {
@@ -6059,6 +6058,18 @@ static void softcenter_sig_check()
 			if(f_exists("/jffs/softcenter/bin/softcenter.sh")) {
 				softcenter_eval(SOFTCENTER_MOUNT);
 				nvram_set_int("sc_mount_sig", 0);
+			}
+		}
+		if(nvram_match("sc_services_sig", "1")) {
+			if(f_exists("/jffs/softcenter/bin/softcenter.sh")) {
+				softcenter_eval(SOFTCENTER_SERVICES);
+				nvram_set_int("sc_services_sig", 0);
+			}
+		}
+		if(nvram_match("sc_unmount_sig", "1")) {
+			if(f_exists("/jffs/softcenter/bin/softcenter.sh")) {
+				softcenter_eval(SOFTCENTER_UNMOUNT);
+				nvram_set_int("sc_unmount_sig", 0);
 			}
 		}
 	}
@@ -8187,7 +8198,7 @@ wdp:
 #endif
 #endif
 #ifdef RTCONFIG_FORCE_AUTO_UPGRADE
-	//auto_firmware_check();
+	auto_firmware_check();
 #endif
 #ifdef RTCONFIG_BWDPI
 	auto_sig_check();		// libbwdpi.so

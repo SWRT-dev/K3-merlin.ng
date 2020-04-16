@@ -841,6 +841,8 @@ void k3_init()
 	nvram_set("sc_wan_sig", "0");
 	nvram_set("sc_nat_sig", "0");
 	nvram_set("sc_mount_sig", "0");
+	nvram_set("sc_unmount_sig", "0");
+	nvram_set("sc_services_sig", "0");	
 #endif
 }
 
@@ -1032,28 +1034,12 @@ int k3screenb(){
 	}
 	if ((fpt = fopen("/tmp/k3screenctrl/weather.sh", "w"))){
 		fprintf(fpt, "#!/bin/sh\n");
-		fprintf(fpt, "get_json_value()\n");
-		fprintf(fpt, "{\n");
-		fprintf(fpt, "  local json=$1\n");
-		fprintf(fpt, "  local key=$2\n");
-		fprintf(fpt, "  if [[ -z \"$3\" ]]; then\n");
-		fprintf(fpt, "    local num=1\n");
-		fprintf(fpt, "  else\n");
-		fprintf(fpt, "    local num=$3\n");
-		fprintf(fpt, "  fi\n");
-		fprintf(fpt, "  local value=$(echo \"${json}\" | awk -F\"[,:}]\" '{for(i=1;i<=NF;i++){if($i~/'${key}'\042/){print $(i+1)}}}' | tr -d '\"' | sed -n ${num}p)\n");
-		fprintf(fpt, "  echo ${value}\n");
-		fprintf(fpt, "}\n");
+		fprintf(fpt, "city=`cat /lib/k3screenctrl/city`\n");
+		fprintf(fpt, "temp=`cat /lib/k3screenctrl/temp`\n");
+		fprintf(fpt, "code=`cat /lib/k3screenctrl/code`\n");
 		fprintf(fpt, "week=$(date +%%w)\n");
 		fprintf(fpt, "data=`cat /lib/k3screenctrl/date`\n");
 		fprintf(fpt, "time=`cat /lib/k3screenctrl/time`\n");
-		fprintf(fpt, "[ -f \"/lib/k3screenctrl/starttime\" ] || echo $(($(date +%%s -d $time)+7200)) > /lib/k3screenctrl/starttime\n");
-		fprintf(fpt, "starttime=`cat /lib/k3screenctrl/starttime`\n");
-		fprintf(fpt, "[ ! -f \"/lib/k3screenctrl/http\" -o $(date +%%s -d $time) -ge $starttime ] && json=`curl -s \"https://api.seniverse.com/v3/weather/now.json?key=5fjwjirm6bzk95rx&location=ip&language=zh-Hans&unit=c\"` && echo $json > /lib/k3screenctrl/http && echo $(($(date +%%s -d $time)+7200)) > /lib/k3screenctrl/starttime\n");
-		fprintf(fpt, "http=`cat /lib/k3screenctrl/http`\n");
-		fprintf(fpt, "city=`get_json_value \"$http\" name`\n");
-		fprintf(fpt, "temp=`get_json_value \"$http\" temperature`\n");
-		fprintf(fpt, "code=`get_json_value \"$http\" code`\n");
 		fprintf(fpt, "echo $city\n");
 		fprintf(fpt, "echo $temp\n");
 		fprintf(fpt, "echo $data\n");
@@ -1119,15 +1105,17 @@ void k3_insmod(){
 }
 
 void k3_init_done(){
-	_dprintf("############################ k3 init done #################################\n");
+	_dprintf("############################ MerlinR init done #################################\n");
 #ifdef RTCONFIG_SOFTCENTER
 	if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh") && nvram_match("sc_mount","0")){
 		doSystem("/usr/sbin/jffsinit.sh &");
-		logmessage("软件中心", "开始安装......");
-		logmessage("软件中心", "1分钟后完成安装");
+		logmessage("Softcenter/软件中心", "Installing/开始安装......");
+		logmessage("Softcenter/软件中心", "Wait a minute/1分钟后完成安装");
 		_dprintf("....softcenter ok....\n");
 	} else if (f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh") && nvram_match("sc_mount","0"))
 		nvram_set("sc_installed","1");
+	//else if (!f_exists("/jffs/softcenter/scripts/ks_tar_intall.sh") && nvram_match("sc_mount","1"))
+		//nvram_set("sc_installed","0");
 	if(f_exists("/jffs/.asusrouter")){
 		unlink("/jffs/.asusrouter");
 		doSystem("sed -i '/softcenter-wan.sh/d' /jffs/scripts/wan-start");
@@ -1155,10 +1143,10 @@ void k3_init_done(){
 	logmessage("K3", "mac:%s", cfe_nvram_get("et0macaddr"));
 
 	start_k3screen();
+#if defined(MERLINR_VER_MAJOR_B)
 	//华硕似乎实现了aimesh的webui和aimesh核心剥离，从而实现382和384共用一个webui，384则强制显示aimesh界面，禁掉它，防止误导
 	//disable aimesh webui,asus splits aimesh into two parts,aimesh webui and aimesh core
 	//aimesh core does not work in this firmware,so disable aimesh webui
-#if defined(MERLINR_VER_MAJOR_B)
 	del_rc_support("amasRouter");
 	del_rc_support("amas");
 #endif
@@ -1414,9 +1402,9 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 	curlhandle = curl_easy_init();
 	snprintf(url, sizeof(url), "%s/%s", serverurl, serverupdate);
 	//snprintf(log, sizeof(log), "echo \"[FWUPDATE]---- update dl_path_info for general %s/%s ----\" >> /tmp/webs_upgrade.log", serverurl, serverupdate);
+	FWUPDATE_DBG("---- update dl_path_info for general %s/%s ----", serverurl, serverupdate);
 	download=curl_download_file(curlhandle , url,localupdate,8,3);
 	//system(log);
-	FWUPDATE_DBG("---- update dl_path_info for general %s/%s ----", serverurl, serverupdate);
 	//_dprintf("%d\n",download);
 	if(download)
 	{
@@ -1433,8 +1421,10 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 					//_dprintf("%s#%s\n",fwver,cur_fwver);
 					if(versioncmp((cur_fwver+1),(fwver+1))==1){
 						nvram_set("webs_state_url", "");
-#if defined(SBRAC3200P) || defined(RTACRH17) || defined(RTAC3200)
+#if defined(SBRAC3200P) || defined(RTACRH17) || defined(RTAC3200) || defined(RTAC85P)
 						snprintf(info,sizeof(info),"3004_382_%s_%s-%s",modelname,fwver,tag);
+#elif defined(RTAC68U)
+						snprintf(info,sizeof(info),"3004_385_%s_%s-%s",modelname,fwver,tag);
 #else
 						snprintf(info,sizeof(info),"3004_384_%s_%s-%s",modelname,fwver,tag);
 #endif
@@ -1486,8 +1476,10 @@ int merlinr_firmware_check_update_main(int argc, char *argv[])
 	curl_global_cleanup();
 
 GODONE:
-#if defined(SBRAC3200P) || defined(RTACRH17) || defined(RTAC3200)
+#if defined(SBRAC3200P) || defined(RTACRH17) || defined(RTAC3200) || defined(RTAC85P)
 	snprintf(info,sizeof(info),"3004_382_%s",nvram_get("extendno"));
+#elif defined(RTAC68U)
+	snprintf(info,sizeof(info),"3004_385_%s",nvram_get("extendno"));
 #else
 	snprintf(info,sizeof(info),"3004_384_%s",nvram_get("extendno"));
 #endif
@@ -1507,7 +1499,7 @@ GODONE:
 	return 0;
 }
 #if !defined(BLUECAVE)
-void exec_uu()
+void exec_uu_merlinr()
 {
 	FILE *fpmodel, *fpmac, *fpuu, *fpurl, *fpmd5, *fpcfg;
 	char buf[128];
@@ -1515,6 +1507,7 @@ void exec_uu()
 	char *dup_pattern, *g, *gg;
 	char p[10][100];
 	if(nvram_get_int("sw_mode") == 1){
+		add_rc_support("uu_accel");
 		if ((fpmodel = fopen("/var/model", "w"))){
 			fprintf(fpmodel, nvram_get("productid"));
 			fclose(fpmodel);
@@ -1610,6 +1603,13 @@ void softcenter_eval(int sig)
 	} else if (SOFTCENTER_MOUNT == sig){
 		snprintf(path, sizeof(path), "%s/softcenter-mount.sh", sc);
 		snprintf(action, sizeof(action), "start");
+	} else if (SOFTCENTER_SERVICES == sig){
+		snprintf(path, sizeof(path), "%s/softcenter-services.sh", sc);
+		snprintf(action, sizeof(action), "start");
+	//enable it after 1.3.0
+	//} else if (SOFTCENTER_UNMOUNT == sig){
+	//	snprintf(path, sizeof(path), "%s/softcenter-unmount.sh", sc);
+	//	snprintf(action, sizeof(action), "unmount");
 	} else {
 		logmessage("Softcenter", "sig=%s, bug?",sig);
 		return;

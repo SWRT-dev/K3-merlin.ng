@@ -4121,14 +4121,16 @@ start_acsd()
 	char *acsd_argv[] = { "/usr/sbin/acsd", NULL };
 	int pid;
 #endif
+#if defined(RTAC3100) || defined(RTAC88U)
 	int txpower=26,pwr=0;
+#endif
 #ifdef RTCONFIG_PROXYSTA
 	if (psta_exist())
 		return 0;
 #endif
 
 	stop_acsd();
-#if defined(RTAC3100)
+#if defined(RTAC3100) || defined(RTAC88U)
 	if (nvram_match("wl0_cpenable","1")){
 		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
 		eval("wlk","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
@@ -4136,100 +4138,6 @@ start_acsd()
 	if (nvram_match("wl1_cpenable","1")){
 		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G -------------------------------------\n");
 		eval("wlk","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
-	}
-#endif
-#if defined(RTAC68U)
-	if (nvram_match("wl0_cpenable","0")){
-		pwr=nvram_get_int("wl0_txpower");
-		if(pwr==0)
-			eval("wl","-i","eth1","txpwr1","-o","-d","14");
-		else if(pwr==25)
-			eval("wl","-i","eth1","txpwr1","-o","-d","17");
-		else if(pwr==50)
-			eval("wl","-i","eth1","txpwr1","-o","-d","20");
-		else if(pwr==88)
-			eval("wl","-i","eth1","txpwr1","-o","-d","23");
-		else if(pwr==100)
-			eval("wl","-i","eth1","txpwr1","-o","-d","26");
-		else
-			eval("wl","-i","eth1","txpwr1","-o","-d","26");
-	} else {
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
-		eval("wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
-	}
-	if (nvram_match("wl1_cpenable","0")){
-		pwr=nvram_get_int("wl0_txpower");
-		if(pwr==0)
-			eval("wl","-i","eth2","txpwr1","-o","-d","14");
-		else if(pwr==25)
-			eval("wl","-i","eth2","txpwr1","-o","-d","17");
-		else if(pwr==50)
-			eval("wl","-i","eth2","txpwr1","-o","-d","20");
-		else if(pwr==88)
-			eval("wl","-i","eth2","txpwr1","-o","-d","23");
-		else if(pwr==100)
-			eval("wl","-i","eth2","txpwr1","-o","-d","26");
-		else
-			eval("wl","-i","eth2","txpwr1","-o","-d","26");
-	} else {
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G -------------------------------------\n");
-		eval("wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
-	}
-#endif
-#if defined(RTAC3200)
-	if (nvram_match("wl0_cpenable","0")){
-		pwr=nvram_get_int("wl0_txpower");
-		if(pwr==0)
-			eval("wl","-i","eth2","txpwr1","-o","-d","14");
-		else if(pwr==25)
-			eval("wl","-i","eth2","txpwr1","-o","-d","17");
-		else if(pwr==50)
-			eval("wl","-i","eth2","txpwr1","-o","-d","20");
-		else if(pwr==88)
-			eval("wl","-i","eth2","txpwr1","-o","-d","23");
-		else if(pwr==100)
-			eval("wl","-i","eth2","txpwr1","-o","-d","26");
-		else
-			eval("wl","-i","eth2","txpwr1","-o","-d","26");
-	} else {
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2.4G -------------------------------------\n");
-		eval("wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
-	}
-	if (nvram_match("wl1_cpenable","0")){
-		pwr=nvram_get_int("wl1_txpower");
-		if(pwr==0)
-			eval("wl","-i","eth1","txpwr1","-o","-d","14");
-		else if(pwr==25)
-			eval("wl","-i","eth1","txpwr1","-o","-d","17");
-		else if(pwr==50)
-			eval("wl","-i","eth1","txpwr1","-o","-d","20");
-		else if(pwr==88)
-			eval("wl","-i","eth1","txpwr1","-o","-d","23");
-		else if(pwr==100)
-			eval("wl","-i","eth1","txpwr1","-o","-d","26");
-		else
-			eval("wl","-i","eth1","txpwr1","-o","-d","26");
-	} else {
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G-1 -------------------------------------\n");
-		eval("wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
-	}
-	if (nvram_match("wl2_cpenable","0")){
-		pwr=nvram_get_int("wl2_txpower");
-		if(pwr==0)
-			eval("wl","-i","eth3","txpwr1","-o","-d","14");
-		else if(pwr==25)
-			eval("wl","-i","eth3","txpwr1","-o","-d","17");
-		else if(pwr==50)
-			eval("wl","-i","eth3","txpwr1","-o","-d","20");
-		else if(pwr==88)
-			eval("wl","-i","eth3","txpwr1","-o","-d","23");
-		else if(pwr==100)
-			eval("wl","-i","eth3","txpwr1","-o","-d","26");
-		else
-			eval("wl","-i","eth3","txpwr1","-o","-d","26");
-	} else {
-		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 5G-2 -------------------------------------\n");
-		eval("wl","-i","eth3","txpwr1","-o","-d",nvram_safe_get("wl2_custompower"));
 	}
 #endif
 	if (!restore_defaults_g && strlen(nvram_safe_get("acs_ifnames")))
@@ -4640,9 +4548,6 @@ start_smartdns(void)
 		killall_tk("smartdns");
 	if (f_exists("/etc/smartdns.conf"))
 		unlink("/etc/smartdns.conf");
-	//doSystem("cp /rom/etc/smartdns.conf /etc/smartdns.conf");
-	//doSystem("echo server $(nvram get wan_dns1_x) >> /etc/smartdns.conf");
-	//doSystem("echo server $(nvram get wan_dns2_x) >> /etc/smartdns.conf");
 	if ((fp = fopen("/etc/smartdns.conf", "w")) == NULL){
 		logmessage(LOGNAME, "start smartdns failed\n");
 		return;
@@ -4651,7 +4556,7 @@ start_smartdns(void)
 	fprintf(fp, "conf-file /etc/blacklist-ip.conf\n");
 	fprintf(fp, "conf-file /etc/whitelist-ip.conf\n");
 	//fprintf(fp, "conf-file /etc/seconddns.conf\n");
-	fprintf(fp, "bind [::]:9053 -no-speed-check\n");
+	fprintf(fp, "bind [::]:9053\n");
 	//fprintf(fp, "bind-tcp [::]:5353\n");
 	fprintf(fp, "cache-size 9999\n");
 	//fprintf(fp, "prefetch-domain yes\n");
@@ -4690,10 +4595,10 @@ start_smartdns(void)
 	}
 	//fprintf(fp, "server %s\n", nvram_get("wan_dns1_x"));
 	//fprintf(fp, "server %s\n", nvram_get("wan_dns2_x"));
-	fprintf(fp, "server-tcp 8.8.8.8\n");
-	fprintf(fp, "server-tcp 8.8.4.4\n");
-	fprintf(fp, "tcp-idle-time 120\n");
-	fprintf(fp, "server-tls 8.8.8.8:853\n");
+	//fprintf(fp, "server-tcp 8.8.8.8\n");
+	//fprintf(fp, "server-tcp 8.8.4.4\n");
+	//fprintf(fp, "tcp-idle-time 120\n");
+	//fprintf(fp, "server-tls 8.8.8.8:853\n");
 	//fprintf(fp, "server-https https://cloudflare-dns.com/dns-query\n");
 	//fprintf(fp, "speed-check-mode none\n");
 	//fprintf(fp, "dualstack-ip-selection no\n");
@@ -8637,7 +8542,7 @@ start_services(void)
 #endif
 
 	run_custom_script("services-start", 0, NULL, NULL);
-	
+	nvram_set_int("sc_services_sig", 1);
 	return 0;
 }
 
@@ -10405,13 +10310,6 @@ again:
 		}
 	}
 	else if(strcmp(script, "upgrade") == 0) {
-//we must make sure that usb can umount and do not start skipd again
-//don't delete scripts in init.d
-#if defined(RTCONFIG_SOFTCENTER)
-//#if defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_BCMARM) || defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK)
-//		doSystem("/usr/sbin/plugin.sh stop");
-//#endif
-#endif
 		int stop_commit;
 		stop_commit = nvram_get_int(ASUS_STOP_COMMIT);
 		if(stop_commit == 0) {
@@ -11676,7 +11574,7 @@ _dprintf("multipath(%s): unit_now: (%d, %d, %s), unit_next: (%d, %d, %s).\n", mo
 #endif
 
 		}
-		reset_leds();
+		setup_leds();
 		nvram_set("restart_wifi", "0");
 	}
 #if defined(RTCONFIG_POWER_SAVE)
@@ -13505,7 +13403,7 @@ retry_wps_enr:
 		if(cmd[1]) system(cmd[1]);
 	}
 	else if (strcmp(script, "leds") == 0) {
-		reset_leds();
+		setup_leds();
 	}
 	else if (strcmp(script, "app") == 0) {
 #if defined(RTCONFIG_APP_PREINSTALLED) || defined(RTCONFIG_APP_NETINSTALLED)
@@ -14900,9 +14798,7 @@ firmware_check_main(int argc, char *argv[])
 #endif
 
 #ifdef CONFIG_BCMWL5
-#if !defined(RTAC68U)
-	fw_check_pre();
-#endif
+	//fw_check_pre();
 #endif
 
 	if(!check_imagefile(argv[1])) {
@@ -15388,7 +15284,7 @@ int service_main(int argc, char *argv[])
 	return 0;
 }
 
-void reset_leds()
+void setup_leds()
 {
 	int model;
 
@@ -15399,6 +15295,9 @@ void reset_leds()
 		    (model == MODEL_RTAC68U) || (model == MODEL_RTAC87U) ||
 		    (model == MODEL_RTAC3200) || (model == MODEL_RTAC88U) ||
 		    (model == MODEL_RTAC3100) || (model == MODEL_RTAC5300) ||
+#if defined(GTAC5300)
+			(model == MODEL_GTAC5300) || 
+#endif
 		    (model == MODEL_RTAC86U)) {
 			setAllLedOff();
 			if (model == MODEL_RTAC87U)
@@ -15408,7 +15307,15 @@ void reset_leds()
 			led_control_atomic(LED_5G, LED_OFF);
 			led_control_atomic(LED_POWER, LED_OFF);
 			led_control_atomic(LED_SWITCH, LED_OFF);
+#if !defined(HND_ROUTER)
 			led_control_atomic(LED_LAN, LED_OFF);
+#endif
+#ifdef RTCONFIG_LAN4WAN_LED
+			led_control_atomic(LED_LAN1, LED_OFF);
+			led_control_atomic(LED_LAN2, LED_OFF);
+			led_control_atomic(LED_LAN3, LED_OFF);
+			led_control_atomic(LED_LAN4, LED_OFF);
+#endif
 			led_control_atomic(LED_WAN, LED_OFF);
 		}
 #ifdef RTCONFIG_USB
@@ -16888,7 +16795,9 @@ int start_cfgsync(void)
 	char *cfg_client_argv[] = {"cfg_client", NULL};
 	pid_t pid;
 	int ret = 0;
-
+#if defined(MERLINR_VER_MAJOR_B)
+	return 0;
+#endif
 #ifdef RTCONFIG_MASTER_DET
 	if (nvram_match("cfg_master", "1") && (is_router_mode() || access_point_mode()))
 #else
@@ -17044,20 +16953,6 @@ void reset_led(void)
 	if(brightness_level < 0 || brightness_level > 3)
 		brightness_level = 2;
 	setCentralLedLv(brightness_level);
-#if defined(K3C)
-	if (nvram_get_int("bc_ledLv") == 0)
-	{
-		led_control(LED_INDICATOR_SIG1, LED_OFF); 
-		led_control(LED_INDICATOR_SIG3, LED_OFF);
-		led_control(LED_INDICATOR_SIG2, LED_OFF);
-	}
-	else if(nvram_get_int("link_internet") == 2){
-		led_control(LED_INDICATOR_SIG2, LED_ON);
-	}
-	else {
-		led_control(LED_INDICATOR_SIG3, LED_ON);
-	}
-#endif
 }
 #endif
 
