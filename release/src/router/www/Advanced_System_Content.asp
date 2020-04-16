@@ -1798,10 +1798,17 @@ function reset_portconflict_hint(){
 					</td>
 				</tr>
 				<tr>
-					<th>Disable LEDs</th>
+					<th><#CTL_close#> LEDs</th>
 					<td>
-						<input type="radio" name="led_disable" value="1" <% nvram_match_x("", "led_disable", "1", "checked"); %>><#checkbox_Yes#>
-						<input type="radio" name="led_disable" value="0" <% nvram_match_x("", "led_disable", "0", "checked"); %>><#checkbox_No#>
+						<input type="radio" name="led_disable" class="input" value="1" <% nvram_match_x("", "led_disable", "1", "checked"); %>><#checkbox_Yes#>
+						<input type="radio" name="led_disable" class="input" value="0" <% nvram_match_x("", "led_disable", "0", "checked"); %>><#checkbox_No#>
+					</td>
+				</tr>
+				<tr>
+					<th><#CTL_Enabled#> UU</th>
+					<td>
+						<input type="radio" name="uu_enable" class="input" value="1" <% nvram_match_x("", "uu_enable", "1", "checked"); %>><#checkbox_Yes#>
+						<input type="radio" name="uu_enable" class="input" value="0" <% nvram_match_x("", "uu_enable", "0", "checked"); %>><#checkbox_No#>
 					</td>
 				</tr>
 				<tr id="pwrsave_tr">
