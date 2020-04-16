@@ -184,15 +184,25 @@ translate_lang (char *s, char *e, FILE *f, kw_t *pkw)
 			char *p_PID_STR = NULL;
 			char *PID_STR = nvram_safe_get("productid");
 			char *ODM_PID_STR = nvram_safe_get("odmpid");
+#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C) || defined(R8000P)
+			char *modelname = nvram_safe_get("modelname");
+			int merlinr_len;
+#endif
 			char *pSrc, *pDest;
 			int pid_len, odm_len;
 
 			pid_len = strlen(PID_STR);
 			odm_len = strlen(ODM_PID_STR);
 
+#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C)
+			//char *modelname = nvram_safe_get("modelname");
+			merlinr_len = strlen(modelname);
+			if (merlinr_len && strcmp(PID_STR, modelname) != 0) {
+				strlcpy(RP_ODM_PID_STR, modelname, merlinr_len+1);
+#else 
 			if (odm_len && strcmp(PID_STR, ODM_PID_STR) != 0) {
-
 				replace_odmpid(ODM_PID_STR, RP_ODM_PID_STR, sizeof(RP_ODM_PID_STR));
+#endif
 				odm_len = strlen(RP_ODM_PID_STR);
 				pSrc  = desc;
 				pDest = pattern1;
