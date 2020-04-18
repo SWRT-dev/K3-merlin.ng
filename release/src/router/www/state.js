@@ -397,9 +397,12 @@ var wl_info = {
 			})()
 };
 //wireless end
-
+var rc_support = '<% nvram_get("rc_support"); %>';
 function isSupport(_ptn){
 	var ui_support = [<% get_ui_support(); %>][0];
+	if(_ptn == "uu_accel")
+		if(rc_support.search("uu_accel") != -1)
+			return 1;
 	return (ui_support[_ptn]) ? ui_support[_ptn] : 0;
 }
 
@@ -556,10 +559,8 @@ var meoVoda_support = isSupport("meoVoda");
 var movistarTriple_support = isSupport("movistarTriple");
 var utf8_ssid_support = isSupport("utf8_ssid");
 var wpa3_support = isSupport('wpa3');
-if(based_modelid == "RT-AC3100" || based_modelid == "RT-AC3200")
-	var uu_support = 1;
-else
-	var uu_support = isSupport('uu_accel');
+var uu_support = isSupport('uu_accel');
+
 var QISWIZARD = "QIS_wizard.htm";
 
 var wl_version = "<% nvram_get("wl_version"); %>";
