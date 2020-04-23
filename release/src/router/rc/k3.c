@@ -938,8 +938,10 @@ int k3screenb(){
 		fprintf(fpb, "else\n");
 		fprintf(fpb, "FW_VERSION=AP:$(nvram get lan_ipaddr)\n");
 		fprintf(fpb, "fi\n");
+		fprintf(fpb, "hd_version=`nvram get hd_version`\n");
+		fprintf(fpb, "[ -n \"$hd_version\" ] || hd_version=A1/A2\n");
 		fprintf(fpb, "echo K3\n");
-		fprintf(fpb, "echo A1/A2\n");
+		fprintf(fpb, "echo $hd_version\n");
 		fprintf(fpb, "echo $FW_VERSION\n");
 		fprintf(fpb, "echo $FW_VERSION\n");
 		fprintf(fpb, "echo $MAC_ADDR\n");

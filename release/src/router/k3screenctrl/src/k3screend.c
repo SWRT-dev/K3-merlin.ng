@@ -1,9 +1,3 @@
-/*
-* 作者：杨志永
-* 日期：2012-04-17 10:10 
-* Email:ljy520zhiyong@163.com
-* 修改：paldier
-*/
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -26,6 +20,7 @@
 #include <netdb.h>
 #include <curl/curl.h>
 #include <json.h>
+#include <shared.h>
 
 char arpbuffer[4096];
 int swmode, timer, timers;
@@ -61,8 +56,7 @@ char Microsoft[] ="38F23E,38256B,B4E1C4,300D43,6C2779,607EDD,6C8FB5,6C2483,A4516
 char XiaoMi[] ="2047DA,286C07,3CBD3E,9C99A0,185936,98FAE3,640980,8CBEBE,F8A45F,28E31F,0C1DAF,14F65A,742344,F0B429,D4970B,64CC2E,B0E235,38A4ED,F48B32,009EC8,ACF7F3,102AB3,584498,A086C6,7C1DD9,ACC1EE,7802F8,68DFDD,C46AB7,FC64BA,2082C0,3480B3,7451BA,64B473,C40BCB";
 char ZTE[] ="74A78E,84742A,681AB2,6CA75F,709F2D,EC1D7F,34DE34,4CCBF5,78E8B6,B49842,8CE081,DC028E,48282F,343759,B805AB,74B57E,540955,981333,F8A34F,C87B5B,98F537,001E73,0019C6,0015EB,98F428,54BE53,300C23,1844E6,38D82F,D87495,344DEA,2C957F,146080,986CF5,CC7B35,F8DFA8,34E0CF,D476EA,789682,749781,E07C13,689FF0,18686A,344B50,FCC897,9CD24B,C864C7,D0154A,AC6462,F4B8A7,90D8F3,78312B,A47E39,A8A668,0C1262,A0EC80,E0C3F3,F46DE2,C4A366,24C44A,D058A8,D071C4,601888,4CAC0A,0026ED,002293,346987,44F436,D05BA8,D437D7,EC8A4C,208986,9CA9E4,E47723,6C8B2F,CC1AFA,F084C9,2C26C5,083FBC,6073BC,D0608C,688AF0,004A77,384608,B4B362,B075D5,08181A,002512,143EBF,94A7B7,3CDA2A,8C7967,D855A3,4C16F1,5422F8,901D27,30F31D,4C09B4,744AA4,10D0AB,90C7D8,FC2D5E,8CE117,64136C,A091C8,702E22,F41F88,78C1A7";
 char *logo[]={deflogo,OnePlus,shu360,Asus,Coolpad,Dell,Haier,Hasee,Honor,HP,HTC,Huawei,Apple,Lenovo,LeEco,LG,Meitu,Meizu,OPPO,Phicomm,Samsung,Smartisan,Sony,TCL,ThinkPad,TongfangPC,VIVO,Microsoft,XiaoMi,ZTE};
-int get_net_work_download_speed(int * download_speed, int * upload_speed);
-
+uint32_t traffic_wanlan(char *ifname, uint32_t *rx, uint32_t *tx);
 void get_time()
 {
 	time_t tmpcal_ptr;
@@ -81,29 +75,63 @@ void get_time()
 }
 void get_speed()
 {
-	int start_download_speed;
-	int end_download_speed;
-	int start_upload_speed;
-	int end_upload_speed;
-	int result_of_download;
-	int result_of_upload;
-	FILE *fpup, *fpdo;
+	unsigned long long rx = 0, tx = 0, vlan_rx = 0, vlan_tx = 0;
+	unsigned long long start_rx = 0, end_rx = 0;
+	unsigned long long start_tx = 0, end_tx = 0;
+	unsigned long long result_rx = 0, result_tx = 0;
+	FILE *fpup, *fpdo, *fp;
+	char buf[2048];
+	char *p, *ifname;
+	int i;
 	if (swmode == 1) {
-		get_net_work_download_speed(&start_download_speed, &start_upload_speed);
-		sleep(5);
-		get_net_work_download_speed(&end_download_speed, &end_upload_speed);
-		result_of_download = ((end_download_speed-start_download_speed)/5);
-		result_of_upload = ((end_upload_speed-start_upload_speed)/5);
-	} else {
-		result_of_download = 0;
-		result_of_upload = 0;
+		for (i=0; i<2; i++) {
+			fp = fopen("/proc/net/dev", "r");
+			if (fp) {
+				fgets(buf, sizeof(buf), fp);
+				fgets(buf, sizeof(buf), fp);
+				while (fgets(buf, sizeof(buf), fp)) {
+					if ((p = strchr(buf, ':')) == NULL)
+						continue;
+					*p = 0;
+					if ((ifname = strrchr(buf, ' ')) == NULL)
+						ifname = buf;
+					else
+						++ifname;
+					if (strcmp(ifname, "ppp0") && strcmp(ifname, "eth0") && strcmp(ifname, "vlan2"))
+						continue;
+					sscanf(p + 1, "%llu%*u%*u%*u%*u%*u%*u%*u%llu", &rx, &tx);
+					if(strncmp(ifname, "vlan", 4)==0)
+						traffic_wanlan(ifname, (uint32_t *) &rx, (uint32_t *) &tx);
+					if(nvram_match("wans_dualwan", "wan none")){
+						if(strcmp(ifname, "eth0")==0){
+							traffic_wanlan("vlan2", (uint32_t *) &rx, (uint32_t *) &tx);
+						}
+					}
+					if (i == 0) {
+						start_rx = rx;
+						start_tx = tx;
+						if((start_rx > 0) && (start_tx > 0))
+							break;
+					} else {
+						end_rx = rx;
+						end_tx = tx;
+						if((end_rx > 0) && (end_tx > 0))
+							break;
+					}
+				}
+				fclose(fp);
+			}
+			sleep(2);
+		}
+		result_rx = ((end_rx-start_rx)/2);
+		result_tx = ((end_tx-start_tx)/2);
 	}
 	if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
-		fprintf(fpup, "%d\n", result_of_upload);
+		fprintf(fpup, "%llu\n", result_tx);
 		fclose(fpup);
 	}
 	if (fpdo = fopen("/tmp/k3screenctrl/downspeed", "w")){
-		fprintf(fpdo, "%d\n", result_of_download);
+		fprintf(fpdo, "%llu\n", result_rx);
 		fclose(fpdo);
 	}
 }
@@ -273,7 +301,7 @@ int weather()
 	char url1[]="https://api.seniverse.com/v3/weather/now.json?key=5fjwjirm6bzk95rx&location";
 	char url2[]="language=zh-Hans&unit=c";
 	char s1[10],s2[10],s3[10];
-	char *s4=NULL, *s5=NULL, *s6=NULL;
+	json_object *s4=NULL, *s5=NULL, *s6=NULL;
 	FILE *fpw;
 	json_object *obj = NULL;
 	json_object *obj0 = NULL;
@@ -298,17 +326,17 @@ int weather()
 		snprintf(url, sizeof(url), "%s=ip&%s", url1, url2);
 	curl_download_file(curlhandle , url,w,8,3);
 	obj = json_object_from_file(w);
-	obj0=json_object_object_get(obj,"results");
+	json_object_object_get_ex(obj,"results", &obj0);
 	if(json_object_array_length(obj0) > 0){
 		obj1=json_object_array_get_idx(obj0,0);//only one
-		objl=json_object_object_get(obj1,"location");
-		objn=json_object_object_get(obj1,"now");
-		s4=json_object_get_string(json_object_object_get(objl,"name"));
-		s5=json_object_get_string(json_object_object_get(objn,"temperature"));
-		s6=json_object_get_string(json_object_object_get(objn,"code"));
-		strlcpy(s1, s4, sizeof(s1));
-		strlcpy(s2, s5, sizeof(s2));
-		strlcpy(s3, s6, sizeof(s3));
+		json_object_object_get_ex(obj1,"location", &objl);
+		json_object_object_get_ex(obj1,"now", &objn);
+		json_object_object_get_ex(objl,"name", &s4);
+		json_object_object_get_ex(objn,"temperature", &s5);
+		json_object_object_get_ex(objn,"code", &s6);
+		strlcpy(s1, json_object_get_string(s4), sizeof(s1));
+		strlcpy(s2, json_object_get_string(s5), sizeof(s2));
+		strlcpy(s3, json_object_get_string(s6), sizeof(s3));
 		json_object_put(obj);
 		json_object_put(obj0);
 		json_object_put(obj1);
@@ -346,7 +374,6 @@ int main(int argc, char * argv[])
 		get_speed();
 		get_time();
 		online();
-		sleep(2);
 		weather();
 		memset(arpbuffer, 0, sizeof(arpbuffer));
 		if ((pip=popen("cat /proc/net/arp", "r")) == NULL ){
@@ -355,72 +382,7 @@ int main(int argc, char * argv[])
 		}
 		fread(arpbuffer, 1, sizeof(arpbuffer), pip);
 		pclose(pip);
+		sleep(3);
 	}
 }
- 
-int get_net_work_download_speed(int * download_speed, int * upload_speed)
-{
-	FILE *pipo_stream;
-	size_t bytes_read;
-	char buffer[4096];
-	char *match;
-	int wan;
-	if(swmode != 1)//not router mode,go to end
-		goto GETERR;
-	if ((pipo_stream=popen("ifconfig", "r")) == NULL )
-	{
-		//syslog(LOG_WARNING, "K3screend: not found any wan!\n");
-		//printf("K3SCREEND:not found any wan!\n");//reboot/upgrade? exit
-		//exit(1);
-		goto GETERR;
-	}
-	fread(buffer, 1, sizeof(buffer), pipo_stream);
-	pclose(pipo_stream);
 
-	if (strstr(buffer, "ppp0"))
-		wan=1;
-	else if (strstr(buffer, "eth0"))
-		wan=2;
-	else if (strstr(buffer, "vlan2"))
-		wan=3;
-	else
-		wan=0;
-	if (wan==1)
-		pipo_stream=popen("ifconfig ppp0", "r");
-	else if (wan==2)
-		pipo_stream=popen("ifconfig eth0", "r");
-	else if (wan==3)
-		pipo_stream=popen("ifconfig vlan2", "r");
-	else {
-GETERR:
-		upload_speed=0;
-		download_speed=0;
-		return 0;
-	}
-	bytes_read = fread(buffer, 1, sizeof(buffer), pipo_stream);
-	if ( (pclose(pipo_stream)) != 0 )
-	{
-		//printf("pclose error!\n");
-		goto GETERR;
-	}
-	if ( bytes_read == 0 )
-	{
-		//printf("bytes_read == 0\n");
-		goto GETERR;
-	}	
-	match = strstr(buffer, "RX bytes:");
-	if (match == NULL)
-	{
-		//printf("NO Keyword %s To Find!\n", download_type);
-		goto GETERR;
-	}
-	sscanf(match, "RX bytes:%d", download_speed);
-	match = strstr(buffer, "TX bytes:");
-	if (match == NULL)
-	{
-		//printf("No Keyword %s To Find!\n", upload_type);
-		goto GETERR;
-	}
-	sscanf(match, "TX bytes:%d", upload_speed);
-	return 0;
-}
