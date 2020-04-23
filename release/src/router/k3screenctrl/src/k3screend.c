@@ -317,6 +317,8 @@ int weather()
 		timers=timer;
 	timers=timer+3600;
 	unlink(w);
+	if(nvram_get_int("link_internet") != 2)
+		goto wan_down;
 	CURL *curlhandle = NULL;
 	curl_global_init(CURL_GLOBAL_ALL);
 	curlhandle = curl_easy_init();
@@ -342,12 +344,13 @@ int weather()
 		json_object_put(obj1);
 		json_object_put(objl);
 		json_object_put(objn);
-		goto WDONE;
+		goto weather_done;
 	}
+wan_down:
 	strlcpy(s1, "Unknow", sizeof(s1));
 	strlcpy(s2, "0", sizeof(s2));
 	strlcpy(s3, "0", sizeof(s3));
-WDONE:
+weather_done:
 	if (fpw = fopen("/lib/k3screenctrl/city", "w")){
 		fprintf(fpw, "%s\n", s1);
 		fclose(fpw);
