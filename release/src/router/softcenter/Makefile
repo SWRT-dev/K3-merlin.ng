@@ -24,8 +24,10 @@ install:
 	install -d $(INSTALLDIR)/usr/bin
 	install -d $(INSTALLDIR)/usr/share
 	install -d $(INSTALLDIR)/usr/lib
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 XWR3100))
 ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 	install -d $(INSTALLDIR)/mcu
+endif
 	install -d $(INSTALLDIR)/rom/cfe/
 endif
 	install -d $(INSTALLDIR)/rom/etc
@@ -114,6 +116,7 @@ else ifeq  ($(BUILD_NAME), $(filter $(BUILD_NAME), TUF-AX3000))
 	install -m 0755 softcenter/TUF/webs/Main_Soft_setting.asp $(INSTALLDIR)/rom/etc/softcenter/TUF/webs
 endif
 	install -m 0755 jffsinit.sh $(INSTALLDIR)/usr/sbin
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 XWR3100))
 ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 	install -m 0755 uhmiMsg $(INSTALLDIR)/usr/sbin
 	install -m 0644 mcu/app.2.2.120.bin $(INSTALLDIR)/mcu
@@ -121,10 +124,11 @@ ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 	install -m 0644 mcu/app.1.1.116.hex $(INSTALLDIR)/mcu
 	install -m 0755 phi_speed $(INSTALLDIR)/usr/sbin
 	install -m 0755 libwlcr.so $(INSTALLDIR)/usr/share
-	install -m 0644 cfe.bin $(INSTALLDIR)/rom/cfe/
 	install -m 0755 uhmi $(INSTALLDIR)/usr/sbin
 	install -m 0755 weather $(INSTALLDIR)/usr/sbin
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
+endif
+	install -m 0644 cfe.bin $(INSTALLDIR)/rom/cfe/
 endif
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin

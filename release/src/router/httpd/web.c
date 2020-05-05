@@ -12217,7 +12217,7 @@ do_upgrade_post(char *url, FILE *stream, int len, char *boundary)
 	int count, cnt;
 	long filelen;
 	int offset;
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20)
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20) || defined(XWR3100)
 	int checkname=0;
 #endif
 #ifndef RTCONFIG_SMALL_FW_UPDATE
@@ -12258,6 +12258,9 @@ do_upgrade_post(char *url, FILE *stream, int len, char *boundary)
 #if defined(K3)
 		if (strstr(buf, "K3"))
 			checkname=1;
+#elif defined(XWR3100)
+		if (strstr(buf, "XWR3100"))
+			checkname=1;
 #elif defined(K3C)
 		if (strstr(buf, "K3C"))
 			checkname=1;
@@ -12277,7 +12280,7 @@ do_upgrade_post(char *url, FILE *stream, int len, char *boundary)
 		if (!strncasecmp(buf, "Content-Disposition:", 20) && strstr(buf, "name=\"file\""))
 			break;
 	}
-#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20)
+#if defined(K3) || defined(K3C) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(R8000P) || defined(R7900P) || defined(RAX20) || defined(XWR3100)
 	if(checkname==0)
 		goto err;
 #endif
@@ -24536,7 +24539,7 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 	struct json_object *wanLanStatus = NULL;
 	struct json_object *wanLanLinkSpeed = NULL;
 	struct json_object *wanLanCount = NULL;
-#if defined(K3) || defined(R8000P) || defined(R7900P)
+#if defined(K3) || defined(R8000P) || defined(R7900P) || defined(XWR3100)
 	fp = popen("rc Get_PhyStatus", "r");
 #else
 	fp = popen("ATE Get_WanLanStatus", "r");

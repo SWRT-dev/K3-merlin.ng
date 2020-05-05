@@ -25,7 +25,7 @@ function initial(){
 }
 function uuRegister(mac){
 	var _mac = mac.toLowerCase();
-	if(modelname == "K3" || modelname == "EA6700" || modelname == "SBRAC1900P" || modelname == "SBRAC3200P" || modelname == "R8000P" || modelname == "R7900P" || modelname == "RTAC3100" || modelname == "RTAC3200" || modelname == "RTACRH17" || modelname == "RAX20" || modelname == "RTAC85P" )
+	if(modelname == "K3" || modelname == "EA6700" || modelname == "SBRAC1900P" || modelname == "SBRAC3200P" || modelname == "R8000P" || modelname == "R7900P" || modelname == "RTAC3100" || modelname == "RTAC3200" || modelname == "RTACRH17" || modelname == "RAX20" || modelname == "RTAC85P" || modelname == "XWR3100" )
 	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt-merlin', '_blank');
 	else
 	window.open('https://router.uu.163.com/asus/pc.html#/acce?gwSn=' + _mac + '&type=asuswrt', '_blank');

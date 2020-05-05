@@ -99,7 +99,7 @@ install_module() {
 	OLD_VERSION=`dbus get softcenter_module_$softcenter_installing_module$VER_SUFFIX`
 	if [ -z "$(dbus get softcenter_server_tcode)" ]; then
 		modelname=`nvram get modelname`
-		if [ "$modelname" == "K3" ]; then
+		if [ "$modelname" == "K3" -o "$modelname" == "XWR3100" ]; then
 			dbus set softcenter_server_tcode=CN
 		elif [ "$modelname" == "SBRAC1900P" -o "$modelname" == "SBR-AC1900P" -o "$modelname" == "SBRAC3200P" -o "$modelname" == "SBR-AC3200P" -o "$modelname" == "R7900P" -o "$modelname" == "R8000P" ]; then
 			dbus set softcenter_server_tcode=ALI

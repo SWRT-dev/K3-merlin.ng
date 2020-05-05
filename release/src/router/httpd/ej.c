@@ -184,7 +184,7 @@ translate_lang (char *s, char *e, FILE *f, kw_t *pkw)
 			char *p_PID_STR = NULL;
 			char *PID_STR = nvram_safe_get("productid");
 			char *ODM_PID_STR = nvram_safe_get("odmpid");
-#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C) || defined(R8000P) || defined(RAX20)
+#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C) || defined(R8000P) || defined(RAX20) || defined(XWR3100)
 			char *modelname = nvram_safe_get("modelname");
 			int merlinr_len;
 #endif
@@ -194,7 +194,7 @@ translate_lang (char *s, char *e, FILE *f, kw_t *pkw)
 			pid_len = strlen(PID_STR);
 			odm_len = strlen(ODM_PID_STR);
 
-#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C) || defined(R8000P) || defined(RAX20)
+#if defined(R7900P) || defined(SBRAC1900P) || defined(SBRAC3200P) || defined(K3) || defined(K3C) || defined(R8000P) || defined(RAX20) || defined(XWR3100)
 			merlinr_len = strlen(modelname);
 			if (merlinr_len && strcmp(PID_STR, modelname) != 0) {
 				strlcpy(RP_ODM_PID_STR, modelname, merlinr_len+1);
