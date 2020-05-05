@@ -96,6 +96,8 @@
 #include <auth_common.h>
 #if defined(K3)
 #include "k3.h"
+#elif defined(XWR3100)
+#include "xwr3100.h"
 #elif defined(R7900P) || defined(R8000P)
 #include "r7900p.h"
 #elif defined(K3C)
@@ -4650,6 +4652,8 @@ void fake_etlan_led(void)
 
 #if defined(K3)
 	if (!GetPhyStatusk3(0)) {
+#elif defined(XWR3100)
+	if (!GetPhyStatus2(0)) {
 #else
 	if (!GetPhyStatus(0)) {
 #endif
@@ -6075,7 +6079,7 @@ static void softcenter_sig_check()
 	}
 }
 #endif
-#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P)
+#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P) || defined(XWR3100)
 #if defined(MERLINR_VER_MAJOR_R) || defined(MERLINR_VER_MAJOR_X)
 static void check_auth_code()
 {
@@ -6083,7 +6087,7 @@ static void check_auth_code()
 	if (i==0)
 #if defined(K3C)
 		i=auth_code_check(nvram_get("et0macaddr"), nvram_get("uuid"));
-#elif defined(K3) || defined(R8000P) || defined(R7900P)
+#elif defined(K3) || defined(R8000P) || defined(R7900P) || defined(XWR3100)
 		i=auth_code_check(cfe_nvram_get("et0macaddr"), nvram_get("uuid"));
 #elif defined(SBRAC1900P)
 		i=auth_code_check(cfe_nvram_get("et2macaddr"), nvram_get("uuid"));
@@ -8255,8 +8259,10 @@ wdp:
 		start_qca_lbd();
 #endif
 #endif
+#if defined(K3) || defined(K3C) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P) || defined(XWR3100)
 #if defined(MERLINR_VER_MAJOR_R) || defined(MERLINR_VER_MAJOR_X)
 	check_auth_code();
+#endif
 #endif
 }
 

@@ -85,7 +85,11 @@
 #endif
 
 //k3
-#include <k3.h>
+#if defined(K3)
+#include "k3.h"
+#elif defined(XWR3100)
+#include "xwr3100.h"
+#endif
 
 static int fatalsigs[] = {
 	SIGILL,
@@ -113,9 +117,9 @@ static char *defenv[] = {
 	"HOME=/",
 	//"PATH=/usr/bin:/bin:/usr/sbin:/sbin",
 #ifdef RTCONFIG_LANTIQ
-	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/rom/opt/lantiq/bin:/rom/opt/lantiq/usr/sbin:/jffs/softcenter/bin:/jffs/softcenter/scripts",
+	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/rom/opt/lantiq/bin:/rom/opt/lantiq/usr/sbin",
 #else
-	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/jffs/softcenter/bin:/jffs/softcenter/scripts",
+	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
 #endif
 #ifdef HND_ROUTER
 	"LD_LIBRARY_PATH=/lib:/usr/lib:/lib/aarch64",
@@ -124,10 +128,7 @@ static char *defenv[] = {
 	"PS1=# ",
 #endif
 #ifdef RTCONFIG_LANTIQ
-	"LD_LIBRARY_PATH=/lib:/usr/lib:/opt/lantiq/usr/lib:/opt/lantiq/usr/sbin/:/tmp/wireless/lantiq/usr/lib/:/jffs/softcenter/lib",
-#endif
-#if defined(RTAC3100) || defined(RTAC68U) || defined(RTAC3200)
-	"LD_LIBRARY_PATH=/lib:/usr/lib:/jffs/softcenter/lib",
+	"LD_LIBRARY_PATH=/lib:/usr/lib:/opt/lantiq/usr/lib:/opt/lantiq/usr/sbin/:/tmp/wireless/lantiq/usr/lib/",
 #endif
 	"SHELL=" SHELL,
 	"USER=root",
@@ -7614,6 +7615,8 @@ int init_nvram(void)
 	case MODEL_RTAC3100:
 #if defined(K3)
 		k3_init();
+#elif defined(XWR3100)
+		xwr3100_init();
 #endif
 		ldo_patch();
 
@@ -7766,33 +7769,16 @@ int init_nvram(void)
 
 		/* gpio */
 		/* HW reset, 2 | LOW */
-#if defined(K3)
-		//nvram_set_int("led_pwr_gpio", 3|GPIO_ACTIVE_LOW);
-		//nvram_set_int("btn_led_gpio", 4);	// active high(on)
-		//nvram_set_int("led_wan_gpio", 5);
-		/* MDC_4709 RGMII, 6 */
-		/* MDIO_4709 RGMII, 7 */
-		//nvram_set_int("pwr_usb_gpio", 9|GPIO_ACTIVE_LOW);
-		//nvram_set_int("reset_switch_gpio", 10);
-		//nvram_set_int("btn_rst_gpio", 11|GPIO_ACTIVE_LOW);
+#if defined(K3) || defined(XWR3100)
 		nvram_set_int("btn_rst_gpio", 17|GPIO_ACTIVE_LOW);
-		/* UART1_RX,  12 */
-		/* UART1_TX,  13 */
-		/* UART1_CTS, 14*/
-		/* UART1_RTS, 15 */
-		//nvram_set_int("led_usb_gpio", 16|GPIO_ACTIVE_LOW);
-		//nvram_set_int("led_usb3_gpio", 17|GPIO_ACTIVE_LOW);
-		//nvram_set_int("led_wps_gpio", 19|GPIO_ACTIVE_LOW);
-		if(model == MODEL_RTAC5300) {
-			nvram_set_int("btn_wltog_gpio", 20|GPIO_ACTIVE_LOW);
-			nvram_set_int("btn_wps_gpio", 18|GPIO_ACTIVE_LOW);
-			nvram_set_int("fan_gpio", 15);
-			nvram_set_int("rpm_fan_gpio", 14|GPIO_ACTIVE_LOW);
-		} else {
-			//nvram_set_int("btn_wltog_gpio", 18|GPIO_ACTIVE_LOW);
-			//nvram_set_int("btn_wps_gpio", 20|GPIO_ACTIVE_LOW);
-		}
-		//nvram_set_int("led_lan_gpio", 21|GPIO_ACTIVE_LOW);	/* FAN CTRL: reserved */
+#if defined(XWR3100)
+		nvram_set_int("led_wan_gpio", 3|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_pwr_gpio", 0|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_usb_gpio", 8|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_wps_gpio", 10|GPIO_ACTIVE_LOW);
+		//nvram_set_int("led_2g_gpio", 13|GPIO_ACTIVE_LOW);
+		//nvram_set_int("led_5g_gpio", 14|GPIO_ACTIVE_LOW);
+#endif
 #else
 		nvram_set_int("led_pwr_gpio", 3|GPIO_ACTIVE_LOW);
 #ifdef RTCONFIG_LED_BTN
@@ -7845,7 +7831,7 @@ int init_nvram(void)
 
 		if (!nvram_get("ct_max"))
 			nvram_set("ct_max", "300000");
-#if defined(K3)
+#if defined(K3) || defined(XWR3100)
 		add_rc_support("mssid 2.4G 5G update usbX1");
 #else
 		add_rc_support("mssid 2.4G 5G update usbX2");
@@ -7864,7 +7850,7 @@ int init_nvram(void)
 		nvram_set("mmc_irq", "177");
 #endif
 		add_rc_support("smart_connect");
-#if !defined(K3)		
+#if !defined(K3) && !defined(XWR3100)
 		if (!strncmp(nvram_safe_get("territory_code"), "AU/05", 5)) {
 			add_rc_support("nz_isp");
 			nvram_set("wifi_psk", cfe_nvram_safe_get_raw("secret_code"));
@@ -11579,9 +11565,11 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 #ifndef RTCONFIG_LANTIQ
 			nvram_set("success_start_service", "1");
 			force_free_caches();
+#endif
 #if defined(K3)
 			k3_init_done();
-#endif
+#elif defined(XWR3100)
+			xwr3100_init_done();
 #endif
 
 #ifdef RTCONFIG_AMAS

@@ -35,13 +35,15 @@
 #endif
 
 #if defined(K3)
-#include <k3.h>
+#include "k3.h"
+#elif defined(XWR3100)
+#include "xwr3100.h"
 #elif defined(R7900P)
-#include <r7900p.h>
+#include "r7900p.h"
 #elif defined(K3C)
-#include <k3c.h>
+#include "k3c.h"
 #elif defined(SBRAC1900P)
-#include <1900p.h>
+#include "1900p.h"
 #endif
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -298,7 +300,7 @@ static int rctest_main(int argc, char *argv[])
 	}
 #endif
 	else if (strcmp(argv[1], "GetPhyStatus")==0) {
-#if defined(R7900P)
+#if defined(R7900P) || defined(XWR3100)
 		printf("Get Phy status:%d\n", GetPhyStatus2(0));
 #elif defined(K3)
 		printf("Get Phy status:%d\n", GetPhyStatusk3(0));
@@ -306,21 +308,17 @@ static int rctest_main(int argc, char *argv[])
 		printf("Get Phy status:%d\n", GetPhyStatus(0));
 #endif
 	}
-#if defined(K3) || defined(R7900P)
+#if defined(K3) || defined(R7900P) || defined(XWR3100)
 	else if (strcmp(argv[1], "Get_PhyStatus")==0) {
 #if defined(K3)
 		GetPhyStatusk3(1);
-#elif defined(R7900P)
+#elif defined(R7900P) || defined(XWR3100)
 		GetPhyStatus2(1);
 #endif
 	}
 #endif
 	else if (strcmp(argv[1], "GetExtPhyStatus")==0) {
-#if defined(K3)
-		printf("Get Ext Phy status:%d\n", GetPhyStatusk3(atoi(argv[2])));
-#else
 		printf("Get Ext Phy status:%d\n", GetPhyStatus(atoi(argv[2])));
-#endif
 	}
 #ifdef HND_ROTUER
 	else if (strcmp(argv[1], "memdw")==0) {

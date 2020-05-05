@@ -19,9 +19,11 @@
 #include <plc_utils.h>
 #endif
 #if defined(K3)
-#include <k3.h>
+#include "k3.h"
+#elif defined(XWR3100)
+#include "xwr3100.h"
 #elif defined(R7900P)
-#include <r7900p.h>
+#include "r7900p.h"
 #endif
 #define MULTICAST_BIT  0x0001
 #define UNIQUE_OUI_BIT 0x0002
@@ -1710,7 +1712,7 @@ int asus_ate_command(const char *command, const char *value, const char *value2)
 #else
 #if defined(K3)
 		if (!GetPhyStatusk3(1) && nvram_match("ATEMODE", "1")) {
-#elif defined(R7900P)
+#elif defined(R7900P) || defined(XWR3100)
 		if (!GetPhyStatus2(1) && nvram_match("ATEMODE", "1")) {
 #else
 		if (!GetPhyStatus(1) && nvram_match("ATEMODE", "1")) {
