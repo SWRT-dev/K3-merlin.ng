@@ -9477,7 +9477,9 @@ NO_USB_CAP:
 #endif
 
 #ifdef RTCONFIG_AMAS
+#if !defined(MERLINR_VER_MAJOR_B)
 	add_rc_support("amas");
+#endif
 	if (nvram_get_int("amas_bdl"))
 	add_rc_support("amas_bdl");
 #endif
