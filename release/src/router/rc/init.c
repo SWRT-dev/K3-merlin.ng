@@ -7627,9 +7627,9 @@ int init_nvram(void)
 		//else
 		//	nvram_set("et_rxlazy_timeout",  "300");
 #endif
-
 		nvram_set("0:ledbh9", "0x7");
 		nvram_set("1:ledbh9", "0x7");
+
 #ifdef RTCONFIG_RGMII_BRCM5301X
 		hw_name = "et1";
 
@@ -7772,12 +7772,17 @@ int init_nvram(void)
 #if defined(K3) || defined(XWR3100)
 		nvram_set_int("btn_rst_gpio", 17|GPIO_ACTIVE_LOW);
 #if defined(XWR3100)
-		nvram_set_int("led_wan_gpio", 3|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_wan_gpio", 3);
 		nvram_set_int("led_pwr_gpio", 0|GPIO_ACTIVE_LOW);
-		nvram_set_int("led_usb_gpio", 8|GPIO_ACTIVE_LOW);
-		nvram_set_int("led_wps_gpio", 10|GPIO_ACTIVE_LOW);
-		//nvram_set_int("led_2g_gpio", 13|GPIO_ACTIVE_LOW);
-		//nvram_set_int("led_5g_gpio", 14|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_usb3_gpio", 8|GPIO_ACTIVE_LOW);
+		//nvram_set_int("led_wps_gpio", 10|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan_gpio", 10|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_2g_gpio", 13|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_5g_gpio", 14|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan1_gpio", 4|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan2_gpio", 6|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan3_gpio", 1|GPIO_ACTIVE_LOW);
+		nvram_set_int("led_lan4_gpio", 2|GPIO_ACTIVE_LOW);
 #endif
 #else
 		nvram_set_int("led_pwr_gpio", 3|GPIO_ACTIVE_LOW);

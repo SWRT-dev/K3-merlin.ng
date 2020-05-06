@@ -24539,7 +24539,7 @@ ej_get_wan_lan_status(int eid, webs_t wp, int argc, char **argv)
 	struct json_object *wanLanStatus = NULL;
 	struct json_object *wanLanLinkSpeed = NULL;
 	struct json_object *wanLanCount = NULL;
-#if defined(K3) || defined(R8000P) || defined(R7900P) || defined(XWR3100)
+#if defined(K3) || defined(R8000P) || defined(R7900P)
 	fp = popen("rc Get_PhyStatus", "r");
 #else
 	fp = popen("ATE Get_WanLanStatus", "r");

@@ -24,8 +24,10 @@ install:
 	install -d $(INSTALLDIR)/usr/bin
 	install -d $(INSTALLDIR)/usr/share
 	install -d $(INSTALLDIR)/usr/lib
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 XWR3100))
 ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 	install -d $(INSTALLDIR)/mcu
+endif
 	install -d $(INSTALLDIR)/rom/cfe/
 endif
 	install -d $(INSTALLDIR)/rom/etc
@@ -125,6 +127,9 @@ ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3))
 	install -m 0755 weather $(INSTALLDIR)/usr/sbin
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
 	install -m 0644 cfe.bin $(INSTALLDIR)/rom/cfe/
+endif
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), XWR3100))
+	install -m 0644 xwr.bin $(INSTALLDIR)/rom/cfe/
 endif
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin

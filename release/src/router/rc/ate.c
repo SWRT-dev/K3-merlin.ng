@@ -20,8 +20,6 @@
 #endif
 #if defined(K3)
 #include "k3.h"
-#elif defined(XWR3100)
-#include "xwr3100.h"
 #elif defined(R7900P)
 #include "r7900p.h"
 #endif
@@ -1712,7 +1710,7 @@ int asus_ate_command(const char *command, const char *value, const char *value2)
 #else
 #if defined(K3)
 		if (!GetPhyStatusk3(1) && nvram_match("ATEMODE", "1")) {
-#elif defined(R7900P) || defined(XWR3100)
+#elif defined(R7900P)
 		if (!GetPhyStatus2(1) && nvram_match("ATEMODE", "1")) {
 #else
 		if (!GetPhyStatus(1) && nvram_match("ATEMODE", "1")) {

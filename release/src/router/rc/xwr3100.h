@@ -23,7 +23,6 @@
 #define __MERLINR_H__
 extern void xwr3100_init(void);
 extern void xwr3100_init_done(void);
-extern int GetPhyStatus2(int verbose);
 extern int merlinr_toolbox(int argc, char **argv);
 #ifdef RTCONFIG_UUPLUGIN
 extern void exec_uu_merlinr(void);

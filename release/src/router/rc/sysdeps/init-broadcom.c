@@ -1342,8 +1342,6 @@ void generate_switch_para(void)
 			/* WAN L1 L2 L3 L4 CPU */	/*vision: WAN L1 L2 L3 L4 */
 #if defined(K3)
 			int ports[SWPORT_COUNT] = { 3, 1, 0, 2, 4, 5 };
-#elif defined(XWR3100)
-			int ports[SWPORT_COUNT] = { 4, 0, 1, 2, 3, 5 };
 #else
 			int ports[SWPORT_COUNT] = { 4, 3, 2, 1, 0, 5 };
 #endif

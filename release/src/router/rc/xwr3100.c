@@ -82,6 +82,8 @@ void xwr3100_init()
 		nvram_set("secret_code", "14725836");
 	if (!nvram_get("territory_code"))
 		nvram_set("territory_code", "US/01");
+	if (!nvram_get("modelname"))
+		nvram_set("modelname", "XWR3100");
 #if defined(RTCONFIG_SOFTCENTER)
 	nvram_set("sc_wan_sig", "0");
 	nvram_set("sc_nat_sig", "0");
@@ -152,45 +154,6 @@ void xwr3100_init_done(){
 #endif
 #endif
 }
-
-int GetPhyStatus2(int verbose)
-{
-	int ports[5];
-	int i, ret, lret=0, mask;
-	char out_buf[30];
-	ports[0]=4; ports[1]=0; ports[2]=1; ports[3]=2; ports[4]=3;
-
-	memset(out_buf, 0, 30);
-	for (i=0; i<5; i++) {
-		mask = 0;
-		mask |= 0x0001<<ports[i];
-		if (get_phy_status(mask)==0) {/*Disconnect*/
-			if (i==0)
-				sprintf(out_buf, "W0=X;");
-			else {
-				sprintf(out_buf, "%sL%d=X;", out_buf, i);
-			}
-		}
-		else { /*Connect, keep check speed*/
-			mask = 0;
-			mask |= (0x0003<<(ports[i]*2));
-			ret=get_phy_speed(mask);
-			ret>>=(ports[i]*2);
-			if (i==0)
-				sprintf(out_buf, "W0=%s;", (ret & 2)? "G":"M");
-			else {
-				lret = 1;
-				sprintf(out_buf, "%sL%d=%s;", out_buf, i, (ret & 2)? "G":"M");
-			}
-		}
-	}
-
-	if (verbose)
-		puts(out_buf);
-
-	return lret;
-}
-
 
 #define FWUPDATE_DBG(fmt,args...) \
         if(1) { \

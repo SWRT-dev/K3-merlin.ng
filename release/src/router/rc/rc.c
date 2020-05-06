@@ -300,7 +300,7 @@ static int rctest_main(int argc, char *argv[])
 	}
 #endif
 	else if (strcmp(argv[1], "GetPhyStatus")==0) {
-#if defined(R7900P) || defined(XWR3100)
+#if defined(R7900P)
 		printf("Get Phy status:%d\n", GetPhyStatus2(0));
 #elif defined(K3)
 		printf("Get Phy status:%d\n", GetPhyStatusk3(0));
@@ -308,11 +308,11 @@ static int rctest_main(int argc, char *argv[])
 		printf("Get Phy status:%d\n", GetPhyStatus(0));
 #endif
 	}
-#if defined(K3) || defined(R7900P) || defined(XWR3100)
+#if defined(K3) || defined(R7900P)
 	else if (strcmp(argv[1], "Get_PhyStatus")==0) {
 #if defined(K3)
 		GetPhyStatusk3(1);
-#elif defined(R7900P) || defined(XWR3100)
+#elif defined(R7900P)
 		GetPhyStatus2(1);
 #endif
 	}
@@ -1279,6 +1279,9 @@ static const applets_t applets[] = {
 #endif
 #ifdef RTCONFIG_ADTBW
 	{ "adtbw",			adtbw_main		},
+#endif
+#if defined(SBRAC1900P) || defined(SBRAC3200P) || defined(XWR3100)
+	{ "toolbox",			merlinr_toolbox		},
 #endif
 	{NULL, NULL}
 };

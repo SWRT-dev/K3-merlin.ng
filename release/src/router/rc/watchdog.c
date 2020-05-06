@@ -4652,8 +4652,6 @@ void fake_etlan_led(void)
 
 #if defined(K3)
 	if (!GetPhyStatusk3(0)) {
-#elif defined(XWR3100)
-	if (!GetPhyStatus2(0)) {
 #else
 	if (!GetPhyStatus(0)) {
 #endif

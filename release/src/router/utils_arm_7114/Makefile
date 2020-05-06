@@ -64,10 +64,10 @@ endif
 
 vpath %.c $(SRCBASE)/tools/misc $(WLAN_StdSrcDirsA) $(WLAN_ComponentSrcDirs)
 
-ifneq ($(wildcard $(SRCBASE)/et/linux/et.c),)
+#ifneq ($(wildcard $(SRCBASE)/et/linux/et.c),)
 UTILS += et
-vpath %.c $(SRCBASE)/et/linux
-endif
+#vpath %.c $(SRCBASE)/et/linux
+#endif
 
 ifneq ($(wildcard $(SRCBASE)/wl/exe),)
 CFLAGS += -I$(SRCBASE)/wl/exe
@@ -141,6 +141,9 @@ wifi/%.o: %.c
 endif
 
 robocfg: robocfg.c etc53xx.h
+
+et:
+	cp -f $(SRCBASE)/wl/exe/prebuilt/et et
 
 clean:
 	rm -f *.o *~ $(UTILS)
