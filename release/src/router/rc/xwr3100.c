@@ -147,11 +147,9 @@ void xwr3100_init_done(){
 		logmessage("XWR3100", "*** verify failed, Reboot after 10 min ***\n");
 	}
 #endif
-#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
-#if defined(K3) || defined(EA6700) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P) || defined(XWR3100)
-//fix some bugs on non-asus devices
-	notify_rc("restart_wireless");
-#endif
+
+#if defined(XWR3100)
+	setup_leds();
 #endif
 }
 

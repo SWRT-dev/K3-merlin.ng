@@ -1363,7 +1363,7 @@ int dhcp6c_wan(int argc, char **argv)
 	else if (strcmp(argv[2], "informed") == 0)
 		return bound6(argv[1], 0);
 	else if (strcmp(argv[2], "ra-updated") == 0)
-		return ra_updated6(argv[2]);
+		return ra_updated6(argv[1]);
 
 	return 0;
 }

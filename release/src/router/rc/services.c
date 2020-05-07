@@ -4846,7 +4846,7 @@ void start_upnp(void)
 	char *gfn_mode = "no";
 #endif
 
-	if (getpid() != 1) {
+	if (getpid() != 1 && getuid() != 0) {
 		notify_rc("start_upnp");
 		return;
 	}
@@ -5098,7 +5098,7 @@ void start_upnp(void)
 
 void stop_upnp(void)
 {
-	if (getpid() != 1) {
+	if (getpid() != 1 && getuid() != 0) {
 		notify_rc("stop_upnp");
 		return;
 	}
@@ -13184,7 +13184,6 @@ retry_wps_enr:
 #ifdef HND_ROUTER
 		if (is_router_mode()) start_mcpd_proxy();
 #endif
-		sleep(2);
 		// TODO: function to force ppp connection
 		start_upnp();
 	}

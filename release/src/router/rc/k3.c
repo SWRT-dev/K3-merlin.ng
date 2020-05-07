@@ -1164,12 +1164,7 @@ void k3_init_done(){
 		logmessage("K3", "*** verify failed, Reboot after 10 min ***\n");
 	}
 #endif
-#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_HND_ROUTER)
-#if defined(K3) || defined(EA6700) || defined(R8000P) || defined(R7900P) || defined(SBRAC1900P)
-//fix some bugs on non-asus devices
-	notify_rc("restart_wireless");
-#endif
-#endif
+
 }
 
 int GetPhyStatusk3(int verbose)

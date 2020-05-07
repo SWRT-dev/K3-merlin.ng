@@ -6013,9 +6013,9 @@ int start_firewall(int wanunit, int lanunit)
 	run_le_fw_script();
 #endif
 
+	/* Assuming wan interface doesn't change */
+	reload_upnp();
 leave:
-	if (restart_upnp) start_upnp();
-
 	file_unlock(lock);
 	run_custom_script("firewall-start", 0, wan_if, NULL);
 	return 0;
