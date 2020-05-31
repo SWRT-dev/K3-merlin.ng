@@ -15,6 +15,7 @@
  * MA 02111-1307 USA
  *
  * Copyright 2018-2020, paldier<paldier@hotmail.com>.
+ * Copyright 2018-2020, lostlonger<lostlonger.g@gmail.com>.
  * All Rights Reserved.
  *
  */
@@ -919,147 +920,20 @@ int k3screena(){
 	return 0;
 }
 int k3screenb(){
-		_dprintf("....k3screen start b....\n");
-	FILE *fpb, *fph, *fpp, *fpw, *fpe, *fpt;
+	_dprintf("....k3screen start b....\n");
 	char *timeout;
 	doSystem("mkdir -p /tmp/k3screenctrl");
-	if ((fpb = fopen("/tmp/k3screenctrl/basic.sh", "w"))){
-		fprintf(fpb, "#!/bin/sh\n");
-		fprintf(fpb, "if [ -n `nvram get et2macaddr` ]; then\n");
-		fprintf(fpb, "    MAC_ADDR=$(nvram get et2macaddr)\n");
-		fprintf(fpb, "else\n");
-		fprintf(fpb, "    MAC_ADDR=$(nvram get k3macaddr)\n");
-		fprintf(fpb, "fi\n");
-		fprintf(fpb, "BUILD_NO=`nvram get buildno`\n");
-		fprintf(fpb, "EXTEND_NO=`nvram get extendno`\n");
-		fprintf(fpb, "swmode=`nvram get sw_mode`\n");
-		fprintf(fpb, "if [ \"$swmode\" == \"1\" ]; then\n");
-		fprintf(fpb, "FW_VERSION=\"$BUILD_NO\"_\"$EXTEND_NO\"\n");
-		fprintf(fpb, "else\n");
-		fprintf(fpb, "FW_VERSION=AP:$(nvram get lan_ipaddr)\n");
-		fprintf(fpb, "fi\n");
-		fprintf(fpb, "hd_version=`nvram get hd_version`\n");
-		fprintf(fpb, "[ -n \"$hd_version\" ] || hd_version=A1/A2\n");
-		fprintf(fpb, "echo K3\n");
-		fprintf(fpb, "echo $hd_version\n");
-		fprintf(fpb, "echo $FW_VERSION\n");
-		fprintf(fpb, "echo $FW_VERSION\n");
-		fprintf(fpb, "echo $MAC_ADDR\n");
-		fclose(fpb);
-	}
-	if ((fph = fopen("/tmp/k3screenctrl/host.sh", "w"))){
-		fprintf(fph, "#!/bin/sh\n");
-		fprintf(fph, "data=`cat /tmp/k3screenctrl/device_online`\n");
-		fprintf(fph, "echo \"${data}\"\n");
-		fclose(fph);
-	}
-	if ((fpp = fopen("/tmp/k3screenctrl/port.sh", "w"))){
-		fprintf(fpp, "#!/bin/sh\n");
-		fprintf(fpp, "eval $(/usr/sbin/robocfg show 2>/dev/null | awk 'NR==2,NR==5{printf $3\" \"}' | awk '{printf(\"LAN2=%%s; LAN1=%%s; LAN3=%%s; WAN1=%%s;\",$1,$2,$3,$4)}')\n");
-		fprintf(fpp, "  [ \"$LAN2\" = \"DOWN\" ] && LAN2=\"0\" || LAN2=\"1\"\n");
-		fprintf(fpp, "  [ \"$LAN1\" = \"DOWN\" ] && LAN1=\"0\" || LAN1=\"1\"\n");
-		fprintf(fpp, "  [ \"$LAN3\" = \"DOWN\" ] && LAN3=\"0\" || LAN3=\"1\"\n");
-		fprintf(fpp, "  [ \"$WAN1\" = \"DOWN\" ] && WAN1=\"0\" || WAN1=\"1\"\n");
-		fprintf(fpp, "  if [ $(nvram get usb_usb3) -eq 1 ]; then\n");
-		fprintf(fpp, "   [ \"$(lsusb | wc -l)\" -gt 3 ] && USB=\"1\" || USB=\"0\"\n");
-		fprintf(fpp, "  else\n");
-		fprintf(fpp, "   [ \"$(lsusb | wc -l)\" -gt 2 ] && USB=\"1\" || USB=\"0\"\n");
-		fprintf(fpp, "  fi\n");
-		fprintf(fpp, "echo $LAN1\n");
-		fprintf(fpp, "echo $LAN2\n");
-		fprintf(fpp, "echo $LAN3\n");
-		fprintf(fpp, "echo $WAN1\n");
-		fprintf(fpp, "echo $USB\n");
-		fclose(fpp);
-	}
-	if ((fpw = fopen("/tmp/k3screenctrl/wan.sh", "w"))){
-		fprintf(fpw, "#!/bin/sh\n");
-		fprintf(fpw, "WAN_STAT=`nvram get wan0_ipaddr`\n");
-		fprintf(fpw, "WAN6_STAT=`nvram get ipv6_ipaddr`\n");
-		fprintf(fpw, "[ $(nvram get sw_mode) -eq 1 ] && mode=0\n");
-		fprintf(fpw, "[ $(nvram get sw_mode) -eq 1 ] || mode=1\n");
-		fprintf(fpw, "[ \"$WAN_STAT\" != \"0.0.0.0\" ] && IPV4_ADDR=\"$WAN_STAT\"\n");
-		fprintf(fpw, "[ \"$WAN6_STAT\" != \"\" ] && IPV6_ADDR=\"$WAN6_STAT\"\n");
-		fprintf(fpw, "if [ -n \"$IPV4_ADDR\" -o -n \"$IPV6_ADDR\" ]; then\n");
-		fprintf(fpw, "    CONNECTED=1\n");
-		fprintf(fpw, "else\n");
-		fprintf(fpw, "    CONNECTED=0\n");
-		fprintf(fpw, "fi\n");
-		fprintf(fpw, "UPLOAD_BPS=`cat /tmp/k3screenctrl/upspeed`\n");
-		fprintf(fpw, "DOWNLOAD_BPS=`cat /tmp/k3screenctrl/downspeed`\n");
-		fprintf(fpw, "echo $CONNECTED\n");
-		fprintf(fpw, "echo $IPV4_ADDR\n");
-		fprintf(fpw, "echo $UPLOAD_BPS\n");
-		fprintf(fpw, "echo $DOWNLOAD_BPS\n");
-		fprintf(fpw, "echo 0\n");
-		fprintf(fpw, "echo $mode\n");
-		fclose(fpw);
-	}
-	if ((fpe = fopen("/tmp/k3screenctrl/wifi.sh", "w"))){
-		fprintf(fpe, "#!/bin/sh\n");
-		fprintf(fpe, "ssid24=`nvram get wl0_ssid`\n");
-		fprintf(fpe, "pd24=`nvram get wl0_wpa_psk`\n");
-		fprintf(fpe, "en24=`nvram get wl0_bss_enabled`\n");
-		fprintf(fpe, "cc24=`wl -i eth1 assoclist| wc -l`\n");
-		fprintf(fpe, "ssid5=`nvram get wl1_ssid`\n");
-		fprintf(fpe, "pd5=`nvram get wl1_wpa_psk`\n");
-		fprintf(fpe, "en5=`nvram get wl1_bss_enabled`\n");
-		fprintf(fpe, "cc5=`wl -i eth2 assoclist| wc -l`\n");
-		fprintf(fpe, "pdg=\"1234567890\"\n");
-		fprintf(fpe, "if [ $(nvram get wl0_auth_mode_x) == \"open\" ]; then\n");
-		fprintf(fpe, "pd24=\" \"\n");
-		fprintf(fpe, "fi\n");
-		fprintf(fpe, "if [ $(nvram get wl1_auth_mode_x) == \"open\" ]; then\n");
-		fprintf(fpe, "pd5=\" \"\n");
-		fprintf(fpe, "fi\n");
-		fprintf(fpe, "if [ \"$(nvram get screen_2G5G_pwd_en)\" != \"1\" ]; then\n");
-		fprintf(fpe, "pd24=\"********\"\n");
-		fprintf(fpe, "pd5=\"********\"\n");
-		fprintf(fpe, "fi\n");
-		fprintf(fpe, "if [ \"$(nvram get screen_guest_pwd_en)\" == \"0\" ]; then\n");
-		fprintf(fpe, "pdg=\"********\"\n");
-		fprintf(fpe, "fi\n");
-		fprintf(fpe, "echo 0\n");
-		fprintf(fpe, "echo $ssid24\n");
-		fprintf(fpe, "echo \"$pd24\"\n");
-		fprintf(fpe, "echo $en24\n");
-		fprintf(fpe, "echo $cc24\n");
-		fprintf(fpe, "echo $ssid5\n");
-		fprintf(fpe, "echo \"$pd5\"\n");
-		fprintf(fpe, "echo $en5\n");
-		fprintf(fpe, "echo $cc5\n");
-		fprintf(fpe, "echo ASUS_GUEST\n");
-		fprintf(fpe, "echo \"$pdg\"\n");
-		fprintf(fpe, "echo 0\n");
-		fprintf(fpe, "echo 0\n");
-		fclose(fpe);
-	}
-	if ((fpt = fopen("/tmp/k3screenctrl/weather.sh", "w"))){
-		fprintf(fpt, "#!/bin/sh\n");
-		fprintf(fpt, "city=`cat /lib/k3screenctrl/city`\n");
-		fprintf(fpt, "temp=`cat /lib/k3screenctrl/temp`\n");
-		fprintf(fpt, "code=`cat /lib/k3screenctrl/code`\n");
-		fprintf(fpt, "week=$(date +%%w)\n");
-		fprintf(fpt, "data=`cat /lib/k3screenctrl/date`\n");
-		fprintf(fpt, "time=`cat /lib/k3screenctrl/time`\n");
-		fprintf(fpt, "echo $city\n");
-		fprintf(fpt, "echo $temp\n");
-		fprintf(fpt, "echo $data\n");
-		fprintf(fpt, "echo $time\n");
-		fprintf(fpt, "echo $code\n");
-		fprintf(fpt, "echo $week\n");
-		fprintf(fpt, "echo 0\n");
-		fclose(fpt);
-	}
 	doSystem("killall -q -9 phi_speed wl_cr uhmi k3screenctrl update_weather k3screend 2>/dev/null");
-	doSystem("chmod +x /tmp/k3screenctrl/*.sh");
-	doSystem("/usr/sbin/k3screend &");
+	//doSystem("/usr/sbin/k3screend &");
+	//doSystem("chmod +x /tmp/k3screenctrl/*.sh");
 	if (nvram_get_int("k3screen_timeout")==1)
 		timeout = "-m0";
 	else
 		timeout = "-m30";
 	char *k3screenctrl_argv[] = { "k3screenctrl", timeout,NULL };
+	char *k3screend_argv[] = { "k3screend",NULL };
 	pid_t pid;
+	_eval(k3screend_argv, NULL, 0, &pid);
 	_eval(k3screenctrl_argv, NULL, 0, &pid);
 	_dprintf("....k3screen ok....\n");
 	return 0;

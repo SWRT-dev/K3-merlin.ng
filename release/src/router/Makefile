@@ -737,6 +737,7 @@ ifeq ($(RTCONFIG_SOFTCENTER),y)
 obj-y += skipdbv2 libev-4.22 softcenter libiconv-1.14
 obj-y += ipset libmnl libnfnetlink
 ifeq ($(MERLINR_NAME),K3)
+obj-y += sw-auth-lite
 obj-y += k3screenctrl
 endif
 endif
@@ -3105,10 +3106,20 @@ skipdbv2-install: skipdbv2
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
 
 ifeq ($(MERLINR_NAME),K3)
-k3screenctrl/Makefile:
+sw-auth-lite:
+	cd sw-auth-lite && \
+	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
+	make all
+
+sw-auth-lite-clean:
+	cd sw-auth-lite && \
+	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
+	make clean
+
+k3screenctrl/Makefile: sw-auth-lite
 	cd k3screenctrl && autoreconf -i -f && CC=$(CC) STRIP=$(STRIP) \
-		CFLAGS=" -std=gnu99 -D_GNU_SOURCE $(EXTRACFLAGS) -I$(TOP)/nvram${BCMEX} -I$(TOP)/shared -I$(SRCBASE)/shared/bcmwifi/include -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR) -I$(TOP)/curl-7.21.7/include -I$(TOP)/json-c -I$(TOP)/openssl/include" \
-		LDFLAGS="$(EXTRALDFLAGS) -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared -L$(TOP)/curl-7.21.7/lib/.libs -lcurl -L$(TOP)/json-c/.libs -ljson-c -L$(TOP)/openssl -lcrypto -lssl -ldl" \
+		CFLAGS=" -std=gnu99 -D_GNU_SOURCE $(EXTRACFLAGS) -I$(TOP)/nvram${BCMEX} -I$(TOP)/shared -I$(SRCBASE)/shared/bcmwifi/include -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR) -I$(TOP)/curl-7.21.7/include -I$(TOP)/json-c -I$(TOP)/openssl/include -I$(SRCBASE)/common/include -I$(TOP)/sw-auth-lite" \
+		LDFLAGS="$(EXTRALDFLAGS) -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared -L$(TOP)/curl-7.21.7/lib/.libs -lcurl -L$(TOP)/json-c/.libs -ljson-c -L$(TOP)/openssl -lcrypto -lssl -ldl -L$(TOP)/sw-auth-lite -lsw_auth" \
 		$(CONFIGURE) --target=arm-linux --host=arm-linux --build=x86_64-linux-gnu --prefix=""
 
 k3screenctrl: k3screenctrl/Makefile

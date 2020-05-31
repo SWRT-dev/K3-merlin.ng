@@ -11,6 +11,8 @@ release/src/router/sw-hw-auth/hw_auth.c.bak
 release/src/router/sw-hw-auth/sw_auth.c.bak
 release/src/router/sw-hw-auth/merlinr_hack.c.bak
 release/src/router/sw-hw-auth/prebuild/*_r
+release/src/router/sw-auth-lite/*.c
+
 ~
 *.ko
 *.o.cmd
