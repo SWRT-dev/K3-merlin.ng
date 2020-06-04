@@ -1,4 +1,6 @@
 
+鉴于华硕已经将更多硬件检测移入驱动，破解难度越来越大，当前代码为最后开源版本，新版本不再公开源代码
+
 based on asuswrt and some code come from https://github.com/RMerl/asuswrt-merlin.ng
 
 The GPL source is created for ASUS wireless router related products. Please visit the ASUS support site (http://support.asus.com) to get the latest GPL tarball.It has a lot in common with many wireless router open source projects, including Oleg/Tomato/DD-WRT/OpenWRT. Thanks the developers of those projects for making the source code available.
